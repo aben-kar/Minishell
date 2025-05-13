@@ -3,45 +3,34 @@
 /*                                                        :::      ::::::::   */
 /*   ft_substr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zaakrab <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/13 18:08:49 by acben-ka          #+#    #+#             */
-/*   Updated: 2024/11/13 18:08:50 by acben-ka         ###   ########.fr       */
+/*   Created: 2024/11/01 21:19:07 by zaakrab           #+#    #+#             */
+/*   Updated: 2024/11/01 21:19:08 by zaakrab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_substr(char const *s, unsigned int start, size_t len)
+char	*ft_substr(const char *s, unsigned int start, size_t len)
 {
-	size_t	len_s;
-	char	*dest;
+	char	*subs;
 	size_t	i;
+	size_t	slen;
 
-	if (!s)
+	if (s == NULL)
 		return (NULL);
-	len_s = ft_strlen(s);
-	if (start >= len_s)
+	slen = ft_strlen(s);
+	if (start >= slen)
 		return (ft_strdup(""));
-	if (start + len > len_s)
-		len = len_s - start;
-	dest = (char *)malloc((len + 1) * sizeof(char));
-	if (dest == NULL)
+	if (start + len > slen)
+		len = slen - start;
+	subs = (char *)malloc(sizeof(char) * (len + 1));
+	if (!subs)
 		return (NULL);
 	i = 0;
-	while (s[start + i] && i < len)
-	{
-		dest[i] = s[start + i];
-		i++;
-	}
-	dest[i] = '\0';
-	return (dest);
+	while (s[start] != 0 && i < len)
+		subs[i++] = s[start++];
+	subs[i] = 0;
+	return (subs);
 }
-
-// int main()
-// {
-//     char s1[] = "hello, world!";
-
-//     char *dest = ft_substr(s1, 20, 6);
-//     printf ("%s", dest);
-// }

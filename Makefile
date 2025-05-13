@@ -1,32 +1,45 @@
-NAME = shell
+NAME = minishell
 
+# Compiler and flags
 CC = cc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror # -fsanitize=address
+LDFLAGS = -Llibft -lft -lreadline -lhistory -lncurses
 
-# Include libft
+# Directories
 LIBFT_DIR = libft
-LIBFT = $(LIBFT_DIR)/libft.a
+PARSER_DIR = parser
+EXECUTION_DIR = execution
 
-SRC = shell.c shell_utils.c function_helper.c
+# Source files
+SRC = main.c \
+      $(wildcard $(PARSER_DIR)/*.c) \
+      $(wildcard $(EXECUTION_DIR)/*.c)
+
 OBJ = $(SRC:.c=.o)
 
-all: $(LIBFT) $(NAME)
+# Headers (including current dir)
+INCLUDES = -I. -I$(LIBFT_DIR) -I$(PARSER_DIR) -I$(EXECUTION_DIR)
 
-$(LIBFT):
-	make -C $(LIBFT_DIR)  # Compile libft
+# Rules
+all: $(NAME)
 
-$(NAME): $(OBJ) $(LIBFT)
-	$(CC) $(CFLAGS) -o $(NAME) $(OBJ) -L$(LIBFT_DIR) -lft
+$(NAME): $(OBJ) $(LIBFT_DIR)/libft.a
+	$(CC) $(CFLAGS) $(OBJ) $(LDFLAGS) -o $@
 
-%.o: %.c shell.h
-	$(CC) $(CFLAGS) -c $< -o $@
+%.o: %.c
+	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+
+$(LIBFT_DIR)/libft.a:
+	$(MAKE) -C $(LIBFT_DIR)
 
 clean:
+	$(MAKE) -C $(LIBFT_DIR) clean
 	rm -f $(OBJ)
-	make -C $(LIBFT_DIR) clean  # Clean libft objects
 
 fclean: clean
+	$(MAKE) -C $(LIBFT_DIR) fclean
 	rm -f $(NAME)
-	make -C $(LIBFT_DIR) fclean  # Full clean libft
 
 re: fclean all
+
+.PHONY: all clean fclean re

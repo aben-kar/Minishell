@@ -3,40 +3,36 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zaakrab <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/12 15:19:52 by acben-ka          #+#    #+#             */
-/*   Updated: 2024/11/16 15:57:48 by acben-ka         ###   ########.fr       */
+/*   Created: 2024/11/01 21:13:30 by zaakrab           #+#    #+#             */
+/*   Updated: 2024/11/01 21:13:31 by zaakrab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_atoi(const char *s)
+int	ft_atoi(const char *str)
 {
-	int	i;
-	int	rs;
-	int	sign;
+	int					i;
+	unsigned long int	res;
+	int					sign;
 
-	i = 0;
-	rs = 0;
 	sign = 1;
-	while ((s[i] >= '\t' && s[i] <= '\r') || s[i] == ' ')
+	res = 0;
+	i = 0;
+	while (str[i] == ' ' || (str[i] >= 9 && str[i] <= 13))
 		i++;
-	if (s[i] == '-' || s[i] == '+')
+	if (str[i] == '+' || str[i] == '-')
 	{
-		if (s[i] == '-')
+		if (str[i] == '-')
 			sign = -1;
 		i++;
 	}
-	while (s[i] >= '0' && s[i] <= '9')
+	while (str[i] >= '0' && str[i] <= '9')
 	{
-		rs = rs * 10 + (s[i] - 48);
-		if (rs * sign > INT_MAX)
-			return (INT_MAX);
-		if (rs * sign < INT_MIN)
-			return (INT_MIN);
+		res = res * 10 + str[i] - '0';
 		i++;
 	}
-	return (rs * sign);
+	return (res * sign);
 }

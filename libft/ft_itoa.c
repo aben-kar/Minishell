@@ -3,94 +3,60 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zaakrab <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/12 15:20:44 by acben-ka          #+#    #+#             */
-/*   Updated: 2024/11/12 15:20:45 by acben-ka         ###   ########.fr       */
+/*   Created: 2024/11/01 21:14:34 by zaakrab           #+#    #+#             */
+/*   Updated: 2024/11/01 21:14:35 by zaakrab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static int	count_nbr(int nb)
+static	int	dig_count(int n)
 {
 	int	count;
 
+	if (n == -2147483648)
+		return (11);
 	count = 0;
-	if (nb == 0)
-		return (1);
-	if (nb < 0)
+	if (n < 0)
 	{
-		nb = -nb;
 		count++;
+		n = -n;
 	}
-	while (nb != 0)
+	while (n > 9)
 	{
-		nb = nb / 10;
 		count++;
+		n = n / 10;
 	}
+	count++;
 	return (count);
-}
-
-static char	*ft_strcpy(char *dest, char *src)
-{
-	int	i;
-
-	i = 0;
-	while (src[i])
-	{
-		dest[i] = src[i];
-		i++;
-	}
-	dest[i] = '\0';
-	return (dest);
-}
-
-static char	*convert_str(char *p, int nbr)
-{
-	int	len;
-
-	len = count_nbr(nbr);
-	if (nbr == -2147483648)
-	{
-		ft_strcpy(p, "-2147483648");
-		return (p);
-	}
-	if (nbr == 0)
-	{
-		p[0] = '0';
-		return (p);
-	}
-	if (nbr < 0)
-	{
-		p[0] = '-';
-		nbr = -nbr;
-	}
-	while (nbr)
-	{
-		p[len - 1] = (nbr % 10) + 48;
-		nbr /= 10;
-		len--;
-	}
-	return (p);
 }
 
 char	*ft_itoa(int n)
 {
-	int		len_nbr;
-	char	*str;
+	char			*str;
+	int				i;
+	int				len;
+	unsigned int	nb;
 
-	len_nbr = count_nbr(n);
-	str = (char *)malloc((len_nbr + 1) * sizeof(char));
+	len = dig_count(n);
+	str = (char *)malloc(sizeof(char) * (len + 1));
 	if (!str)
 		return (NULL);
-	convert_str(str, n);
-	str[len_nbr] = '\0';
+	if (n > 0)
+		nb = n;
+	else
+		nb = -n;
+	i = len - 1;
+	while (i >= 0)
+	{
+		str[i] = nb % 10 + '0';
+		nb /= 10;
+		i--;
+		if (n < 0)
+			str[0] = '-';
+	}
+	str[len] = 0;
 	return (str);
 }
-
-// int	main(void)
-// {
-// 	char *sttr = ft_itoa(-2147483648);
-// 	printf("%s", sttr);
-// }

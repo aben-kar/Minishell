@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_memchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zaakrab <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/12 15:20:50 by acben-ka          #+#    #+#             */
-/*   Updated: 2024/11/12 15:54:44 by acben-ka         ###   ########.fr       */
+/*   Created: 2024/11/01 21:15:44 by zaakrab           #+#    #+#             */
+/*   Updated: 2024/11/01 21:15:45 by zaakrab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,27 +14,18 @@
 
 void	*ft_memchr(const void *s, int c, size_t n)
 {
-	unsigned char	*ptr;
+	unsigned char	*str;
 	size_t			i;
+	unsigned char	uc;
 
-	if (!s)
-		return (NULL);
-	ptr = (unsigned char *)s;
+	str = (unsigned char *) s;
+	uc = (unsigned char) c;
 	i = 0;
 	while (i < n)
 	{
-		if (ptr[i] == (unsigned char)c)
-			return (&ptr[i]);
+		if (str[i] == uc)
+			return ((void *) &str[i]);
 		i++;
 	}
 	return (NULL);
 }
-
-// int	main(void)
-// {
-// 	char *s1 = "pixhaha";
-
-// 	char *result = ft_memchr(s1, 'H', 10);
-// 	printf("%s", result);
-// 	return (0);
-// }

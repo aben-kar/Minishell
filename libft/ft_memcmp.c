@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_memcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zaakrab <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/13 18:07:06 by acben-ka          #+#    #+#             */
-/*   Updated: 2024/11/13 18:07:07 by acben-ka         ###   ########.fr       */
+/*   Created: 2024/11/01 21:15:52 by zaakrab           #+#    #+#             */
+/*   Updated: 2024/11/01 21:15:55 by zaakrab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,28 +14,19 @@
 
 int	ft_memcmp(const void *s1, const void *s2, size_t n)
 {
-	char	*st1;
-	char	*st2;
-	size_t	i;
+	unsigned char	*str1;
+	unsigned char	*str2;
+	size_t			i;
 
-	if (!s1 || !s2)
+	if (n == 0 || (!s1 && !s2))
 		return (0);
-	st1 = (char *)s1;
-	st2 = (char *)s2;
+	str1 = (unsigned char *)s1;
+	str2 = (unsigned char *)s2;
 	i = 0;
-	while (i < n)
+	while ((str1[i] == str2[i]) && n - 1 > 0)
 	{
-		if (st1[i] != st2[i])
-			return ((unsigned char)st1[i] - (unsigned char)st2[i]);
 		i++;
+		n--;
 	}
-	if (i == n)
-		return (0);
-	return (0);
+	return ((int)(str1[i] - str2[i]));
 }
-
-// int	main(void)
-// {
-// 	printf("%d\n", ft_memcmp(NULL, "hello", 1));
-// 	//printf ("%d", memcmp(NULL, NULL, 2));
-// }

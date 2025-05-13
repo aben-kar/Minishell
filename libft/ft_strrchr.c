@@ -3,35 +3,31 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strrchr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zaakrab <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/13 18:08:31 by acben-ka          #+#    #+#             */
-/*   Updated: 2024/11/13 18:08:32 by acben-ka         ###   ########.fr       */
+/*   Created: 2024/11/01 21:18:53 by zaakrab           #+#    #+#             */
+/*   Updated: 2024/11/01 21:18:54 by zaakrab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strrchr(const char *str, int c)
+char	*ft_strrchr(const char *s, int c)
 {
-	int	len;
+	size_t	i;
 
-	len = ft_strlen((char *)str);
-	if (c == 0)
-		return ((char *)&str[len]);
-	while (len >= 0)
+	i = 0;
+	while (s[i] != 0)
+		i++;
+	if ((char)c == '\0')
+		return ((char *)&s[i]);
+	while (i > 0)
 	{
-		if (str[len] == (char)c)
-			return ((char *)&str[len]);
-		len--;
+		if (s[i] == (char)c)
+			return ((char *)&s[i]);
+		i--;
 	}
+	if (s[0] == (char)c)
+		return ((char *)&s[0]);
 	return (NULL);
 }
-
-// int	main(void)
-// {
-// 	printf("%s\n", ft_strrchr(NULL, 'a'));
-
-// 	//printf("%s", strrchr(NULL, 'a'));
-// 	return (0);
-// }

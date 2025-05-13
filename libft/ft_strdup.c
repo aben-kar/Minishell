@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zaakrab <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/12 15:21:45 by acben-ka          #+#    #+#             */
-/*   Updated: 2024/11/12 18:48:56 by acben-ka         ###   ########.fr       */
+/*   Created: 2024/11/01 21:17:04 by zaakrab           #+#    #+#             */
+/*   Updated: 2024/11/01 21:17:04 by zaakrab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,21 @@
 
 char	*ft_strdup(const char *s1)
 {
-	size_t	len;
-	char	*ptr;
+	char	*dest;
+	size_t	i;
 
-	if (!s1)
+	i = 0;
+	while (s1[i] != 0)
+		i++;
+	dest = (char *)malloc(sizeof(char) * (i + 1));
+	if (dest == NULL)
 		return (NULL);
-	len = ft_strlen(s1);
-	ptr = (char *)ft_calloc((len + 1), sizeof(char));
-	if (ptr == NULL)
-		return (NULL);
-	ft_memcpy(ptr, s1, len);
-	return (ptr);
+	i = 0;
+	while (s1[i] != 0)
+	{
+		dest[i] = s1[i];
+		i++;
+	}
+	dest[i] = 0;
+	return (dest);
 }
-// int main()
-// {
-//     char *str;
-//     char *dest = ft_strdup(NULL);
-//     printf ("%s\n", dest);
-// }

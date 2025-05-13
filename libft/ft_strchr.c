@@ -3,31 +3,27 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zaakrab <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/12 15:21:42 by acben-ka          #+#    #+#             */
-/*   Updated: 2024/11/12 18:49:02 by acben-ka         ###   ########.fr       */
+/*   Created: 2024/11/01 21:16:56 by zaakrab           #+#    #+#             */
+/*   Updated: 2024/11/01 21:16:57 by zaakrab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strchr(const char *str, int c)
+char	*ft_strchr(const char *s, int c)
 {
-	if (!str)
-		return (NULL);
-	while (*str)
+	int	i;
+
+	i = 0;
+	while (s[i] != 0)
 	{
-		if ((char)c == *str)
-			return ((char *)str);
-		str++;
+		if ((char)c == s[i])
+			return ((char *) &s[i]);
+		i++;
 	}
-	if ((char)c == '\0')
-		return ((char *)str);
+	if (s[i] == (char) c)
+		return ((char *) &s[i]);
 	return (NULL);
 }
-// int main()
-// {
-//     //printf ("%s\n", ft_strchr(NULL, 97));
-//     printf ("%s", strchr("Pool", 97));
-// }

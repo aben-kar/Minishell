@@ -3,39 +3,40 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zaakrab <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/12 15:22:26 by acben-ka          #+#    #+#             */
-/*   Updated: 2024/11/12 18:53:54 by acben-ka         ###   ########.fr       */
+/*   Created: 2024/11/01 21:17:17 by zaakrab           #+#    #+#             */
+/*   Updated: 2024/11/01 21:17:18 by zaakrab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strjoin(char const *s1, char const *s2)
+char	*ft_strjoin(const char *s1, const char *s2)
 {
-	char	*concate;
-	size_t	len_s1;
-	size_t	len_s2;
+	char	*result;
+	int		i;
+	int		j;
+	int		s1_len;
+	int		s2_len;
 
-	if (!s1)
-		return ((char *)s2);
-	if (!s2)
-		return ((char *)s1);
-	len_s1 = ft_strlen(s1);
-	len_s2 = ft_strlen(s2);
-	concate = (char *)ft_calloc((len_s1 + len_s2 + 1), sizeof(char));
-	if (concate == NULL)
+	if (!s1 && s2)
+		return (ft_strdup(s2));
+	if (!s2 && s1)
+		return (ft_strdup(s1));
+	if (!s1 && !s2)
+		return (ft_strdup(""));
+	s1_len = ft_strlen(s1);
+	s2_len = ft_strlen(s2);
+	result = (char *)malloc(sizeof(char) * (s1_len + s2_len + 1));
+	if (!result)
 		return (NULL);
-	ft_memcpy(concate, s1, len_s1);
-	ft_memcpy(concate + len_s1, s2, len_s2);
-	return (concate);
+	i = -1;
+	while (++i < s1_len)
+		result[i] = s1[i];
+	j = 0;
+	while (j < s2_len)
+		result[i++] = s2[j++];
+	result[i] = 0;
+	return (result);
 }
-
-// int	main(void)
-// {
-// 	// char *s1 = "world";
-
-// 	char *dest = ft_strjoin("work", "work");
-// 	printf("%s", dest);
-// }

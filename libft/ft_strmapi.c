@@ -3,47 +3,33 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strmapi.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zaakrab <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/14 15:03:35 by acben-ka          #+#    #+#             */
-/*   Updated: 2024/11/14 15:05:34 by acben-ka         ###   ########.fr       */
+/*   Created: 2024/11/01 21:18:32 by zaakrab           #+#    #+#             */
+/*   Updated: 2024/11/01 21:18:33 by zaakrab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-// static char	my_upper(unsigned int i, char str)
-// {
-// 	if (str >= 'a' && str <= 'z')
-// 		str -= 32;
-// 	return (str);
-// }
-
-char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
+char	*ft_strmapi(const char *s, char (*f)(unsigned int, char))
 {
+	char			*mapped;
 	unsigned int	i;
-	char			*str;
+	unsigned int	len;
 
 	if (!s || !f)
 		return (NULL);
 	i = 0;
-	str = (char *)malloc(sizeof(char) * (ft_strlen(s)) + 1);
-	if (str == NULL)
+	len = ft_strlen(s);
+	mapped = (char *)malloc(sizeof(char) * (len + 1));
+	if (!mapped)
 		return (NULL);
-	while (s[i] != '\0')
+	while (i < len)
 	{
-		str[i] = f(i, s[i]);
+		mapped[i] = (*f)(i, s[i]);
 		i++;
 	}
-	str[i] = '\0';
-	return (str);
+	mapped[i] = 0;
+	return (mapped);
 }
-
-// int	main(void)
-// {
-// 	char add[10] = "hellow";
-
-// 	char *rs = ft_strmapi(add, NULL);
-
-// 	printf("%s", rs);
-// }

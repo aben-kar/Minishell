@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_isprint.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zaakrab <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/12 15:20:40 by acben-ka          #+#    #+#             */
-/*   Updated: 2024/11/12 15:20:41 by acben-ka         ###   ########.fr       */
+/*   Created: 2024/11/01 21:14:24 by zaakrab           #+#    #+#             */
+/*   Updated: 2024/11/01 21:14:25 by zaakrab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,3 @@ int	ft_isprint(int c)
 		return (1);
 	return (0);
 }
-// int main()
-// {
-//     printf ("%d", ft_isprint(126));
-// }

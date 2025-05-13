@@ -3,43 +3,36 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strlcat.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zaakrab <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/12 15:22:30 by acben-ka          #+#    #+#             */
-/*   Updated: 2024/11/12 20:06:14 by acben-ka         ###   ########.fr       */
+/*   Created: 2024/11/01 21:17:42 by zaakrab           #+#    #+#             */
+/*   Updated: 2024/11/01 21:17:43 by zaakrab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-size_t	ft_strlcat(char *dest, const char *src, size_t size)
+size_t	ft_strlcat(char *dst, const char *src, size_t size)
 {
-	size_t	len_sr;
-	size_t	len_ds;
 	size_t	i;
+	size_t	j;
+	size_t	len_dst;
+	size_t	total_length;
 
-	len_sr = ft_strlen(src);
-	if (size == 0)
-		return (len_sr);
-	len_ds = ft_strlen(dest);
-	if (size < len_ds)
-		return (size + len_sr);
 	i = 0;
-	while (src[i] && len_ds + i < size - 1)
+	len_dst = ft_strlen(dst);
+	j = len_dst;
+	total_length = len_dst + ft_strlen(src);
+	if (!dst && size == 0)
+		return (ft_strlen(src));
+	if (j >= size)
+		return (total_length - (j - size));
+	while (src[i] != '\0' && (i + len_dst) < size - 1)
 	{
-		dest[len_ds + i] = src[i];
+		dst[j] = src[i];
 		i++;
+		j++;
 	}
-	dest[len_ds + i] = '\0';
-	return (len_ds + len_sr);
+	dst[j] = '\0';
+	return (total_length);
 }
-// int main() {
-//     char dest[30] = "hello";
-//     char src[30] = "World!";
-//     size_t result = ft_strlcat(dest, src, 6);
-//     printf("%zu\n", result);
-//     char dest2[30] = "hello";
-//     char src1[30] = "World!";
-//     size_t result2 = strlcat(dest2, src1, 6);
-//     printf("%zu\n", result2);
-// }

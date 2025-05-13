@@ -3,44 +3,32 @@
 /*                                                        :::      ::::::::   */
 /*   ft_memcpy.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zaakrab <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/12 15:20:58 by acben-ka          #+#    #+#             */
-/*   Updated: 2024/11/16 15:55:55 by acben-ka         ###   ########.fr       */
+/*   Created: 2024/11/01 21:16:03 by zaakrab           #+#    #+#             */
+/*   Updated: 2024/11/01 21:16:04 by zaakrab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	*ft_memcpy(void *dst, const void *src, size_t n)
+void	*ft_memcpy(void *dest, const void *src, size_t n)
 {
-	unsigned char	*d;
-	unsigned char	*s;
-	size_t			i;
+	unsigned char		*tmpdst;
+	const unsigned char	*tmpsrc;
+	size_t				i;
 
-	if (dst == NULL && src == NULL)
+	tmpdst = (unsigned char *) dest;
+	tmpsrc = (const unsigned char *) src;
+	if (tmpdst == NULL && tmpsrc == NULL)
 		return (NULL);
-	d = (unsigned char *)dst;
-	s = (unsigned char *)src;
+	if (dest == src)
+		return (dest);
 	i = 0;
 	while (i < n)
 	{
-		d[i] = s[i];
+		tmpdst[i] = tmpsrc[i];
 		i++;
 	}
-	return (dst);
+	return (dest);
 }
-// int main()
-// {
-//     char src[10] = "hello";
-//     char dest[10];
-//     char dest2[10];
-
-//     ft_memcpy(dest, NULL, 0);
-//     printf ("%s\n", dest);
-
-//     // memcpy(dest2, NULL, 2);
-//     // printf("%s", dest2);
-
-//     return (0);
-// }
