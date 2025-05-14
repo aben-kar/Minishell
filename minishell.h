@@ -100,8 +100,8 @@ t_redirect	*add_redir(t_redirect *list, char *filename, int type, t_gc **gc);
 char    	**argv_add(char **argv, const char *value, t_gc **gc);
 t_command	*add_command(t_command *list, t_command *new);
 t_command   *parse_tokens(t_token *tokens, int *has_pipe, t_gc **gc);
-void        free_tokens(t_token *tokens);
-void        free_commands(t_command *cmds);
+// void        free_tokens(t_token *tokens);
+// void        free_commands(t_command *cmds);
 // gc libft funcs
 void	*ft_calloc_gc(size_t nelem, size_t size, t_gc **gc);
 char	*ft_itoa_gc(int n, t_gc **gc);
