@@ -2,17 +2,7 @@
 
 // define global variable
 int g_exit_status = 0;
-/*
 
-❗Important
-You now need to replace malloc/calloc inside tokenize, parse_tokens, etc.
-	with gc_alloc(size, &gc) where appropriate. For example:
-
-char *val = gc_alloc(len + 1, &gc);
-
-This way, all allocations go through the GC and are automatically freed.
-
-*/
 // int main(int ac, char **av, char **envp)
 // {
 // 	(void)av;
