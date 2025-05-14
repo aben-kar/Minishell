@@ -115,9 +115,9 @@ int main(int ac, char **av, char **envp)
 		t_env *env_list = init_copier_env(envp);
 		t_env *env = ft_copier_env(env_list, envp);
 
-		setup_signals();
 		while (1)
 		{
+			setup_signals();
 			input = readline("minishell$ ");
 
 			if (input == NULL)
@@ -129,18 +129,23 @@ int main(int ac, char **av, char **envp)
 			tokens = tokenize(input, &gc);				 // assumes tokenize may call gc_alloc()
 			cmds = parse_tokens(tokens, &has_pipe, &gc); // same here
 		
-			int i = 0;
+			// int i = 0;
 
-			while (input[i])
-			{
-				// if pipe ==> function pipe =1
+			// while (input[i])
+			// {
+			// 	// if pipe ==> function pipe =1
 
-				// else without pipe ==> excute command
-			}
-
+			// 	// else without pipe ==> excute command
+			// }
 			if (input && *input)
 			{
-				execute_command(cmds, env);
+				if (has_pipe)
+					printf("%d\n", has_pipe); // ila kan lpipe at3tik 1 f result
+				else
+				{
+					printf("%d\n", has_pipe); // daba ila makaynch lpipe at3tik 0 f result o ghat executi bla pipe
+					execute_command(cmds, env);
+				}
 			}
 		}
 	}
