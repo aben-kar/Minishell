@@ -6,12 +6,29 @@
 /*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 14:47:31 by acben-ka          #+#    #+#             */
-/*   Updated: 2025/05/13 16:25:14 by acben-ka         ###   ########.fr       */
+/*   Updated: 2025/05/14 19:55:38 by acben-ka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 // #include "minishell.h"
 #include "../minishell.h"
+
+void ft_env_null(t_env **head)
+{
+    t_env *tmp = malloc(sizeof(t_env));
+
+    if (!tmp)
+        exit(1);
+
+    tmp->key = ft_strdup("PWD");
+    tmp->value = ft_strdup("/home/acben-ka/Desktop/allo");
+    tmp->next = NULL;
+    if (!*head)
+    {
+        *head = tmp;
+        return;
+    }
+}
 
 void insert_at_end(t_env **head, char *key, char *value) // char **env
 {
@@ -43,6 +60,13 @@ t_env *init_copier_env(char **envp)
     t_env *head = NULL;
     int i = 0;
 
+    if (!*envp)
+    {
+        printf("testdadad\n");
+        ft_env_null(&head);
+        return head;
+    }
+    
     while (envp[i])
     {
         char *equal = ft_strchr(envp[i], '=');

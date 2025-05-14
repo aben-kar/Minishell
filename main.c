@@ -103,7 +103,7 @@ int main(int ac, char **av, char **envp)
 		int has_pipe;
 		t_gc *gc;
 		t_env *env_list = init_copier_env(envp);
-		t_env *env = ft_copier_env(env_list, envp);
+		// t_env *env = ft_copier_env(env_list, envp);
 
 		while (1)
 		{
@@ -134,7 +134,7 @@ int main(int ac, char **av, char **envp)
 				else
 				{
 					printf("%d\n", has_pipe); // daba ila makaynch lpipe at3tik 0 f result o ghat executi bla pipe
-					execute_command(cmds, env);
+					execute_command(cmds, env_list);
 				}
 			}
 		}
