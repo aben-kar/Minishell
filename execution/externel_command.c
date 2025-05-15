@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   externel_command.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
+/*   By: achraf <achraf@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 18:21:38 by acben-ka          #+#    #+#             */
-/*   Updated: 2025/05/13 17:46:20 by acben-ka         ###   ########.fr       */
+/*   Updated: 2025/05/15 22:31:39 by achraf           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,28 +39,6 @@ char **get_path(t_env *envp)
     }
     return (NULL);
 }
-
-// void apply_redirections(t_command *cmd)
-// {
-//     int fd;
-
-//     // Handle outfile '>' or '>>'
-//     if (cmd->outfile)
-//     {
-//         if (cmd->append == 1)
-//             fd = open(cmd->outfile, O_WRONLY | O_CREAT | O_APPEND, 0644);
-//         else // 0
-//             fd = open(cmd->outfile, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-
-//         // if (fd < 0)
-//         // {
-//         //     perror("open outfile");
-//         //     exit(1);
-//         // }
-//         dup2(fd, STDOUT_FILENO);
-//         close(fd);
-//     }
-// }
 
 bool check_command(t_command *check, t_env *envp)
 {
@@ -121,57 +99,8 @@ char *find_executable_path(t_command *shell, t_env *envp)
 void execute_command(t_command *shell, t_env *env)
 {
     if (check_command(shell, env) == true) // external command
-    {
-        char **copier_env = env_to_array(env);
-        char *cmd_path = find_executable_path(shell, env);
-        int id = fork();
-        if (id == 0)
-        {
-            // apply_redirections(shell);
-            execve(cmd_path, shell->cmd, copier_env);
-            exit(1);
-        }
-
-        else
-            waitpid(id, NULL, 0);
-    }
+        excute_extenel_cmd(shell, env);
     
     else // Built-in
-    {
-        char *builtins[] = {"echo", "cd", "pwd", "export", "unset", "env", "exit", NULL};
-        int j = 0;
-        int found = 0;
-
-        while (builtins[j])
-        {
-            if ((ft_strcmp(shell->cmd[0], builtins[j])) == 0)
-            {
-                found = 1;
-                if ((ft_strcmp(shell->cmd[0], "echo") == 0)) // echo
-                {
-                    ft_echo(shell->cmd + 1);
-                }
-
-                else if (ft_strcmp(shell->cmd[0], "cd") == 0) // cd
-                    ft_cd(shell->cmd + 1, env);
-                else if ((ft_strcmp(shell->cmd[0], "pwd")) == 0) // pwd
-                    ft_pwd();
-                else if ((ft_strcmp(shell->cmd[0], "env")) == 0) // env
-                    ft_env(env);
-                else if ((ft_strcmp(shell->cmd[0], "export")) == 0) // export
-                    ft_export(shell->cmd + 1, &env);
-                else if ((ft_strcmp(shell->cmd[0], "unset")) == 0) // unset
-                    ft_unset(shell->cmd + 1, &env);
-                else if ((ft_strcmp(shell->cmd[0], "exit")) == 0) // exit
-                    ft_exit(shell->cmd + 1);
-                break;
-            }
-            j++;
-        }
-        if (!found)
-        {
-            char *error_echo = ft_strjoin(shell->cmd[0], ": command not found");
-            ft_putendl_fd(error_echo, 2);
-        }
-    }
+        built_in(shell, env);
 }

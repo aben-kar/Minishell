@@ -22,32 +22,24 @@ int main(int ac, char **av, char **envp)
 			input = readline("minishell$ ");
 
 			if (input == NULL)
-            {
-                printf("exit\n");
-                break;
-            }
+			{
+				printf("exit\n");
+				break;
+			}
+			// add_history
 
 			tokens = tokenize(input, &gc);				 // assumes tokenize may call gc_alloc()
 			cmds = parse_tokens(tokens, &has_pipe, &gc); // same here
-		
-			// int i = 0;
 
-			// while (input[i])
-			// {
-			// 	// if pipe ==> function pipe =1
-
-			// 	// else without pipe ==> excute command
-			// }
-			// if (input && *input)
-			// {
-			// 	if (has_pipe)
-			// 		printf("ila kayen pipe ==> %d\n", has_pipe); // ila kan lpipe at3tik 1 f result
-			// 	else
-			// 	{
-			// 		printf("ila makayenach pipe ==> %d\n", has_pipe); // daba ila makaynch lpipe at3tik 0 f result o ghat executi bla pipe
-			// 	}
-			// }
-			execute_command(cmds, env_list);
+			if (input && *input)
+			{
+				if (has_pipe)
+					execute_multi_pipe(cmds, env_list);
+				else
+					execute_command(cmds, env_list);
+			}
 		}
+		free(input);	  // Msahi l'input
+		gc_free_all(&gc); // Nadi l'garbage collector
 	}
 }

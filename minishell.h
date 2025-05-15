@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
+/*   By: achraf <achraf@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 16:23:09 by acben-ka          #+#    #+#             */
-/*   Updated: 2025/05/15 15:49:57 by acben-ka         ###   ########.fr       */
+/*   Updated: 2025/05/15 22:30:38 by achraf           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,23 +18,23 @@
 # include <stdlib.h>
 # include <stdint.h>
 # include <unistd.h>
+#include <stdbool.h>
 # include <fcntl.h>
 # include <sys/wait.h>
-#include <stdbool.h>
-# include "libft/libft.h"
 #include <linux/limits.h> // For PATH_MAX
 #include <sys/stat.h> // for stat
 #include <readline/readline.h>
 #include <readline/history.h> // add_history
+# include "libft/libft.h"
 #include "parser/gc.h"
 
+// about herdoc
 #define	REDIR_IN 0
 #define	REDIR_OUT 1
 #define	REDIR_APPEND 2
 #define	REDIR_HEREDOC 3
 
 extern int	g_exit_status; // global varible
-
 typedef struct stat t_stat;
 
 typedef struct s_token {
@@ -45,43 +45,49 @@ typedef struct s_token {
 typedef struct s_redirect {
 	char	*filename;
 	int		type; // (0: >, 1: >>, 2: <, 3: <<)
+	bool	has_redirect; // (true == kayen || false == makayench)
 	struct s_redirect	*next;
 }	t_redirect;
 
 typedef struct s_command { // about excution
 	char	**cmd; // command
-	t_redirect	*redirects; // linked list of redirections
+	t_redirect	*redirects; // linked list of
 	struct s_command *next; // for pipelines
 }	t_command;
 
-typedef struct s_env
+typedef struct s_env // about env
 {
     char *key;            // ex: PATH
     char *value;          // ex: /usr/bin:/bin
     struct s_env *next;
 } t_env;
 
-
-void execute_command(t_command *shell, t_env *env);
-// BUILT-IN COMMAND
+// Built-in command
 int ft_echo(char **args);
-// int ft_cd(char **args, char **envp);
 int ft_cd(char **args, t_env *env);
 int ft_pwd(void);
-// int ft_copier_env(t_env *env, char **envp);
-t_env *ft_copier_env(t_env *env, char **envp);
-t_env *init_copier_env(char **envp);
 int ft_export(char **args, t_env **env);
-void insert_at_end(t_env **head, char *key, char *value);
-char **env_to_array(t_env *env);
 int ft_env(t_env *env);
-int check_plus(char *args);
-// void key_with_equal(char *args, char *key, char *value, t_env **env);
-int key_with_equal(char *arg, char **key, char **value, t_env **env);
-int key_with_plus(char *arg, char **key, char **value, t_env **env);
 int ft_unset(char **args, t_env **env);
 int ft_exit(char **args);
+// function helper about Built-in
+t_env *ft_copier_env(t_env *env, char **envp);
+t_env *init_copier_env(char **envp);
+void insert_at_end(t_env **head, char *key, char *value);
 void print_error(char *key);
+int check_plus(char *args);
+int key_with_equal(char *arg, char **key, char **value, t_env **env);
+int key_with_plus(char *arg, char **key, char **value, t_env **env);
+// execution
+void execute_command(t_command *shell, t_env *env);
+char **env_to_array(t_env *env);
+char *find_executable_path(t_command *shell, t_env *envp);
+bool check_command(t_command *check, t_env *envp);
+void excute_extenel_cmd(t_command *cmd, t_env *env);
+void built_in(t_command *cmd, t_env *env);
+// multi-pipe
+void execute_multi_pipe(t_command *cmd, t_env *env);
+void excute_cmd_in_pipe(t_command *cmd, t_env *env);
 
 // ---------------------------------------------------------------------
 
