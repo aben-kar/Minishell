@@ -1,0 +1,51 @@
+// if (!args[0] || !*args)
+//     {
+//         t_env *tmp = *env;
+//         int sorted = 0;
+//         while (!sorted)
+//         {
+//             sorted = 1;
+//             t_env *current = *env;
+//             while (current && current->next)
+//             {
+//                 if (ft_strcmp(current->key, current->next->key) > 0) // ilyas+=allo
+//                 {
+//                     char *temp_key = current->key;
+//                     current->key = current->next->key;
+//                     current->next->key = temp_key;
+
+//                     char *temp_value = current->value;
+//                     current->value = current->next->value;
+//                     current->next->value = temp_value;
+
+//                     sorted = 0;
+//                 }
+//                 current = current->next;
+//             }
+//         }
+
+//         tmp = *env;
+//         while (tmp)
+//         {
+//             char *line = ft_strjoin("declare -x ", tmp->key);
+//             if (tmp->value != NULL)
+//             {
+//                 if (*(tmp->value))
+//                 {
+//                     char *eq = ft_strjoin(line, "=\"");
+//                     char *val = ft_strjoin(eq, tmp->value);
+//                     char *final = ft_strjoin(val, "\"");
+//                     ft_putendl_fd(final, 1);
+//                 }
+//                 else
+//                 {
+//                     char *eq = ft_strjoin(line, "=\"\""); // export ILYAS=
+//                     ft_putendl_fd(eq, 1);
+//                     free(eq);
+//                 }
+//             }
+//             else
+//                 ft_putendl_fd(line, 1); // IYAS
+//             tmp = tmp->next;
+//         }
+//     }

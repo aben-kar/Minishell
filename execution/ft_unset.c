@@ -6,7 +6,7 @@
 /*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 14:50:45 by aben-kar          #+#    #+#             */
-/*   Updated: 2025/05/13 16:25:42 by acben-ka         ###   ########.fr       */
+/*   Updated: 2025/05/15 16:01:35 by acben-ka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,12 @@ void deleteNode(t_env **head, int position)
         free(temp);
         temp = *head;
     }
-
-    for (int i = 1; temp != NULL && i < position; i++) {
+    int i = 1;
+    while (temp != NULL && i < position)
+    {
         prev = temp;
         temp = temp->next;
+        i++;
     }
 
     if (temp != NULL) {

@@ -6,7 +6,7 @@
 /*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 16:23:09 by acben-ka          #+#    #+#             */
-/*   Updated: 2025/05/13 18:00:38 by acben-ka         ###   ########.fr       */
+/*   Updated: 2025/05/15 15:49:57 by acben-ka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,9 +58,9 @@ typedef struct s_env
 {
     char *key;            // ex: PATH
     char *value;          // ex: /usr/bin:/bin
-    bool    has_value;  // equal exists ? 1 : 0
     struct s_env *next;
 } t_env;
+
 
 void execute_command(t_command *shell, t_env *env);
 // BUILT-IN COMMAND
@@ -81,6 +81,7 @@ int key_with_equal(char *arg, char **key, char **value, t_env **env);
 int key_with_plus(char *arg, char **key, char **value, t_env **env);
 int ft_unset(char **args, t_env **env);
 int ft_exit(char **args);
+void print_error(char *key);
 
 // ---------------------------------------------------------------------
 

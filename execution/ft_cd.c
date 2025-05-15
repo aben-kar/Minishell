@@ -74,8 +74,7 @@ int ft_cd(char **args, t_env *env)
     }
     if (!args[0] || ((ft_strcmp(args[0], "~")) == 0)) // just "cd" go to home
     {
-        char *to_home = print_home(tmp); // jhksdgjkj
-        // printf ("HOME ==> %s\n", to_home);
+        char *to_home = print_home(tmp);
         if (!to_home)
         {
             ft_putendl_fd("cd: HOME not set", 2);

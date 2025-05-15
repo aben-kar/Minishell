@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: achraf <achraf@student.42.fr>              +#+  +:+       +#+        */
+/*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 15:31:35 by acben-ka          #+#    #+#             */
-/*   Updated: 2025/05/14 21:00:24 by achraf           ###   ########.fr       */
+/*   Updated: 2025/05/15 15:52:06 by acben-ka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,24 +18,20 @@ int count_plus(char *arg)
     char *equal = ft_strchr(arg, '=');
     int plus_count = 0;
 
-    // Check only in the key (before '=')
     int i = 0;
-    while (arg[i] && &arg[i] < equal)
+    while (arg[i] && (&arg[i]) < equal)
     {
         if (arg[i] == '+')
             plus_count++;
         i++;
     }
 
-    return plus_count;
+    return (plus_count);
 }
 
 int is_equal_alone(char *arg)
 {
     char *equal = ft_strchr(arg, '=');
-    // if (!equal || equal == arg) // ma kaynach = or it's the first char
-    //     return false;
-
     if (*(equal - 1) == '+')
     {
         if (count_plus(arg) > 1)
@@ -72,30 +68,6 @@ int ft_export(char **args, t_env **env)
     if (!args[0] || !*args)
     {
         t_env *tmp = *env;
-        int sorted = 0;
-        while (!sorted)
-        {
-            sorted = 1;
-            t_env *current = *env;
-            while (current && current->next)
-            {
-                if (ft_strcmp(current->key, current->next->key) > 0) // ilyas+=allo
-                {
-                    char *temp_key = current->key;
-                    current->key = current->next->key;
-                    current->next->key = temp_key;
-
-                    char *temp_value = current->value;
-                    current->value = current->next->value;
-                    current->next->value = temp_value;
-
-                    sorted = 0;
-                }
-                current = current->next;
-            }
-        }
-
-        tmp = *env;
         while (tmp)
         {
             char *line = ft_strjoin("declare -x ", tmp->key);
@@ -115,7 +87,7 @@ int ft_export(char **args, t_env **env)
                     free(eq);
                 }
             }
-            else
+            else // without value
                 ft_putendl_fd(line, 1); // IYAS
             tmp = tmp->next;
         }
@@ -125,18 +97,6 @@ int ft_export(char **args, t_env **env)
     {
         t_env *tmp = *env;
         int i = 0;
-        // while (args[i])
-        // {
-        //     if ((args[i][0] >= '0' && args[i][0] <= '9') || args[i][0] == 61)
-        //     {
-        //         char *error_1 = ft_strjoin("export: ", *args);
-        //         char *error_2 = ft_strjoin(error_1, ": not a valid identifier");
-        //         ft_putendl_fd(error_2, 1);
-        //         return (1);
-        //     }
-        //     i++;
-        // }
-
         while (args[i])
         {
             char *equal = ft_strchr(args[i], '='); // test+=test
@@ -147,12 +107,13 @@ int ft_export(char **args, t_env **env)
                 int string_len = equal - args[i] + 1;
                 char *string = ft_substr(args[i], 0, string_len);
                 int check_is_equal = is_equal_alone(string);
+                
                 if (check_is_equal == 11)
                     key_with_equal(args[i], &key, &value, &tmp);
                 else if (check_is_equal == 12)
                     key_with_plus(args[i], &key, &value, &tmp);
                 else
-                    ft_putendl_fd("error > 1 plus", 1);
+                    print_error(args[i]);
             }
             else
             {

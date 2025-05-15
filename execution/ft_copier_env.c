@@ -6,7 +6,7 @@
 /*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 14:47:31 by acben-ka          #+#    #+#             */
-/*   Updated: 2025/05/14 19:55:38 by acben-ka         ###   ########.fr       */
+/*   Updated: 2025/05/14 22:59:39 by acben-ka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,6 @@ t_env *init_copier_env(char **envp)
 
     if (!*envp)
     {
-        printf("testdadad\n");
         ft_env_null(&head);
         return head;
     }
