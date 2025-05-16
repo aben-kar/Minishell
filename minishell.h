@@ -18,15 +18,16 @@
 # include <stdlib.h>
 # include <stdint.h>
 # include <unistd.h>
-#include <stdbool.h>
+# include <signal.h>
+# include <stdbool.h>
 # include <fcntl.h>
 # include <sys/wait.h>
-#include <linux/limits.h> // For PATH_MAX
-#include <sys/stat.h> // for stat
-#include <readline/readline.h>
-#include <readline/history.h> // add_history
+# include <linux/limits.h> // For PATH_MAX
+# include <sys/stat.h> // for stat
+# include <readline/readline.h>
+# include <readline/history.h> // add_history
 # include "libft/libft.h"
-#include "parser/gc.h"
+# include "parser/gc.h"
 
 // about herdoc
 #define	REDIR_IN 0
