@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zaakrab <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: achraf <achraf@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 16:23:09 by acben-ka          #+#    #+#             */
-/*   Updated: 2025/05/16 01:42:01 by zaakrab          ###   ########.fr       */
+/*   Updated: 2025/05/16 20:11:53 by achraf           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ int ft_env(t_env *env);
 int ft_unset(char **args, t_env **env);
 int ft_exit(char **args, t_gc **gc);
 // function helper about Built-in
-t_env *ft_copier_env(t_env *env, char **envp, t_gc **gc);
+// t_env *ft_copier_env(t_env *env, char **envp, t_gc **gc);
 t_env *init_copier_env(char **envp, t_gc **gc);
 void insert_at_end(t_env **head, char *key, char *value, t_gc **gc);
 void print_error(char *key, t_gc **gc);

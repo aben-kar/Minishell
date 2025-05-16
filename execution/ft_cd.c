@@ -57,7 +57,6 @@ void update_pwd_oldpwd(char *oldpwd, t_env **env, t_gc **gc)
         }
         current = current->next;
     }
-
     free(newpwd);
 }
 

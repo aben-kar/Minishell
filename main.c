@@ -14,12 +14,12 @@ int main(int ac, char **av, char **envp)
 		int			has_pipe;
 		t_gc		*gc = NULL;
 		t_env		*env_list = init_copier_env(envp, &gc);
-		t_env		*env;
+		// t_env		*env;
 
 		while (1)
 		{
 			setup_signals();
-			env = ft_copier_env(env_list, envp, &gc);
+			// env = ft_copier_env(env_list, envp, &gc);
 			input = readline("minishell$ ");
 
 			if (input == NULL)
@@ -31,7 +31,7 @@ int main(int ac, char **av, char **envp)
 			if (*input) // ignore empty inputs
 				add_history(input); // t9dr tnavigi lhistory b arrows..
 			tokens = tokenize(input, &gc);				 // assumes tokenize may call gc_alloc()
-			cmds = parse_tokens(tokens, &has_pipe, &gc, env); // same here
+			cmds = parse_tokens(tokens, &has_pipe, &gc, env_list); // same here
 			if (input && *input)
 			{
 				if (has_pipe)

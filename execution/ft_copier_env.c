@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_copier_env.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zaakrab <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: achraf <achraf@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 14:47:31 by acben-ka          #+#    #+#             */
-/*   Updated: 2025/05/16 01:28:44 by zaakrab          ###   ########.fr       */
+/*   Updated: 2025/05/16 20:11:31 by achraf           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,12 +82,12 @@ t_env *init_copier_env(char **envp, t_gc **gc)
     return head;
 }
 
-t_env *ft_copier_env(t_env *env, char **envp, t_gc **gc)
-{
-    env = init_copier_env(envp, gc);
-    return env;
-    // return 0;
-}
+// t_env *ft_copier_env(t_env *env, char **envp, t_gc **gc)
+// {
+//     env = init_copier_env(envp, gc);
+//     return env;
+//     // return 0;
+// }
 
 
 // PWD=/home/acben-ka/Desktop
