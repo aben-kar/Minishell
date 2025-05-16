@@ -34,13 +34,11 @@ char **env_to_array(t_env *env, t_gc **gc)
     i = 0;
     while (tmp)
     {
-        char *key_equal = ft_strjoin_gc(tmp->key, "=", gc);
-        envp[i] = ft_strjoin_gc(key_equal, tmp->value, gc);
+        envp[i] = ft_strjoin_gc(ft_strjoin_gc(tmp->key, "=", gc), tmp->value, gc);
         // free(key_equal);
         tmp = tmp->next;
         i++;
     }
-
     envp[i] = NULL;
 
     return envp;
