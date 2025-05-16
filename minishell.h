@@ -117,6 +117,7 @@ char	*ft_itoa_gc(int n, t_gc **gc);
 char	*ft_strdup_gc(const char *s1, t_gc **gc);
 char	*ft_substr_gc(const char *s, unsigned int start, size_t len, t_gc **gc);
 char	*ft_strjoin_gc(const char *s1, const char *s2, t_gc **gc);
+char	**ft_split_gc(char const *s, char *c, t_gc **gc);
 
 
 #endif

@@ -27,7 +27,7 @@ char **get_path(t_env *envp, t_gc **gc)
         found = ft_strnstr(*copier_env, "PATH=", 5);
         if (found)
         {
-            split_path = ft_split(found + 5, ":");
+            split_path = ft_split_gc(found + 5, ":", gc);
             if (!split_path)
             {
                 write(2, "PATH Not Found In Environment./n", 31);
