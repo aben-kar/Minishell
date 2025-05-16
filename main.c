@@ -12,13 +12,14 @@ int main(int ac, char **av, char **envp)
 		t_token		*tokens;
 		t_command	*cmds;
 		int			has_pipe;
-		t_gc		*gc;
+		t_gc		*gc = NULL;
 		t_env		*env_list = init_copier_env(envp, &gc);
-		t_env		*env = ft_copier_env(env_list, envp, &gc);
-	
+		t_env		*env;
+
 		while (1)
 		{
 			setup_signals();
+			env = ft_copier_env(env_list, envp, &gc);
 			input = readline("minishell$ ");
 
 			if (input == NULL)
