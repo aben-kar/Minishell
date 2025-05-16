@@ -48,6 +48,7 @@ int main(int ac, char **av, char **envp)
 			}
 			free(input);
 		}
+		clear_history();
 		gc_free_all(&gc);
 	}
 }
