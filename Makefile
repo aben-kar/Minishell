@@ -10,11 +10,13 @@ LDFLAGS = -Llibft -lft -lreadline -lhistory -lncurses
 LIBFT_DIR = libft
 PARSER_DIR = parser
 EXECUTION_DIR = execution
+HELPER_DIR = helper_gc
 
 # Source files
 SRC = main.c \
       $(wildcard $(PARSER_DIR)/*.c) \
-      $(wildcard $(EXECUTION_DIR)/*.c)
+      $(wildcard $(EXECUTION_DIR)/*.c) \
+	  $(wildcard $(HELPER_DIR)/*.c)
 
 OBJ = $(SRC:.c=.o)
 

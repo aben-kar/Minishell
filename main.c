@@ -27,16 +27,23 @@ int main(int ac, char **av, char **envp)
 				break;
 			}
 			// add_history
-
+			if (*input) // ignore empty inputs
+				add_history(input); // t9dr tnavigi lhistory b arrows..
 			tokens = tokenize(input, &gc);				 // assumes tokenize may call gc_alloc()
 			cmds = parse_tokens(tokens, &has_pipe, &gc); // same here
-
 			if (input && *input)
 			{
 				if (has_pipe)
 					execute_multi_pipe(cmds, env_list);
 				else
 					execute_command(cmds, env_list);
+				/*
+					mohim daba t9dr tkhdm had logic for redirections:
+					if (cmd->has_redirect) {
+    					// handle redirections
+					}
+					chi 7aja b7al hka...
+				*/
 			}
 		}
 		free(input);	  // Msahi l'input

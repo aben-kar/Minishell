@@ -75,6 +75,7 @@ t_command *parse_tokens(t_token *tokens, int *has_pipe, t_gc **gc)
                     return (NULL);
                 }
                 cmd->redirects = add_redir(cmd->redirects, tokens->value, type, gc);
+                cmd->has_redirect = true; // l9ina redirection = true
             }
             else
             {

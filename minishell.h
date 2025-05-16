@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: achraf <achraf@student.42.fr>              +#+  +:+       +#+        */
+/*   By: zaakrab <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 16:23:09 by acben-ka          #+#    #+#             */
-/*   Updated: 2025/05/15 22:30:38 by achraf           ###   ########.fr       */
+/*   Updated: 2025/05/16 00:52:27 by zaakrab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,13 +45,13 @@ typedef struct s_token {
 typedef struct s_redirect {
 	char	*filename;
 	int		type; // (0: >, 1: >>, 2: <, 3: <<)
-	bool	has_redirect; // (true == kayen || false == makayench)
 	struct s_redirect	*next;
 }	t_redirect;
 
 typedef struct s_command { // about excution
 	char	**cmd; // command
 	t_redirect	*redirects; // linked list of
+	bool	has_redirect; // (true == kayen || false == makayench)
 	struct s_command *next; // for pipelines
 }	t_command;
 
