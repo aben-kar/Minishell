@@ -40,7 +40,7 @@ void deleteNode(t_env **head, int position)
 
     if (position == 1) {
         *head = temp->next;
-        // free(temp); // this whole file is tist mibi keep all frees
+        free(temp); // this whole file is tist mibi keep all frees
         temp = *head;
     }
     int i = 1;
@@ -53,7 +53,7 @@ void deleteNode(t_env **head, int position)
 
     if (temp != NULL) {
         prev->next = temp->next;
-        // free(temp);
+        free(temp);
     }
 }
 

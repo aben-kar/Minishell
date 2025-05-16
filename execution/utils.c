@@ -34,9 +34,9 @@ char **env_to_array(t_env *env, t_gc **gc)
     i = 0;
     while (tmp)
     {
-        char *key_equal = ft_strjoin_gc(tmp->key, "=", gc);
+        char *key_equal = ft_strjoin(tmp->key, "=");
         envp[i] = ft_strjoin_gc(key_equal, tmp->value, gc);
-        // free(key_equal);
+        free(key_equal);
         tmp = tmp->next;
         i++;
     }

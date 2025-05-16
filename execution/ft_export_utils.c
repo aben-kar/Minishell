@@ -35,20 +35,20 @@ int key_with_equal(char *arg, char **key, char **value, t_env **env, t_gc **gc)
     char *equal = ft_strchr(arg, '=');
 
     int key_len = equal - arg;
-    *key = ft_substr_gc(arg, 0, key_len, gc);
+    *key = ft_substr(arg, 0, key_len);
 
     if (check_key(*key) == false)
         print_error(*key, gc);
     
     if (*(equal + 1) == '\0') // ==> test=
-        *value = ft_strdup_gc("", gc);
+        *value = ft_strdup("");
     else
-        *value = ft_strdup_gc(equal + 1, gc);
+        *value = ft_strdup(equal + 1);
 
     if (check_plus(*key) == 12)
     {
         print_error(*key, gc);
-        // free(*key); free(*value);
+        free(*key); free(*value);
     }
 
     t_env *repetition = *env;
@@ -56,7 +56,7 @@ int key_with_equal(char *arg, char **key, char **value, t_env **env, t_gc **gc)
     {
         if (ft_strcmp(repetition->key, *key) == 0)
         {
-            // free(repetition->value); // maybe no free tist
+            free(repetition->value); // maybe no free tist
             repetition->value = *value;
             free(*key);
             return (0);
@@ -72,8 +72,8 @@ int key_with_plus(char *arg, char **key, char **value, t_env **env, t_gc **gc)
     t_env *tmp = *env;
     char *equal = ft_strchr(arg, '=');
     int key_len = equal - arg - 1;
-    *key = ft_substr_gc(arg, 0, key_len, gc);
-    *value = ft_strdup_gc(equal + 1, gc);
+    *key = ft_substr(arg, 0, key_len);
+    *value = ft_strdup(equal + 1);
     
     if (check_key(*key) == false)
         print_error(*key, gc);
@@ -81,7 +81,7 @@ int key_with_plus(char *arg, char **key, char **value, t_env **env, t_gc **gc)
     if (check_plus(*key) == 12)
     {
         print_error(*key, gc);
-        // free(*key); free(*value);
+        free(*key); free(*value);
         return (1);
     }    
     
@@ -92,10 +92,10 @@ int key_with_plus(char *arg, char **key, char **value, t_env **env, t_gc **gc)
         {
             if (repetition->value == NULL)
                 repetition->value = ft_strdup_gc("", gc);
-            char *new_val = ft_strjoin_gc(repetition->value, *value, gc);
-            // free(repetition->value); free(*value);
+            char *new_val = ft_strjoin(repetition->value, *value);
+            free(repetition->value); free(*value);
             repetition->value = new_val;
-            // free(*key);
+            free(*key);
             return 0;
         }
         repetition = repetition->next;
