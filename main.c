@@ -8,16 +8,18 @@ int main(int ac, char **av, char **envp)
 	(void)av;
 	if (ac == 1)
 	{
-		char *input;
-		t_token *tokens;
-		t_command *cmds;
-		int has_pipe;
-		t_gc *gc;
-		t_env *env_list = init_copier_env(envp, &gc);
-		t_env *env = ft_copier_env(env_list, envp, &gc);
-
+		char		*input;
+		t_token		*tokens;
+		t_command	*cmds;
+		int			has_pipe;
+		t_gc		*gc;
+		t_env		*env_list = init_copier_env(envp, NULL);
+		t_env		*env;
+	
 		while (1)
 		{
+			gc = NULL;
+			env = ft_copier_env(env_list, envp, &gc);
 			setup_signals();
 			input = readline("minishell$ ");
 
@@ -45,8 +47,8 @@ int main(int ac, char **av, char **envp)
 					chi 7aja b7al hka...
 				*/
 			}
+			free(input);
+			gc_free_all(&gc);
 		}
-		free(input);	  // Msahi l'input
-		gc_free_all(&gc); // Nadi l'garbage collector
 	}
 }

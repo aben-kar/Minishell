@@ -110,7 +110,7 @@ int ft_cd(char **args, t_env *env, t_gc **gc)
                 }
 
                 update_pwd_oldpwd(oldpwd, &env, gc);
-                // free(oldpwd);
+                free(new_pwd);
             }
             else // is file
             {
