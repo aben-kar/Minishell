@@ -6,7 +6,7 @@
 /*   By: zaakrab <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 16:23:09 by acben-ka          #+#    #+#             */
-/*   Updated: 2025/05/16 01:31:08 by zaakrab          ###   ########.fr       */
+/*   Updated: 2025/05/16 01:42:01 by zaakrab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,8 @@ void excute_cmd_in_pipe(t_command *cmd, t_env *env, t_gc **gc);
 
 t_token		*add_token(t_token *last, char *value, t_gc **gc);
 t_token		*tokenize(const char *input, t_gc **gc);
-char		*expand_var(char *word, t_gc **gc);
+char		*get_env_val(const char *key, t_env *env);
+char		*expand_var(char *word, t_gc **gc, t_env *env);
 char		*create_here_doc(char *delimiter);
 int			is_redir(char *s);
 int			redir_type(char	*s);
@@ -106,7 +107,7 @@ void		handle_sigint(int sig);
 t_redirect	*add_redir(t_redirect *list, char *filename, int type, t_gc **gc);
 char    	**argv_add(char **argv, const char *value, t_gc **gc);
 t_command	*add_command(t_command *list, t_command *new);
-t_command   *parse_tokens(t_token *tokens, int *has_pipe, t_gc **gc);
+t_command   *parse_tokens(t_token *tokens, int *has_pipe, t_gc **gc, t_env *env);
 // void        free_tokens(t_token *tokens);
 // void        free_commands(t_command *cmds);
 // gc libft funcs

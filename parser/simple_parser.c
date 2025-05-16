@@ -48,7 +48,7 @@ t_command	*add_command(t_command *list, t_command *new)
 	return (list);
 }
 
-t_command *parse_tokens(t_token *tokens, int *has_pipe, t_gc **gc)
+t_command *parse_tokens(t_token *tokens, int *has_pipe, t_gc **gc, t_env *env)
 {
     t_command *cmds = NULL;
 
@@ -79,7 +79,7 @@ t_command *parse_tokens(t_token *tokens, int *has_pipe, t_gc **gc)
             }
             else
             {
-                char *expanded = expand_var(tokens->value, gc);
+                char *expanded = expand_var(tokens->value, gc, env);
 				cmd->cmd = argv_add(cmd->cmd, expanded, gc);
             }
             tokens = tokens->next;

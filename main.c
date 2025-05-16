@@ -14,7 +14,7 @@ int main(int ac, char **av, char **envp)
 		int has_pipe;
 		t_gc *gc;
 		t_env *env_list = init_copier_env(envp, &gc);
-		// t_env *env = ft_copier_env(env_list, envp, &gc);
+		t_env *env = ft_copier_env(env_list, envp, &gc);
 
 		while (1)
 		{
@@ -30,7 +30,7 @@ int main(int ac, char **av, char **envp)
 			if (*input) // ignore empty inputs
 				add_history(input); // t9dr tnavigi lhistory b arrows..
 			tokens = tokenize(input, &gc);				 // assumes tokenize may call gc_alloc()
-			cmds = parse_tokens(tokens, &has_pipe, &gc); // same here
+			cmds = parse_tokens(tokens, &has_pipe, &gc, env); // same here
 			if (input && *input)
 			{
 				if (has_pipe)

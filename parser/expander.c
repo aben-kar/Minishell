@@ -2,7 +2,19 @@
 #include "../minishell.h"
 
 // yes yes yes you know what time it is bruv
-char	*expand_var(char *word, t_gc **gc)
+char	*get_env_val(const char *key, t_env *env)
+{
+	while (env)
+	{
+		if (ft_strcmp(env->key, key) == 0)
+			return (env->value);
+		env = env->next;
+	}
+	return (NULL);
+}
+// this function is used to expand the variable
+
+char	*expand_var(char *word, t_gc **gc, t_env *env)
 {
 	char	*inner;
 	char	*val;
@@ -29,7 +41,7 @@ char	*expand_var(char *word, t_gc **gc)
 		}
 		if (inner && inner[0] == '$')
 		{
-			val = getenv(inner + 1);
+			val = get_env_val(inner + 1, env);
 			// free(inner);
 			if (val)
 				return (ft_strdup_gc(val, gc));
@@ -42,7 +54,7 @@ char	*expand_var(char *word, t_gc **gc)
 	else if (word[0] == '$')
 	{
 		// unquoted variable
-		val = getenv(word + 1);
+		val = get_env_val(word + 1, env);
 		if (val)
 			return (ft_strdup_gc(val, gc));
 		else
