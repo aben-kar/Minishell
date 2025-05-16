@@ -38,7 +38,7 @@ void update_pwd_oldpwd(char *oldpwd, t_env **env, t_gc **gc)
     {
         if (ft_strcmp(current->key, "OLDPWD") == 0)
         {
-            free(current->value);
+            // free(current->value);
             current->value = ft_strdup_gc(oldpwd, gc);
             break;
         }
@@ -51,14 +51,14 @@ void update_pwd_oldpwd(char *oldpwd, t_env **env, t_gc **gc)
     {
         if (ft_strcmp(current->key, "PWD") == 0)
         {
-            free(current->value);
+            // free(current->value);
             current->value = ft_strdup_gc(newpwd, gc);
             break;
         }
         current = current->next;
     }
 
-    // free(newpwd);
+    free(newpwd);
 }
 
 int ft_cd(char **args, t_env *env, t_gc **gc)
@@ -97,7 +97,7 @@ int ft_cd(char **args, t_env *env, t_gc **gc)
                 if (chdir(args[0]) != 0)
                 {
                     ft_putendl_fd("cd: Permission denied", 1);
-                    // free(oldpwd);
+                    free(oldpwd);
                     return 1;
                 }
 
@@ -110,7 +110,7 @@ int ft_cd(char **args, t_env *env, t_gc **gc)
                 }
 
                 update_pwd_oldpwd(oldpwd, &env, gc);
-                free(oldpwd);
+                // free(oldpwd);
             }
             else // is file
             {

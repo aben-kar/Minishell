@@ -87,8 +87,8 @@ char *find_executable_path(t_command *shell, t_env *envp, t_gc **gc)
     int i = 0;
     while (directory[i])
     {
-        char *add_slash = ft_strjoin(directory[i], "/");
-        char *cmd_path = ft_strjoin(add_slash, shell->cmd[0]);
+        char *add_slash = ft_strjoin_gc(directory[i], "/", gc);
+        char *cmd_path = ft_strjoin_gc(add_slash, shell->cmd[0], gc);
         if ((access(cmd_path, F_OK | X_OK)) == 0)
             return (cmd_path); // External Commands
         i++;

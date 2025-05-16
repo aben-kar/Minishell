@@ -61,7 +61,7 @@ void built_in(t_command *cmd, t_env *env, t_gc **gc)
     }
     if (!found)
     {
-        char *error_echo = ft_strjoin(cmd->cmd[0], ": command not found");
+        char *error_echo = ft_strjoin_gc(cmd->cmd[0], ": command not found", gc);
         ft_putendl_fd(error_echo, 1);
     }
 }
