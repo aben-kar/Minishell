@@ -65,7 +65,7 @@ t_command *parse_tokens(t_token *tokens, int *has_pipe, t_gc **gc, t_env *env)
             return (NULL);
         while (tokens && ft_strcmp(tokens->value, "|") != 0) // without pipe
         {
-            if (is_redir(tokens->value)) // with redurection
+            if (is_redir(tokens->value)) // with redirection
             {
                 int type = redir_type(tokens->value);
                 tokens = tokens->next;
