@@ -6,7 +6,7 @@
 /*   By: zaakrab <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 16:23:09 by acben-ka          #+#    #+#             */
-/*   Updated: 2025/05/16 01:23:53 by zaakrab          ###   ########.fr       */
+/*   Updated: 2025/05/16 01:31:08 by zaakrab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ int ft_exit(char **args, t_gc **gc);
 // function helper about Built-in
 t_env *ft_copier_env(t_env *env, char **envp, t_gc **gc);
 t_env *init_copier_env(char **envp, t_gc **gc);
-void insert_at_end(t_env **head, char *key, char *value);
+void insert_at_end(t_env **head, char *key, char *value, t_gc **gc);
 void print_error(char *key, t_gc **gc);
 int check_plus(char *args);
 int key_with_equal(char *arg, char **key, char **value, t_env **env, t_gc **gc);
@@ -81,9 +81,9 @@ int key_with_plus(char *arg, char **key, char **value, t_env **env, t_gc **gc);
 // execution
 void execute_command(t_command *shell, t_env *env, t_gc **gc);
 char **env_to_array(t_env *env, t_gc **gc);
-char *find_executable_path(t_command *shell, t_env *envp);
+char *find_executable_path(t_command *shell, t_env *envp, t_gc **gc);
 bool check_command(t_command *check, t_env *envp, t_gc **gc);
-void excute_extenel_cmd(t_command *cmd, t_env *env);
+void excute_extenel_cmd(t_command *cmd, t_env *env, t_gc **gc);
 void built_in(t_command *cmd, t_env *env, t_gc **gc);
 // multi-pipe
 void execute_multi_pipe(t_command *cmd, t_env *env, t_gc **gc);

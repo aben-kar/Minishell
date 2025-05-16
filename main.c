@@ -34,7 +34,7 @@ int main(int ac, char **av, char **envp)
 			if (input && *input)
 			{
 				if (has_pipe)
-					execute_multi_pipe(cmds, env_list);
+					execute_multi_pipe(cmds, env_list, &gc);
 				else
 					execute_command(cmds, env_list, &gc);
 				/*

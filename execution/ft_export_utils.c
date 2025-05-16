@@ -6,7 +6,7 @@
 /*   By: zaakrab <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 00:52:34 by aben-kar          #+#    #+#             */
-/*   Updated: 2025/05/16 01:17:30 by zaakrab          ###   ########.fr       */
+/*   Updated: 2025/05/16 01:32:36 by zaakrab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ int key_with_equal(char *arg, char **key, char **value, t_env **env, t_gc **gc)
         }
         repetition = repetition->next;
     }
-    insert_at_end(&tmp, *key, *value);
+    insert_at_end(&tmp, *key, *value, gc);
     return (0);
 }
 
@@ -104,6 +104,6 @@ int key_with_plus(char *arg, char **key, char **value, t_env **env, t_gc **gc)
     // if (*value == NULL)
     //     *value = ft_strdup("");
         
-    insert_at_end(&tmp, *key, *value);
+    insert_at_end(&tmp, *key, *value, gc);
     return 0;
 }

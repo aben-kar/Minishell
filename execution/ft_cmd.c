@@ -6,16 +6,16 @@
 /*   By: zaakrab <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 22:26:01 by achraf            #+#    #+#             */
-/*   Updated: 2025/05/16 01:20:49 by zaakrab          ###   ########.fr       */
+/*   Updated: 2025/05/16 01:27:22 by zaakrab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void excute_extenel_cmd(t_command *cmd, t_env *env)
+void excute_extenel_cmd(t_command *cmd, t_env *env, t_gc **gc)
 {
-    char **copier_env = env_to_array(env);
-    char *cmd_path = find_executable_path(cmd, env);
+    char **copier_env = env_to_array(env, gc);
+    char *cmd_path = find_executable_path(cmd, env, gc);
     int id = fork();
     if (id == 0)
     {

@@ -6,7 +6,7 @@
 /*   By: zaakrab <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/19 14:21:32 by acben-ka          #+#    #+#             */
-/*   Updated: 2025/05/16 01:10:40 by zaakrab          ###   ########.fr       */
+/*   Updated: 2025/05/16 01:26:20 by zaakrab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void update_pwd_oldpwd(char *oldpwd, t_env **env, t_gc **gc)
         if (ft_strcmp(current->key, "OLDPWD") == 0)
         {
             free(current->value);
-            current->value = ft_strdup(oldpwd);
+            current->value = ft_strdup_gc(oldpwd, gc);
             break;
         }
         current = current->next;

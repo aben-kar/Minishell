@@ -6,7 +6,7 @@
 /*   By: zaakrab <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 15:31:35 by acben-ka          #+#    #+#             */
-/*   Updated: 2025/05/16 01:20:14 by zaakrab          ###   ########.fr       */
+/*   Updated: 2025/05/16 01:31:38 by zaakrab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,7 @@ int ft_export(char **args, t_env **env, t_gc **gc)
                 char *key = args[i];
                 char *value = NULL;
 
-                insert_at_end(&new_node, key, value);
+                insert_at_end(&new_node, key, value, gc);
             }
             i++;
         }

@@ -6,7 +6,7 @@
 /*   By: zaakrab <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 14:47:31 by acben-ka          #+#    #+#             */
-/*   Updated: 2025/05/16 01:12:59 by zaakrab          ###   ########.fr       */
+/*   Updated: 2025/05/16 01:28:44 by zaakrab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,9 @@ void ft_env_null(t_env **head, t_gc **gc)
     }
 }
 
-void insert_at_end(t_env **head, char *key, char *value) // char **env
+void insert_at_end(t_env **head, char *key, char *value, t_gc **gc) // char **env
 {
-    t_env *new_node = malloc(sizeof(t_env));
+    t_env *new_node = gc_alloc(sizeof(t_env), gc);
 
     if (!new_node)
         exit(1);
@@ -72,10 +72,10 @@ t_env *init_copier_env(char **envp, t_gc **gc)
         if (equal)
         {
             int key_len = equal - envp[i];
-            char *key = ft_substr(envp[i], 0, key_len);
-            char *value = ft_strdup(equal + 1); // '='
+            char *key = ft_substr_gc(envp[i], 0, key_len, gc);
+            char *value = ft_strdup_gc(equal + 1, gc); // '='
 
-            insert_at_end(&head, key, value);
+            insert_at_end(&head, key, value, gc);
         }
         i++;
     }

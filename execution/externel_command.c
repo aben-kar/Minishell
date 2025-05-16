@@ -6,14 +6,14 @@
 /*   By: zaakrab <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 18:21:38 by acben-ka          #+#    #+#             */
-/*   Updated: 2025/05/16 01:08:26 by zaakrab          ###   ########.fr       */
+/*   Updated: 2025/05/16 01:31:58 by zaakrab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 // #include "minishell.h"
 #include "../minishell.h"
 
-char **get_path(t_env *envp)
+char **get_path(t_env *envp, t_gc **gc)
 {
     char *found;
     char **split_path;
@@ -21,7 +21,7 @@ char **get_path(t_env *envp)
 
     tmp = envp;
     
-    char **copier_env = env_to_array(tmp);
+    char **copier_env = env_to_array(tmp, gc);
     while (*copier_env)
     {
         found = ft_strnstr(*copier_env, "PATH=", 5);
@@ -61,7 +61,7 @@ bool check_command(t_command *check, t_env *envp, t_gc **gc)
     if ((access(check->cmd[0], F_OK | X_OK)) == 0) // ls
         return (true);
 
-    char **directory = get_path(tmp);
+    char **directory = get_path(tmp, gc);
     if (!directory)
         return (false);
 
@@ -79,11 +79,11 @@ bool check_command(t_command *check, t_env *envp, t_gc **gc)
 }
 
 
-char *find_executable_path(t_command *shell, t_env *envp)
+char *find_executable_path(t_command *shell, t_env *envp, t_gc **gc)
 {
     if ((access(shell->cmd[0], F_OK | X_OK)) == 0) // execute direct "/bin/ls"
         return (*(shell->cmd));                    // External Commands
-    char **directory = get_path(envp);
+    char **directory = get_path(envp, gc);
     int i = 0;
     while (directory[i])
     {
@@ -99,8 +99,8 @@ char *find_executable_path(t_command *shell, t_env *envp)
 void execute_command(t_command *shell, t_env *env, t_gc **gc)
 {
     if (check_command(shell, env, gc) == true) // external command
-        excute_extenel_cmd(shell, env);
+        excute_extenel_cmd(shell, env, gc);
     
     else // Built-in
-        built_in(shell, env);
+        built_in(shell, env, gc);
 }
