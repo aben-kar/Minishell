@@ -56,9 +56,9 @@ int key_with_equal(char *arg, char **key, char **value, t_env **env, t_gc **gc)
     {
         if (ft_strcmp(repetition->key, *key) == 0)
         {
-            // ree(repetition->value); // maybe no free tist
+            // free(repetition->value); // maybe no free tist
             repetition->value = *value;
-            // free(*key);
+            free(*key);
             return (0);
         }
         repetition = repetition->next;
