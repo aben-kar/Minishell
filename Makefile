@@ -21,7 +21,7 @@ SRC = main.c \
 OBJ = $(SRC:.c=.o)
 
 # Headers (including current dir)
-INCLUDES = -I. -I$(LIBFT_DIR) -I$(PARSER_DIR) -I$(EXECUTION_DIR)
+INCLUDES = -I. -I$(LIBFT_DIR) -I$(PARSER_DIR) -I$(EXECUTION_DIR) -I$(HELPER_DIR)
 
 # Rules
 all: $(NAME)
