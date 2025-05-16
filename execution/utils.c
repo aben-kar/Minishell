@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zaakrab <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 15:32:12 by acben-ka          #+#    #+#             */
-/*   Updated: 2025/05/13 16:25:48 by acben-ka         ###   ########.fr       */
+/*   Updated: 2025/05/16 01:23:39 by zaakrab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 // #include "minishell.h"
 #include "../minishell.h"
 
-char **env_to_array(t_env *env)
+char **env_to_array(t_env *env, t_gc **gc)
 {
     int i = 0;
     t_env *tmp = env;
@@ -26,7 +26,7 @@ char **env_to_array(t_env *env)
         tmp = tmp->next;
     }
 
-    envp = malloc(sizeof(char *) * (size + 1));
+    envp = gc_alloc(sizeof(char *) * (size + 1), gc);
     if (!envp)
         return NULL;
 
@@ -34,9 +34,9 @@ char **env_to_array(t_env *env)
     i = 0;
     while (tmp)
     {
-        char *key_equal = ft_strjoin(tmp->key, "=");
-        envp[i] = ft_strjoin(key_equal, tmp->value);
-        free(key_equal);
+        char *key_equal = ft_strjoin_gc(tmp->key, "=", gc);
+        envp[i] = ft_strjoin_gc(key_equal, tmp->value, gc);
+        // free(key_equal);
         tmp = tmp->next;
         i++;
     }

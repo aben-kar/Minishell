@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zaakrab <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/19 14:21:32 by acben-ka          #+#    #+#             */
-/*   Updated: 2025/05/13 16:25:07 by acben-ka         ###   ########.fr       */
+/*   Updated: 2025/05/16 01:10:40 by zaakrab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ char *print_home(t_env *env)
     return NULL; // No HOME.
 }
 
-void update_pwd_oldpwd(char *oldpwd, t_env **env)
+void update_pwd_oldpwd(char *oldpwd, t_env **env, t_gc **gc)
 {
     t_env *current = *env;
     char *newpwd = getcwd(NULL, 0);
@@ -52,7 +52,7 @@ void update_pwd_oldpwd(char *oldpwd, t_env **env)
         if (ft_strcmp(current->key, "PWD") == 0)
         {
             free(current->value);
-            current->value = ft_strdup(newpwd);
+            current->value = ft_strdup_gc(newpwd, gc);
             break;
         }
         current = current->next;
@@ -61,7 +61,7 @@ void update_pwd_oldpwd(char *oldpwd, t_env **env)
     // free(newpwd);
 }
 
-int ft_cd(char **args, t_env *env)
+int ft_cd(char **args, t_env *env, t_gc **gc)
 {
     t_stat info;
     t_env *tmp = env;
@@ -109,7 +109,7 @@ int ft_cd(char **args, t_env *env)
                     return (1);
                 }
 
-                update_pwd_oldpwd(oldpwd, &env);
+                update_pwd_oldpwd(oldpwd, &env, gc);
                 free(oldpwd);
             }
             else // is file

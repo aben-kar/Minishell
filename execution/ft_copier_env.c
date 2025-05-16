@@ -3,25 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   ft_copier_env.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zaakrab <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 14:47:31 by acben-ka          #+#    #+#             */
-/*   Updated: 2025/05/14 22:59:39 by acben-ka         ###   ########.fr       */
+/*   Updated: 2025/05/16 01:12:59 by zaakrab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 // #include "minishell.h"
 #include "../minishell.h"
 
-void ft_env_null(t_env **head)
+void ft_env_null(t_env **head, t_gc **gc)
 {
-    t_env *tmp = malloc(sizeof(t_env));
+    t_env *tmp = gc_alloc(sizeof(t_env), gc);
 
     if (!tmp)
         exit(1);
 
-    tmp->key = ft_strdup("PWD");
-    tmp->value = ft_strdup("/home/acben-ka/Desktop/allo");
+    tmp->key = ft_strdup_gc("PWD", gc);
+    tmp->value = ft_strdup_gc("/home/acben-ka/Desktop/allo", gc);
     tmp->next = NULL;
     if (!*head)
     {
@@ -55,14 +55,14 @@ void insert_at_end(t_env **head, char *key, char *value) // char **env
     // return head;
 }
 
-t_env *init_copier_env(char **envp)
+t_env *init_copier_env(char **envp, t_gc **gc)
 {
     t_env *head = NULL;
     int i = 0;
 
     if (!*envp)
     {
-        ft_env_null(&head);
+        ft_env_null(&head, gc);
         return head;
     }
     
@@ -82,9 +82,9 @@ t_env *init_copier_env(char **envp)
     return head;
 }
 
-t_env *ft_copier_env(t_env *env, char **envp)
+t_env *ft_copier_env(t_env *env, char **envp, t_gc **gc)
 {
-    env = init_copier_env(envp);
+    env = init_copier_env(envp, gc);
     return env;
     // return 0;
 }

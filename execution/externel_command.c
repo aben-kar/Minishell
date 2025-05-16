@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   externel_command.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: achraf <achraf@student.42.fr>              +#+  +:+       +#+        */
+/*   By: zaakrab <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 18:21:38 by acben-ka          #+#    #+#             */
-/*   Updated: 2025/05/15 22:31:39 by achraf           ###   ########.fr       */
+/*   Updated: 2025/05/16 01:08:26 by zaakrab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ char **get_path(t_env *envp)
     return (NULL);
 }
 
-bool check_command(t_command *check, t_env *envp)
+bool check_command(t_command *check, t_env *envp, t_gc **gc)
 {
     t_env *tmp;
     tmp = envp;
@@ -68,8 +68,8 @@ bool check_command(t_command *check, t_env *envp)
     int i = 0;
     while (directory[i])
     {
-        char *add_slash = ft_strjoin(directory[i], "/");
-        char *cmd_path = ft_strjoin(add_slash, check->cmd[0]);
+        char *add_slash = ft_strjoin_gc(directory[i], "/", gc);
+        char *cmd_path = ft_strjoin_gc(add_slash, check->cmd[0], gc);
         if ((access(cmd_path, F_OK | X_OK)) == 0)
             return (true);
         i++;
@@ -96,9 +96,9 @@ char *find_executable_path(t_command *shell, t_env *envp)
     return (NULL);
 }
 
-void execute_command(t_command *shell, t_env *env)
+void execute_command(t_command *shell, t_env *env, t_gc **gc)
 {
-    if (check_command(shell, env) == true) // external command
+    if (check_command(shell, env, gc) == true) // external command
         excute_extenel_cmd(shell, env);
     
     else // Built-in

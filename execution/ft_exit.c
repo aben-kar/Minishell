@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zaakrab <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 16:42:44 by acben-ka          #+#    #+#             */
-/*   Updated: 2025/05/13 18:03:47 by acben-ka         ###   ########.fr       */
+/*   Updated: 2025/05/16 01:14:47 by zaakrab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ bool all_is_digit(char *arg)
     return true;
 }
 
-int ft_exit(char **args)
+int ft_exit(char **args, t_gc **gc)
 {
     // printf ("sign ==> %c\n", *args[0]);
     if (!args || !*args)
@@ -54,7 +54,7 @@ int ft_exit(char **args)
     {
         ft_putendl_fd("exit", 1);
         ft_putstr_fd("exit: ", 1);
-        char *join = ft_strjoin(args[0], ": numeric argument required");
+        char *join = ft_strjoin_gc(args[0], ": numeric argument required", gc);
         ft_putendl_fd(join, 1);
         exit(2);
     }
@@ -71,7 +71,7 @@ int ft_exit(char **args)
         {
             ft_putendl_fd("exit", 1);
             ft_putstr_fd("exit: ", 1);
-            char *join = ft_strjoin(args[0], ": numeric argument required");
+            char *join = ft_strjoin_gc(args[0], ": numeric argument required", gc);
             ft_putendl_fd(join, 1);
             exit(2);
         }

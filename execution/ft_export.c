@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zaakrab <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 15:31:35 by acben-ka          #+#    #+#             */
-/*   Updated: 2025/05/15 15:52:06 by acben-ka         ###   ########.fr       */
+/*   Updated: 2025/05/16 01:20:14 by zaakrab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,28 +63,28 @@ int check_plus(char *args)
     return 99;
 }
 
-int ft_export(char **args, t_env **env)
+int ft_export(char **args, t_env **env, t_gc **gc)
 {
     if (!args[0] || !*args)
     {
         t_env *tmp = *env;
         while (tmp)
         {
-            char *line = ft_strjoin("declare -x ", tmp->key);
+            char *line = ft_strjoin_gc("declare -x ", tmp->key, gc);
             if (tmp->value != NULL)
             {
                 if (*(tmp->value))
                 {
-                    char *eq = ft_strjoin(line, "=\"");
-                    char *val = ft_strjoin(eq, tmp->value);
-                    char *final = ft_strjoin(val, "\"");
+                    char *eq = ft_strjoin_gc(line, "=\"", gc);
+                    char *val = ft_strjoin_gc(eq, tmp->value, gc);
+                    char *final = ft_strjoin_gc(val, "\"", gc);
                     ft_putendl_fd(final, 1);
                 }
                 else
                 {
-                    char *eq = ft_strjoin(line, "=\"\""); // export ILYAS=
+                    char *eq = ft_strjoin_gc(line, "=\"\"", gc); // export ILYAS=
                     ft_putendl_fd(eq, 1);
-                    free(eq);
+                    // free(eq);
                 }
             }
             else // without value
@@ -105,15 +105,15 @@ int ft_export(char **args, t_env **env)
                 char *key = NULL;
                 char *value = NULL;
                 int string_len = equal - args[i] + 1;
-                char *string = ft_substr(args[i], 0, string_len);
+                char *string = ft_substr_gc(args[i], 0, string_len, gc);
                 int check_is_equal = is_equal_alone(string);
                 
                 if (check_is_equal == 11)
-                    key_with_equal(args[i], &key, &value, &tmp);
+                    key_with_equal(args[i], &key, &value, &tmp, gc);
                 else if (check_is_equal == 12)
-                    key_with_plus(args[i], &key, &value, &tmp);
+                    key_with_plus(args[i], &key, &value, &tmp, gc);
                 else
-                    print_error(args[i]);
+                    print_error(args[i], gc);
             }
             else
             {

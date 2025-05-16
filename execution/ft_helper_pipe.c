@@ -3,20 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   ft_helper_pipe.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: achraf <achraf@student.42.fr>              +#+  +:+       +#+        */
+/*   By: zaakrab <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 19:00:57 by achraf            #+#    #+#             */
-/*   Updated: 2025/05/15 23:35:08 by achraf           ###   ########.fr       */
+/*   Updated: 2025/05/16 01:21:14 by zaakrab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void excute_cmd_in_pipe(t_command *cmd, t_env *env)
+void excute_cmd_in_pipe(t_command *cmd, t_env *env, t_gc **gc)
 {
-    if (check_command(cmd, env) == false)
+    if (check_command(cmd, env, gc) == false)
     {
-        built_in(cmd, env);
+        built_in(cmd, env, gc);
         exit(0);
     }
     else

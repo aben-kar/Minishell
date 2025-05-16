@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cmd.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: achraf <achraf@student.42.fr>              +#+  +:+       +#+        */
+/*   By: zaakrab <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 22:26:01 by achraf            #+#    #+#             */
-/*   Updated: 2025/05/15 22:30:04 by achraf           ###   ########.fr       */
+/*   Updated: 2025/05/16 01:20:49 by zaakrab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void excute_extenel_cmd(t_command *cmd, t_env *env)
         waitpid(id, NULL, 0);
 }
 
-void built_in(t_command *cmd, t_env *env)
+void built_in(t_command *cmd, t_env *env, t_gc **gc)
 {
     char *builtins[] = {"echo", "cd", "pwd", "export", "unset", "env", "exit", NULL};
     int j = 0;
@@ -44,17 +44,17 @@ void built_in(t_command *cmd, t_env *env)
             }
 
             else if (ft_strcmp(cmd->cmd[0], "cd") == 0) // cd
-                ft_cd(cmd->cmd + 1, env);
+                ft_cd(cmd->cmd + 1, env, gc);
             else if ((ft_strcmp(cmd->cmd[0], "pwd")) == 0) // pwd
                 ft_pwd();
             else if ((ft_strcmp(cmd->cmd[0], "env")) == 0) // env
                 ft_env(env);
             else if ((ft_strcmp(cmd->cmd[0], "export")) == 0) // export
-                ft_export(cmd->cmd + 1, &env);
+                ft_export(cmd->cmd + 1, &env, gc);
             else if ((ft_strcmp(cmd->cmd[0], "unset")) == 0) // unset
                 ft_unset(cmd->cmd + 1, &env);
             else if ((ft_strcmp(cmd->cmd[0], "exit")) == 0) // exit
-                ft_exit(cmd->cmd + 1);
+                ft_exit(cmd->cmd + 1, gc);
             break;
         }
         j++;

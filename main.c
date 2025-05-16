@@ -13,8 +13,8 @@ int main(int ac, char **av, char **envp)
 		t_command *cmds;
 		int has_pipe;
 		t_gc *gc;
-		t_env *env_list = init_copier_env(envp);
-		// t_env *env = ft_copier_env(env_list, envp);
+		t_env *env_list = init_copier_env(envp, &gc);
+		// t_env *env = ft_copier_env(env_list, envp, &gc);
 
 		while (1)
 		{
@@ -36,7 +36,7 @@ int main(int ac, char **av, char **envp)
 				if (has_pipe)
 					execute_multi_pipe(cmds, env_list);
 				else
-					execute_command(cmds, env_list);
+					execute_command(cmds, env_list, &gc);
 				/*
 					mohim daba t9dr tkhdm had logic for redirections:
 					if (cmd->has_redirect) {

@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_pipeline.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: achraf <achraf@student.42.fr>              +#+  +:+       +#+        */
+/*   By: zaakrab <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 18:11:45 by achraf            #+#    #+#             */
-/*   Updated: 2025/05/16 00:00:53 by achraf           ###   ########.fr       */
+/*   Updated: 2025/05/16 01:22:18 by zaakrab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void execute_multi_pipe(t_command *cmd, t_env *env)
+void execute_multi_pipe(t_command *cmd, t_env *env, t_gc **gc)
 {
     int fd[2];
     int save_fd = -1;
@@ -53,7 +53,7 @@ void execute_multi_pipe(t_command *cmd, t_env *env)
                 close(fd[1]);
             }
 
-            excute_cmd_in_pipe(current, env);
+            excute_cmd_in_pipe(current, env, gc);
         }
         else
         {
