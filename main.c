@@ -46,8 +46,8 @@ int main(int ac, char **av, char **envp)
 					chi 7aja b7al hka...
 				*/
 			}
+			free(input);
 		}
-		free(input);
 		gc_free_all(&gc);
 	}
 }
