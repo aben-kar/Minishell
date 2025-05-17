@@ -50,7 +50,8 @@ t_command	*add_command(t_command *list, t_command *new)
 
 t_command *parse_tokens(t_token *tokens, int *has_pipe, t_gc **gc, t_env *env)
 {
-    t_command *cmds = NULL;
+    t_command   *cmds = NULL;
+    char        *filename;
 
     if (tokens && ft_strcmp(tokens->value, "|") == 0) // pipe at the beginning
     {
@@ -74,7 +75,8 @@ t_command *parse_tokens(t_token *tokens, int *has_pipe, t_gc **gc, t_env *env)
                     write(2, "parse error: invalid redirection\n", 33);
                     return (NULL);
                 }
-                cmd->redirects = add_redir(cmd->redirects, tokens->value, type, gc);
+                filename = expand_var(tokens->value, gc, env);
+                cmd->redirects = add_redir(cmd->redirects, filename, type, gc);
                 cmd->has_redirect = true; // l9ina redirection = true
             }
             else
