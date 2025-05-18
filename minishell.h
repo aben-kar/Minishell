@@ -30,9 +30,9 @@
 # include "parser/gc.h"
 
 // about herdoc
-#define	REDIR_IN 0 // normalment hada khaso ikon REDIR_OUT
-#define	REDIR_OUT 1 // normalmment hada khaso ikon REDIR_APPEND
-#define	REDIR_APPEND 2 // normalment hada khaso ikon REDIR_IN
+#define	REDIR_OUT 0 // normalment hada khaso ikon REDIR_OUT
+#define	REDIR_APPEND 1 // normalmment hada khaso ikon REDIR_APPEND
+#define	REDIR_IN 2 // normalment hada khaso ikon REDIR_IN
 #define	REDIR_HEREDOC 3 // HADA RAH
 
 extern int	g_exit_status; // global varible
