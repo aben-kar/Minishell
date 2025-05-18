@@ -6,7 +6,7 @@
 /*   By: achraf <achraf@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 16:23:09 by acben-ka          #+#    #+#             */
-/*   Updated: 2025/05/16 20:11:53 by achraf           ###   ########.fr       */
+/*   Updated: 2025/05/18 01:39:40 by achraf           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,10 @@
 # include "parser/gc.h"
 
 // about herdoc
-#define	REDIR_IN 0
-#define	REDIR_OUT 1
-#define	REDIR_APPEND 2
-#define	REDIR_HEREDOC 3
+#define	REDIR_IN 0 // normalment hada khaso ikon REDIR_OUT
+#define	REDIR_OUT 1 // normalmment hada khaso ikon REDIR_APPEND
+#define	REDIR_APPEND 2 // normalment hada khaso ikon REDIR_IN
+#define	REDIR_HEREDOC 3 // HADA RAH
 
 extern int	g_exit_status; // global varible
 typedef struct stat t_stat;
@@ -45,7 +45,7 @@ typedef struct s_token {
 
 typedef struct s_redirect {
 	char	*filename;
-	int		type; // (0: >, 1: >>, 2: <, 3: <<)
+	int		type; // (0: >,         1: >>,        2: <,             3: <<)
 	struct s_redirect	*next;
 }	t_redirect;
 

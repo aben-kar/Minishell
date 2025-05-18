@@ -3,6 +3,56 @@
 // define global variable
 int g_exit_status = 0;
 
+// void print_node(t_command *head)
+// {
+//     while (head)
+//     {
+//         printf("----- Command Node -----\n");
+
+//         // Print argv
+//         int i = 0;
+//         while (head->cmd && head->cmd[i])
+//         {
+//             printf("cmd[%d] = [%s]\n", i, head->cmd[i]);
+//             i++;
+//         }
+
+//         // Print redirections (use a temp pointer so we don't lose original list)
+//         t_redirect *redir = head->redirects;
+//         while (redir)
+//         {
+//             int type = redir->type;
+//             char *smiyadyaltype = NULL;
+//             switch (type)
+//             {   
+//             case 0:
+//                 smiyadyaltype = "REDIR_IN";
+//                 break;
+//             case 1:
+//                 smiyadyaltype = "REDIR_OUT";
+//                 break;
+//             case 2:
+//                 smiyadyaltype = "REDIR_APPEND";
+//                 break;
+//             case 3:
+//                 smiyadyaltype = "REDIR_HEREDOC";
+//                 break;
+//             default:
+//                 break;
+//             }
+//             printf("redir: { type: %s, filename: %s }\n", smiyadyaltype, redir->filename);
+//             redir = redir->next;
+//         }
+
+//         // Print pipe info
+//         //printf("pipe_in: %d, pipe_out: %d\n", head->bo,);
+
+//         printf("----------------------------------------------------------------------------------------\n\n\n");
+
+//         head = head->next;
+//     }
+// }
+
 int main(int ac, char **av, char **envp)
 {
 	(void)av;
@@ -33,6 +83,7 @@ int main(int ac, char **av, char **envp)
 				add_history(input); // t9dr tnavigi lhistory b arrows..
 			tokens = tokenize(input, &gc);				 // assumes tokenize may call gc_alloc()
 			cmds = parse_tokens(tokens, &has_pipe, &gc, env_list); // same here
+			// function deyal debag (print_node) li katb9a t3awd l structure dyal commands.
 			if (input && *input)
 			{
 				if (has_pipe)
