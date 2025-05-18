@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_pipeline.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: achraf <achraf@student.42.fr>              +#+  +:+       +#+        */
+/*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 18:11:45 by achraf            #+#    #+#             */
-/*   Updated: 2025/05/18 01:41:58 by achraf           ###   ########.fr       */
+/*   Updated: 2025/05/18 16:45:58 by acben-ka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,13 +39,14 @@ void execute_multi_pipe(t_command *cmd, t_env *env, t_gc **gc)
 
         if (id == 0)
         {
+            
             if (save_fd != -1)
             {
                 // printf ("halawa\n");
                 dup2(save_fd, STDIN_FILENO);
                 close(save_fd);
             }
-
+            
             if (current->next)
             {
                 close(fd[0]);
@@ -57,7 +58,7 @@ void execute_multi_pipe(t_command *cmd, t_env *env, t_gc **gc)
                 t_redirect *redir = current->redirects;
                 while (redir)
                 {
-                    if (redir->type == REDIR_APPEND)
+                    if (redir->type == REDIR_IN) // "<" read 
                     {
                         int in_fd = open(redir->filename, O_RDONLY);
                         if (in_fd < 0)
@@ -68,7 +69,7 @@ void execute_multi_pipe(t_command *cmd, t_env *env, t_gc **gc)
                         dup2(in_fd, STDIN_FILENO);
                         close(in_fd);
                     }
-                    else if (redir->type == REDIR_IN)
+                    else if (redir->type == REDIR_OUT) // '>' out
                     {
                         int out_fd = open(redir->filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
                         if (out_fd < 0)
@@ -79,7 +80,7 @@ void execute_multi_pipe(t_command *cmd, t_env *env, t_gc **gc)
                         dup2(out_fd, STDOUT_FILENO);
                         close(out_fd);
                     }
-                    else if (redir->type == REDIR_OUT)
+                    else if (redir->type == REDIR_APPEND) // '>>' append
                     {
                         int append_fd = open(redir->filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
                         if (append_fd < 0)
@@ -109,6 +110,6 @@ void execute_multi_pipe(t_command *cmd, t_env *env, t_gc **gc)
             current = current->next;
         }
     }
-    while (waitpid(-1, NULL, 0) > 0)
-        ;
+    while (waitpid(-1, NULL, 0) > 0);
 }
+

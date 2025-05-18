@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: achraf <achraf@student.42.fr>              +#+  +:+       +#+        */
+/*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 16:23:09 by acben-ka          #+#    #+#             */
-/*   Updated: 2025/05/18 01:39:40 by achraf           ###   ########.fr       */
+/*   Updated: 2025/05/18 16:20:23 by acben-ka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ typedef struct s_token {
 
 typedef struct s_redirect {
 	char	*filename;
-	int		type; // (0: >,         1: >>,        2: <,             3: <<)
+	int		type;
 	struct s_redirect	*next;
 }	t_redirect;
 

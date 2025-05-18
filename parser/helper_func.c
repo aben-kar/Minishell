@@ -10,11 +10,11 @@ int	is_redir(char *s)
 int	redir_type(char	*s)
 {
 	if (!ft_strcmp(s, ">"))
-		return REDIR_IN;
-	if (!ft_strcmp(s, ">>"))
 		return REDIR_OUT;
-	if (!ft_strcmp(s, "<"))
+	if (!ft_strcmp(s, ">>"))
 		return REDIR_APPEND;
+	if (!ft_strcmp(s, "<"))
+		return REDIR_IN;
 	return REDIR_HEREDOC; // "<<"
 }
 

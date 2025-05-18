@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   externel_command.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zaakrab <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 18:21:38 by acben-ka          #+#    #+#             */
-/*   Updated: 2025/05/16 01:31:58 by zaakrab          ###   ########.fr       */
+/*   Updated: 2025/05/18 16:35:52 by acben-ka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,3 +104,5 @@ void execute_command(t_command *shell, t_env *env, t_gc **gc)
     else // Built-in
         built_in(shell, env, gc);
 }
+// 
+// 
