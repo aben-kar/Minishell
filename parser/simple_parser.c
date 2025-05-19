@@ -75,13 +75,13 @@ t_command *parse_tokens(t_token *tokens, int *has_pipe, t_gc **gc, t_env *env)
                     write(2, "parse error: invalid redirection\n", 33);
                     return (NULL);
                 }
-                filename = expand_var(tokens->value, gc, env);
+                filename = expand_word(tokens->value, gc, env);
                 cmd->redirects = add_redir(cmd->redirects, filename, type, gc);
                 cmd->has_redirect = true; // l9ina redirection = true
             }
             else
             {
-                char *expanded = expand_var(tokens->value, gc, env);
+                char    *expanded = expand_word(tokens->value, gc, env);
 				cmd->cmd = argv_add(cmd->cmd, expanded, gc);
             }
             tokens = tokens->next;

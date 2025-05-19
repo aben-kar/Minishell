@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zaakrab <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 16:23:09 by acben-ka          #+#    #+#             */
-/*   Updated: 2025/05/18 16:20:23 by acben-ka         ###   ########.fr       */
+/*   Updated: 2025/05/19 14:26:51 by zaakrab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,8 @@ void excute_cmd_in_pipe(t_command *cmd, t_env *env, t_gc **gc);
 t_token		*add_token(t_token *last, char *value, t_gc **gc);
 t_token		*tokenize(const char *input, t_gc **gc);
 char		*get_env_val(const char *key, t_env *env);
-char		*expand_var(char *word, t_gc **gc, t_env *env);
+// char		*expand_var(char *word, t_gc **gc, t_env *env);
+char		*expand_word(const char *word, t_gc **gc, t_env *env);
 char		*create_here_doc(char *delimiter);
 int			is_redir(char *s);
 int			redir_type(char	*s);
@@ -117,6 +118,7 @@ char	*ft_itoa_gc(int n, t_gc **gc);
 char	*ft_strdup_gc(const char *s1, t_gc **gc);
 char	*ft_substr_gc(const char *s, unsigned int start, size_t len, t_gc **gc);
 char	*ft_strjoin_gc(const char *s1, const char *s2, t_gc **gc);
+char	*ft_strjoin_char_gc(const char *s, char c, t_gc **gc);
 char	**ft_split_gc(char const *s, char *c, t_gc **gc);
 // test
 // void print_command_structure(t_command *cmds);
