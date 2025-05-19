@@ -11,7 +11,57 @@ t_token	*add_token(t_token *last, char *value, t_gc **gc)
 	return new;
 }
 
-t_token	*tokenize(const char *input, t_gc **gc) // ls | cat > ls | echo "hello" | grep hello 
+// t_token	*tokenize(const char *input, t_gc **gc) // ls | cat > ls | echo "hello" | grep hello 
+// {
+// 	int		i = 0;
+// 	t_token	*head = NULL;
+// 	t_token	*last = NULL;
+
+// 	while (input[i])
+// 	{
+// 		while (ft_isspace(input[i])) // skip space
+// 			i++;
+// 		if (input[i] == '\'' || input[i] == '"') // ""
+// 		{
+// 			char	quote = input[i++]; // ""
+// 			int		start = i;
+// 			while (input[i] && input[i] != quote)
+// 				i++;
+// 			char	*val = ft_substr_gc(input, start, i - start, gc);
+// 			last = add_token(last, val, gc);
+// 			if (!head)
+// 				head = last;
+// 			if (input[i])
+// 				i++;
+// 		}
+// 		else if (is_operator(input[i]))
+// 		{
+// 			int	start = i;
+// 			if ((input[i] == '>' || input[i] == '<') && input[i] == input[i+1])
+// 				i += 2;
+// 			else
+// 				i++;
+// 			char	*val = ft_substr_gc(input, start, i - start, gc);
+// 			last = add_token(last, val, gc);
+// 			if (!head)
+// 				head = last;
+// 		}
+// 		else if (input[i])
+// 		{
+// 			int	start = i;
+// 			while (input[i] && !ft_isspace(input[i]) && !is_operator(input[i]) 
+// 				&& input[i] != '\'' && input[i] != '"')
+// 					i++;
+// 			char	*val = ft_substr_gc(input, start, i - start, gc);
+// 			last = add_token(last, val, gc);
+// 			if (!head)
+// 				head = last;
+// 		}
+// 	}
+// 	return (head);
+// }
+
+t_token	*tokenize(const char *input, t_gc **gc)
 {
 	int		i = 0;
 	t_token	*head = NULL;
@@ -19,44 +69,49 @@ t_token	*tokenize(const char *input, t_gc **gc) // ls | cat > ls | echo "hello" 
 
 	while (input[i])
 	{
-		while (ft_isspace(input[i])) // skip space
+		while (ft_isspace(input[i]))
 			i++;
-		if (input[i] == '\'' || input[i] == '"') // ""
+
+		if (input[i] == '\'' || input[i] == '"') // quote
 		{
-			char	quote = input[i++]; // ""
-			int		start = i;
+			char	quote = input[i];
+			int		start = i++; // include the opening quote
 			while (input[i] && input[i] != quote)
 				i++;
-			char	*val = ft_substr_gc(input, start, i - start, gc);
+			if (input[i] == quote)
+				i++; // include the closing quote
+			else
+			{
+				write(2, "parse error: unclosed quote\n", 29);
+				return (NULL);
+			}
+			char *val = ft_substr_gc(input, start, i - start, gc); // include quotes
 			last = add_token(last, val, gc);
 			if (!head)
 				head = last;
-			if (input[i])
-				i++;
 		}
-		else if (is_operator(input[i]))
+		else if (is_operator(input[i])) // | > >> < <<
 		{
 			int	start = i;
-			if ((input[i] == '>' || input[i] == '<') && input[i] == input[i+1])
+			if ((input[i] == '>' || input[i] == '<') && input[i] == input[i + 1])
 				i += 2;
 			else
 				i++;
-			char	*val = ft_substr_gc(input, start, i - start, gc);
+			char *val = ft_substr_gc(input, start, i - start, gc);
 			last = add_token(last, val, gc);
 			if (!head)
 				head = last;
 		}
-		else if (input[i])
+		else if (input[i]) // word
 		{
 			int	start = i;
-			while (input[i] && !ft_isspace(input[i]) && !is_operator(input[i]) 
-				&& input[i] != '\'' && input[i] != '"')
-					i++;
-			char	*val = ft_substr_gc(input, start, i - start, gc);
+			while (input[i] && !ft_isspace(input[i]) && !is_operator(input[i]) && input[i] != '\'' && input[i] != '"')
+				i++;
+			char *val = ft_substr_gc(input, start, i - start, gc);
 			last = add_token(last, val, gc);
 			if (!head)
 				head = last;
 		}
 	}
-	return (head);
+	return head;
 }

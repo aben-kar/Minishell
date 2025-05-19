@@ -60,7 +60,7 @@ int main(int ac, char **av, char **envp)
 	{
 		char		*input;
 		t_token		*tokens;
-		t_command	*cmds = NULL;
+		t_command	*cmds;
 		int			has_pipe;
 		t_gc		*gc = NULL;
 		t_env		*env_list = init_copier_env(envp, &gc);
@@ -68,11 +68,11 @@ int main(int ac, char **av, char **envp)
 
 		while (1)
 		{
+			cmds = NULL;
 			setup_signals();
 			// print_command_structure(cmds); // testing tokens only
 			// env = ft_copier_env(env_list, envp, &gc);
 			input = readline("minishell$ ");
-
 			if (input == NULL)
 			{
 				printf("exit\n");
@@ -82,7 +82,17 @@ int main(int ac, char **av, char **envp)
 			if (*input) // ignore empty inputs
 				add_history(input); // t9dr tnavigi lhistory b arrows..
 			tokens = tokenize(input, &gc);				 // assumes tokenize may call gc_alloc()
+			if (!tokens)
+			{
+    			free(input);
+    			continue; // skip to next prompt after error (like unclosed quote)
+			}
 			cmds = parse_tokens(tokens, &has_pipe, &gc, env_list); // same here
+			if (!cmds)
+			{
+				free (input);
+				continue;
+			}
 			// print_node(cmds);
 			if (input && *input)
 			{

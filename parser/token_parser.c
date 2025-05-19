@@ -53,6 +53,8 @@ t_command *parse_tokens(t_token *tokens, int *has_pipe, t_gc **gc, t_env *env)
     t_command   *cmds = NULL;
     char        *filename;
 
+    if (!tokens)
+        return (NULL);
     if (tokens && ft_strcmp(tokens->value, "|") == 0) // pipe at the beginning
     {
         write(2, "parse error: empty command before pipe\n", 39);
@@ -75,13 +77,15 @@ t_command *parse_tokens(t_token *tokens, int *has_pipe, t_gc **gc, t_env *env)
                     write(2, "parse error: invalid redirection\n", 33);
                     return (NULL);
                 }
-                filename = expand_var(tokens->value, gc, env);
+                filename = expand_word(tokens->value, gc, env);
                 cmd->redirects = add_redir(cmd->redirects, filename, type, gc);
                 cmd->has_redirect = true; // l9ina redirection = true
             }
             else
             {
-                char *expanded = expand_var(tokens->value, gc, env);
+                char    *expanded = expand_word(tokens->value, gc, env);
+                if (!expanded)
+                    return (NULL);
 				cmd->cmd = argv_add(cmd->cmd, expanded, gc);
             }
             tokens = tokens->next;
