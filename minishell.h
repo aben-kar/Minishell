@@ -6,7 +6,7 @@
 /*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 16:23:09 by acben-ka          #+#    #+#             */
-/*   Updated: 2025/05/18 16:20:23 by acben-ka         ###   ########.fr       */
+/*   Updated: 2025/05/19 15:22:33 by acben-ka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ int key_with_plus(char *arg, char **key, char **value, t_env **env, t_gc **gc);
 void execute_command(t_command *shell, t_env *env, t_gc **gc);
 char **env_to_array(t_env *env, t_gc **gc);
 char *find_executable_path(t_command *shell, t_env *envp, t_gc **gc);
-bool check_command(t_command *check, t_env *envp, t_gc **gc);
+bool check_command(t_command *cmd);
 void excute_extenel_cmd(t_command *cmd, t_env *env, t_gc **gc);
 void built_in(t_command *cmd, t_env *env, t_gc **gc);
 // multi-pipe

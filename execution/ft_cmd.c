@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cmd.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zaakrab <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 22:26:01 by achraf            #+#    #+#             */
-/*   Updated: 2025/05/16 01:27:22 by zaakrab          ###   ########.fr       */
+/*   Updated: 2025/05/19 17:54:42 by acben-ka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,8 @@ void excute_extenel_cmd(t_command *cmd, t_env *env, t_gc **gc)
     int id = fork();
     if (id == 0)
     {
-        // apply_redirections(cmd);
         execve(cmd_path, cmd->cmd, copier_env);
-        exit(1);
+        // exit status "TODO"
     }
     else
         waitpid(id, NULL, 0);
@@ -59,9 +58,10 @@ void built_in(t_command *cmd, t_env *env, t_gc **gc)
         }
         j++;
     }
-    if (!found)
+    if (found == 0)
     {
-        char *error_echo = ft_strjoin_gc(cmd->cmd[0], ": command not found", gc);
-        ft_putendl_fd(error_echo, 1);
+        ft_putstr_fd(cmd->cmd[0], 2);
+        ft_putendl_fd(": command not found", 2);
+        // exit status "TODO"
     }
 }

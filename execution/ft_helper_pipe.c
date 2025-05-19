@@ -3,28 +3,27 @@
 /*                                                        :::      ::::::::   */
 /*   ft_helper_pipe.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zaakrab <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 19:00:57 by achraf            #+#    #+#             */
-/*   Updated: 2025/05/16 01:29:26 by zaakrab          ###   ########.fr       */
+/*   Updated: 2025/05/19 17:52:05 by acben-ka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void excute_cmd_in_pipe(t_command *cmd, t_env *env, t_gc **gc)
+void excute_cmd_in_pipe(t_command *cmds, t_env *env, t_gc **gc)
 {
-    if (check_command(cmd, env, gc) == false)
+    if (check_command(cmds) == false)
     {
-        built_in(cmd, env, gc);
+        built_in(cmds, env, gc);
         exit(0);
     }
     else
     {
         char **copier_env = env_to_array(env, gc);
-        char *cmd_path = find_executable_path(cmd, env, gc);
-        // apply_redirections(cmd);
-        execve(cmd_path, cmd->cmd, copier_env);
+        char *cmd_path = find_executable_path(cmds, env, gc);
+        execve(cmd_path, cmds->cmd, copier_env);
         exit(0);
     }
 }

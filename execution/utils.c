@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zaakrab <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 15:32:12 by acben-ka          #+#    #+#             */
-/*   Updated: 2025/05/16 01:23:39 by zaakrab          ###   ########.fr       */
+/*   Updated: 2025/05/19 18:20:09 by acben-ka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,3 +43,7 @@ char **env_to_array(t_env *env, t_gc **gc)
 
     return envp;
 }
+// void write_error(char *str, int fd)
+// {
+     // 
+// }

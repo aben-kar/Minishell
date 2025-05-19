@@ -6,7 +6,7 @@
 /*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 18:11:45 by achraf            #+#    #+#             */
-/*   Updated: 2025/05/18 16:45:58 by acben-ka         ###   ########.fr       */
+/*   Updated: 2025/05/19 17:30:55 by acben-ka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,12 @@ void execute_multi_pipe(t_command *cmd, t_env *env, t_gc **gc)
     int save_fd = -1;
     pid_t id;
     t_command *current = cmd;
+
+
+    // int tmp = open("tmp", O_CREAT | O_WRONLY | O_TRUNC, 0664);
+    
+
+    
 
     while (current)
     {
@@ -39,7 +45,7 @@ void execute_multi_pipe(t_command *cmd, t_env *env, t_gc **gc)
 
         if (id == 0)
         {
-            
+            // dup2(tmp, STDERR_FILENO);
             if (save_fd != -1)
             {
                 // printf ("halawa\n");
@@ -111,5 +117,8 @@ void execute_multi_pipe(t_command *cmd, t_env *env, t_gc **gc)
         }
     }
     while (waitpid(-1, NULL, 0) > 0);
+    // ktb ach endlk f tmp (stderr_)
+    // unlink("tmp");
+    
 }
 
