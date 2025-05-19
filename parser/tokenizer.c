@@ -80,6 +80,11 @@ t_token	*tokenize(const char *input, t_gc **gc)
 				i++;
 			if (input[i] == quote)
 				i++; // include the closing quote
+			else
+			{
+				write(2, "parse error: unclosed quote\n", 29);
+				return (NULL);
+			}
 			char *val = ft_substr_gc(input, start, i - start, gc); // include quotes
 			last = add_token(last, val, gc);
 			if (!head)
