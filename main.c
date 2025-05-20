@@ -68,8 +68,9 @@ int main(int ac, char **av, char **envp)
 
 		while (1)
 		{
-			cmds = NULL;
 			setup_signals();
+			rl_catch_signals = 0;
+			cmds = NULL;
 			// print_command_structure(cmds); // testing tokens only
 			// env = ft_copier_env(env_list, envp, &gc);
 			input = readline("minishell$ ");
