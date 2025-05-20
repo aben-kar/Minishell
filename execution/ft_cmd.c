@@ -19,11 +19,24 @@ void excute_external_cmd(t_command *cmd, t_env *env, t_gc **gc)
     int id = fork();
     if (id == 0)
     {
+        signal(SIGINT, SIG_DFL); // TEST
+        signal(SIGQUIT, SIG_DFL); // TEST
         execve(cmd_path, cmd->cmd, copier_env);
-        // exit status "TODO"
+
+        perror("execve"); // exit status "TODO"
+        exit(1); // NEW
     }
     else
-        waitpid(id, NULL, 0);
+    {
+        signal(SIGINT, SIG_IGN); // TEST
+        signal(SIGQUIT, SIG_IGN); // TEST
+        waitpid(id, NULL, 0); // DYALK
+        // int status;
+        // waitpid(id, &status, 0);
+        // if (status == 2 << 8)
+        //     write(1, "\n", 1);
+        setup_signals(); // TEST
+    }
 }
 
 void built_in(t_command *cmd, t_env *env, t_gc **gc)

@@ -45,6 +45,8 @@ void execute_multi_pipe(t_command *cmd, t_env *env, t_gc **gc)
 
         if (id == 0)
         {
+            signal(SIGINT, SIG_DFL); // TEST
+            signal(SIGQUIT, SIG_DFL); // TEST
             // dup2(tmp, STDERR_FILENO);
             if (save_fd != -1)
             {
@@ -104,6 +106,8 @@ void execute_multi_pipe(t_command *cmd, t_env *env, t_gc **gc)
         }
         else
         {
+            signal(SIGINT, SIG_IGN); // TEST
+            signal(SIGQUIT, SIG_IGN); // TEST
             // printf ("dekhel hena\n");
             if (save_fd != -1)
                 close(save_fd);
@@ -116,9 +120,15 @@ void execute_multi_pipe(t_command *cmd, t_env *env, t_gc **gc)
             current = current->next;
         }
     }
-    while (waitpid(-1, NULL, 0) > 0);
+    while (waitpid(-1, NULL, 0) > 0); // DYALK
+    // int status;
+    // while (waitpid(-1, &status, 0) > 0)
+    // {
+    //     if (status == 2 << 8)
+    //         write(1, "\n", 1);
+    // }
+    setup_signals(); // TEST
     // ktb ach endlk f tmp (stderr_)
     // unlink("tmp");
-    
 }
 

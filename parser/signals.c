@@ -15,8 +15,8 @@
 void	handle_sigint(int sig)
 {
 	(void)sig;
-	rl_replace_line("", 0); // cleari line dl input
 	write(1, "\n", 1); // print new line
+	rl_replace_line("", 0); // cleari line dl input
 	rl_on_new_line(); // tell readline you're at a new line
 	rl_redisplay(); // reprint the prompt and buffer li kaykon deja msavi f readline, kat3awd tprompti
 }
