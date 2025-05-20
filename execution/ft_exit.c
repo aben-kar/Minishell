@@ -3,22 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zaakrab <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: achraf <achraf@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 16:42:44 by acben-ka          #+#    #+#             */
-/*   Updated: 2025/05/16 01:14:47 by zaakrab          ###   ########.fr       */
+/*   Updated: 2025/05/20 22:52:13 by achraf           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 // #include "minishell.h"
 #include "../minishell.h"
 
-int    *get_exit_status(void)
-{
-    static int    exit_status;
+// int    *get_exit_status(void)
+// {
+//     static int    exit_status;
 
-    return (&exit_status);
-}
+//     return (&exit_status);
+// }
 
 bool all_is_digit(char *arg)
 {

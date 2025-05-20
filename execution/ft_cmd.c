@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cmd.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
+/*   By: achraf <achraf@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 22:26:01 by achraf            #+#    #+#             */
-/*   Updated: 2025/05/19 17:54:42 by acben-ka         ###   ########.fr       */
+/*   Updated: 2025/05/21 00:02:26 by achraf           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,25 +16,74 @@ void excute_external_cmd(t_command *cmd, t_env *env, t_gc **gc)
 {
     char **copier_env = env_to_array(env, gc);
     char *cmd_path = find_executable_path(cmd, env, gc);
+    int status;
+    if (!cmd_path)
+    {
+        g_exit_status = 127;
+        return;
+    }
     int id = fork();
     if (id == 0)
     {
         signal(SIGINT, SIG_DFL); // TEST
         signal(SIGQUIT, SIG_DFL); // TEST
-        execve(cmd_path, cmd->cmd, copier_env);
+        if (cmd->has_redirect)
+        {
+            t_redirect *redir = cmd->redirects;
+            while (redir)
+            {
+                if (redir->type == REDIR_IN) // "<" read 
+                {
+                    int in_fd = open(redir->filename, O_RDONLY);
+                    if (in_fd < 0)
+                    {
+                        perror("open");
+                        exit(1);
+                    }
+                    dup2(in_fd, STDIN_FILENO);
+                    close(in_fd);
+                }
+                else if (redir->type == REDIR_OUT) // '>' out
+                {
+                    int out_fd = open(redir->filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+                    if (out_fd < 0)
+                    {
+                        perror("open");
+                        exit(1);
+                    }
+                    dup2(out_fd, STDOUT_FILENO);
+                    close(out_fd);
+                }
+                else if (redir->type == REDIR_APPEND) // '>>' append
+                {
+                    int append_fd = open(redir->filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
+                    if (append_fd < 0)
+                    {
+                        perror("open");
+                        exit(1);
+                    }
+                    dup2(append_fd, STDOUT_FILENO);
+                    close(append_fd);
+                }
+                redir = redir->next;
+            }
+        }
+        if (execve(cmd_path, cmd->cmd, copier_env) == -1)
+        {
+            perror("execve"); // exit status "TODO"
+            exit(127); // NEW
+        }
 
-        perror("execve"); // exit status "TODO"
-        exit(1); // NEW
     }
     else
     {
         signal(SIGINT, SIG_IGN); // TEST
         signal(SIGQUIT, SIG_IGN); // TEST
-        waitpid(id, NULL, 0); // DYALK
-        // int status;
-        // waitpid(id, &status, 0);
-        // if (status == 2 << 8)
-        //     write(1, "\n", 1);
+        waitpid(id, &status, 0);
+        if (WIFEXITED(status))
+            g_exit_status = WEXITSTATUS(status);
+        else if (WIFSIGNALED(status))
+            g_exit_status = 128 + WTERMSIG(status);
         setup_signals(); // TEST
     }
 }
@@ -53,14 +102,20 @@ void built_in(t_command *cmd, t_env *env, t_gc **gc)
             if ((ft_strcmp(cmd->cmd[0], "echo") == 0)) // echo
             {
                 ft_echo(cmd->cmd + 1);
+                g_exit_status = 0;
             }
-
             else if (ft_strcmp(cmd->cmd[0], "cd") == 0) // cd
                 ft_cd(cmd->cmd + 1, env, gc);
             else if ((ft_strcmp(cmd->cmd[0], "pwd")) == 0) // pwd
+            {
                 ft_pwd();
+                g_exit_status = 0;
+            }
             else if ((ft_strcmp(cmd->cmd[0], "env")) == 0) // env
+            {
                 ft_env(env);
+                g_exit_status = 0;
+            }
             else if ((ft_strcmp(cmd->cmd[0], "export")) == 0) // export
                 ft_export(cmd->cmd + 1, &env, gc);
             else if ((ft_strcmp(cmd->cmd[0], "unset")) == 0) // unset
@@ -73,8 +128,7 @@ void built_in(t_command *cmd, t_env *env, t_gc **gc)
     }
     if (found == 0)
     {
-        ft_putstr_fd(cmd->cmd[0], 2);
-        ft_putendl_fd(": command not found", 2);
-        // exit status "TODO"
+        write_error(cmd->cmd[0], 2);
+        g_exit_status = 127; // Command not found
     }
 }

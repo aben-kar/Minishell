@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
+/*   By: achraf <achraf@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 16:23:09 by acben-ka          #+#    #+#             */
-/*   Updated: 2025/05/19 18:46:46 by acben-ka         ###   ########.fr       */
+/*   Updated: 2025/05/20 22:38:09 by achraf           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@ char *find_executable_path(t_command *shell, t_env *envp, t_gc **gc);
 bool check_command(t_command *cmd);
 void excute_external_cmd(t_command *cmd, t_env *env, t_gc **gc);
 void built_in(t_command *cmd, t_env *env, t_gc **gc);
+void write_error(char *cmd, int error_code);
 // multi-pipe
 void execute_multi_pipe(t_command *cmd, t_env *env, t_gc **gc);
 void excute_cmd_in_pipe(t_command *cmd, t_env *env, t_gc **gc);
