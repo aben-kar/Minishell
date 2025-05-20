@@ -12,7 +12,7 @@
 
 #include "../minishell.h"
 
-void excute_extenel_cmd(t_command *cmd, t_env *env, t_gc **gc)
+void excute_external_cmd(t_command *cmd, t_env *env, t_gc **gc)
 {
     char **copier_env = env_to_array(env, gc);
     char *cmd_path = find_executable_path(cmd, env, gc);

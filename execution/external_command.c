@@ -119,7 +119,7 @@ bool check_command(t_command *cmd)
 void execute_command(t_command *shell, t_env *env, t_gc **gc)
 {
     if (check_command(shell) == true) // external command
-        excute_extenel_cmd(shell, env, gc);
+        excute_external_cmd(shell, env, gc);
     
     else if (check_command(shell) == false)
         built_in(shell, env, gc);

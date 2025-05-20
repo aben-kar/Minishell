@@ -84,7 +84,7 @@ void execute_command(t_command *shell, t_env *env, t_gc **gc);
 char **env_to_array(t_env *env, t_gc **gc);
 char *find_executable_path(t_command *shell, t_env *envp, t_gc **gc);
 bool check_command(t_command *cmd);
-void excute_extenel_cmd(t_command *cmd, t_env *env, t_gc **gc);
+void excute_external_cmd(t_command *cmd, t_env *env, t_gc **gc);
 void built_in(t_command *cmd, t_env *env, t_gc **gc);
 // multi-pipe
 void execute_multi_pipe(t_command *cmd, t_env *env, t_gc **gc);
