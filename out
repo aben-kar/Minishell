@@ -1,0 +1,12 @@
+execution
+git.sh
+helper_gc
+libft
+main.c
+main.o
+Makefile
+minishell
+minishell.h
+out
+parser
+tmp_folder

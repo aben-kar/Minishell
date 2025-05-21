@@ -83,7 +83,15 @@ void excute_external_cmd(t_command *cmd, t_env *env, t_gc **gc)
         if (WIFEXITED(status))
             g_exit_status = WEXITSTATUS(status);
         else if (WIFSIGNALED(status))
+        {
             g_exit_status = 128 + WTERMSIG(status);
+            if (g_exit_status == 131)
+            {
+                write (1, "quit (core dumped)\n", ft_strlen("quit (core dumped)\n"));  
+            }
+            else if(g_exit_status == 130)
+                write(1, "\n", 1);
+        }
         setup_signals(); // TEST
     }
 }

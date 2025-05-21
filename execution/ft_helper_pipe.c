@@ -22,10 +22,10 @@ void excute_cmd_in_pipe(t_command *cmds, t_env *env, t_gc **gc)
     else
     {
         char **copier_env = env_to_array(env, gc);
-        char *cmd_path = find_executable_path(cmds, env, gc);
+        char *cmd_path = find_executable_path(cmds, env, gc); // lg
         if (!cmd_path)
         {
-            g_exit_status = 127;
+            // g_exit_status = 127;
             exit(g_exit_status);
         }
         if (execve(cmd_path, cmds->cmd, copier_env) == -1)

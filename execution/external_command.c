@@ -42,18 +42,15 @@ char **get_path(t_env *envp, t_gc **gc)
 
 char *find_executable_path(t_command *shell, t_env *envp, t_gc **gc)
 {
-    // Check if command is empty
     if (!shell->cmd || !shell->cmd[0] || !shell->cmd[0][0])
     {
-        // print error
+        printf ("empty cmd\n");
         return NULL;
     }
     
-    // If it starts with /, ./ or ../ - treat as direct path
     if ((access(shell->cmd[0], F_OK | X_OK)) == 0)
         return (shell->cmd[0]);
     
-    // Get PATH from environment
     char **directory = get_path(envp, gc);
     if (!directory)
     {
@@ -61,7 +58,6 @@ char *find_executable_path(t_command *shell, t_env *envp, t_gc **gc)
         return NULL;
     }
     
-    // Try each directory in PATH
     int i = 0;
     while (directory[i])
     {
@@ -72,7 +68,6 @@ char *find_executable_path(t_command *shell, t_env *envp, t_gc **gc)
         i++;
     }
     
-    // Command not found
     write_error(shell->cmd[0], 2);
     return NULL;
 }

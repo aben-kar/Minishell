@@ -42,16 +42,15 @@ void execute_multi_pipe(t_command *cmd, t_env *env, t_gc **gc)
 
         if (id == 0)
         {
-            signal(SIGINT, SIG_DFL); // TEST
+            signal(SIGINT, SIG_DFL);  // TEST
             signal(SIGQUIT, SIG_DFL); // TEST
-            // dup2(tmp, STDERR_FILENO);
             if (save_fd != -1)
             {
                 // printf ("halawa\n");
                 dup2(save_fd, STDIN_FILENO);
                 close(save_fd);
             }
-            
+
             if (current->next)
             {
                 close(fd[0]);
@@ -63,7 +62,7 @@ void execute_multi_pipe(t_command *cmd, t_env *env, t_gc **gc)
                 t_redirect *redir = current->redirects;
                 while (redir)
                 {
-                    if (redir->type == REDIR_IN) // "<" read 
+                    if (redir->type == REDIR_IN) // "<" read
                     {
                         int in_fd = open(redir->filename, O_RDONLY);
                         if (in_fd < 0)
@@ -104,9 +103,8 @@ void execute_multi_pipe(t_command *cmd, t_env *env, t_gc **gc)
         }
         else
         {
-            signal(SIGINT, SIG_IGN); // TEST
+            signal(SIGINT, SIG_IGN);  // TEST
             signal(SIGQUIT, SIG_IGN); // TEST
-            // printf ("dekhel hena\n");
             if (save_fd != -1)
                 close(save_fd);
 
@@ -118,19 +116,17 @@ void execute_multi_pipe(t_command *cmd, t_env *env, t_gc **gc)
             current = current->next;
         }
     }
-    while (waitpid(-1, &status, 0) > 0) 
+    while ((wait(&status)) > 0)
     {
+
         if (WIFEXITED(status))
         {
             g_exit_status = WEXITSTATUS(status);
-             // printf ("exit1 == %d\n", g_exit_status);
         }
-        else if (WIFSIGNALED(status))
+        if (WIFSIGNALED(status))
         {
             g_exit_status = 128 + WTERMSIG(status);
-            // printf ("exit2 == %d\n", g_exit_status);
         }
         setup_signals();
     }
 }
-
