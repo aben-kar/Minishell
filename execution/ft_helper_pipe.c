@@ -6,7 +6,7 @@
 /*   By: achraf <achraf@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 19:00:57 by achraf            #+#    #+#             */
-/*   Updated: 2025/05/20 23:20:34 by achraf           ###   ########.fr       */
+/*   Updated: 2025/05/22 00:00:43 by achraf           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,10 @@ void excute_cmd_in_pipe(t_command *cmds, t_env *env, t_gc **gc)
         if (!cmd_path)
         {
             // g_exit_status = 127;
-            exit(g_exit_status);
+            exit(127);
         }
         if (execve(cmd_path, cmds->cmd, copier_env) == -1)
         {
-            perror("execve");
             exit(127);
         }
     }

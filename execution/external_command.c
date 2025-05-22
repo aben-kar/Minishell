@@ -6,7 +6,7 @@
 /*   By: achraf <achraf@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 18:21:38 by acben-ka          #+#    #+#             */
-/*   Updated: 2025/05/20 22:37:35 by achraf           ###   ########.fr       */
+/*   Updated: 2025/05/22 01:29:05 by achraf           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,8 @@ char *find_executable_path(t_command *shell, t_env *envp, t_gc **gc)
             return (cmd_path);
         i++;
     }
-    
     write_error(shell->cmd[0], 2);
+    // printf ("1\n");
     return NULL;
 }
 
@@ -92,7 +92,10 @@ bool check_command(t_command *cmd)
 void execute_command(t_command *shell, t_env *env, t_gc **gc)
 {
     if (check_command(shell) == true) // external command
+    {
+        // printf ("external command\n");
         excute_external_cmd(shell, env, gc);
+    }
     
     else if (check_command(shell) == false)
         built_in(shell, env, gc);

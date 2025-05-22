@@ -6,7 +6,7 @@
 /*   By: achraf <achraf@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 18:11:45 by achraf            #+#    #+#             */
-/*   Updated: 2025/05/20 23:55:36 by achraf           ###   ########.fr       */
+/*   Updated: 2025/05/22 00:21:18 by achraf           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ void execute_multi_pipe(t_command *cmd, t_env *env, t_gc **gc)
                 }
             }
             excute_cmd_in_pipe(current, env, gc);
-            exit(127);
+            // exit(127);
         }
         else
         {
@@ -116,17 +116,18 @@ void execute_multi_pipe(t_command *cmd, t_env *env, t_gc **gc)
             current = current->next;
         }
     }
-    while ((wait(&status)) > 0)
+    int last_status = status;
+    while ((waitpid(-1, &status, 0)) > 0)
     {
-
         if (WIFEXITED(status))
         {
-            g_exit_status = WEXITSTATUS(status);
+            last_status = WEXITSTATUS(status); // nstockiw status dyal kol command
         }
-        if (WIFSIGNALED(status))
+        else if (WIFSIGNALED(status) && last_status != 127)
         {
-            g_exit_status = 128 + WTERMSIG(status);
+            last_status = 128 + WTERMSIG(status);
         }
-        setup_signals();
     }
+    g_exit_status = last_status; // nsetiw g_exit_status b last status
+    setup_signals();
 }

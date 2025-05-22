@@ -6,7 +6,7 @@
 /*   By: achraf <achraf@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 22:26:01 by achraf            #+#    #+#             */
-/*   Updated: 2025/05/21 00:02:26 by achraf           ###   ########.fr       */
+/*   Updated: 2025/05/22 01:32:20 by achraf           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void excute_external_cmd(t_command *cmd, t_env *env, t_gc **gc)
         }
         if (execve(cmd_path, cmd->cmd, copier_env) == -1)
         {
-            perror("execve"); // exit status "TODO"
+            // perror("execve"); // exit status "TODO"
             exit(127); // NEW
         }
 
@@ -81,7 +81,12 @@ void excute_external_cmd(t_command *cmd, t_env *env, t_gc **gc)
         signal(SIGQUIT, SIG_IGN); // TEST
         waitpid(id, &status, 0);
         if (WIFEXITED(status))
+        {
+            printf ("1\n");
             g_exit_status = WEXITSTATUS(status);
+            if (g_exit_status == 126)
+                write_error(cmd->cmd[0], 1);
+        }
         else if (WIFSIGNALED(status))
         {
             g_exit_status = 128 + WTERMSIG(status);
