@@ -6,7 +6,7 @@
 /*   By: achraf <achraf@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 16:23:09 by acben-ka          #+#    #+#             */
-/*   Updated: 2025/05/20 22:38:09 by achraf           ###   ########.fr       */
+/*   Updated: 2025/05/23 01:41:33 by achraf           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 # include <readline/history.h> // add_history
 # include "libft/libft.h"
 # include "parser/gc.h"
+# include <errno.h>
 
 // about herdoc
 #define	REDIR_OUT 0 // normalment hada khaso ikon REDIR_OUT

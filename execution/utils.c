@@ -6,7 +6,7 @@
 /*   By: achraf <achraf@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 15:32:12 by acben-ka          #+#    #+#             */
-/*   Updated: 2025/05/22 01:17:13 by achraf           ###   ########.fr       */
+/*   Updated: 2025/05/23 01:29:19 by achraf           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ void write_error(char *cmd, int error_code)
 {
     if (error_code == 2) // Command not found
     {
-        // printf ("1\n");
         ft_putstr_fd(cmd, 2);
         ft_putstr_fd(": command not found\n", 2);
         g_exit_status = 127;

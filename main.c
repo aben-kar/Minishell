@@ -103,7 +103,6 @@ int main(int ac, char **av, char **envp)
 				}
 				else
 				{
-					// printf ("main\n");
 					execute_command(cmds, env_list, &gc);
 				}
 			}
