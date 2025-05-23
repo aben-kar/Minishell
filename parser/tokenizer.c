@@ -82,7 +82,12 @@ t_token	*tokenize(const char *input, t_gc **gc)
 				i++; // include the closing quote
 			else
 			{
-				write(2, "parse error: unclosed quote\n", 29);
+				// write(2, "parse error: unclosed quote\n", 29); FIRST
+				// write(2, "bash: unexpected EOF while looking for matching `", 48);
+				// write(2, &quote, 1);
+				// write(2, "'\n", 2);
+				// write(2, "bash: syntax error: unexpected end of file\n", 43);
+				bash_unclosed_quote_error(quote);
 				return (NULL);
 			}
 			char *val = ft_substr_gc(input, start, i - start, gc); // include quotes

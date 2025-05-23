@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: achraf <achraf@student.42.fr>              +#+  +:+       +#+        */
+/*   By: zaakrab <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 16:23:09 by acben-ka          #+#    #+#             */
-/*   Updated: 2025/05/23 01:41:33 by achraf           ###   ########.fr       */
+/*   Updated: 2025/05/23 16:41:58 by zaakrab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,8 @@ void excute_cmd_in_pipe(t_command *cmd, t_env *env, t_gc **gc);
 
 // ---------------------------------------------------------------------
 
+void		bash_syntax_error(const char *token);
+void		bash_unclosed_quote_error(char quote);
 t_token		*add_token(t_token *last, char *value, t_gc **gc);
 t_token		*tokenize(const char *input, t_gc **gc);
 char		*get_env_val(const char *key, t_env *env);

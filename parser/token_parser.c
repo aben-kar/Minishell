@@ -57,7 +57,9 @@ t_command *parse_tokens(t_token *tokens, int *has_pipe, t_gc **gc, t_env *env)
         return (NULL);
     if (tokens && ft_strcmp(tokens->value, "|") == 0) // pipe at the beginning
     {
-        write(2, "parse error: empty command before pipe\n", 39);
+        // write(2, "parse error: empty command before pipe\n", 39); FIRST
+        bash_syntax_error("|");
+        // write(2, "bash: syntax error near unexpected token `|'\n", 44);
         return (NULL);
     }
     *has_pipe = 0;
@@ -72,9 +74,23 @@ t_command *parse_tokens(t_token *tokens, int *has_pipe, t_gc **gc, t_env *env)
             {
                 int type = redir_type(tokens->value);
                 tokens = tokens->next;
-                if (!tokens || is_redir(tokens->value) || ft_strcmp(tokens->value, "|") == 0)
+                // if (!tokens || is_redir(tokens->value) || ft_strcmp(tokens->value, "|") == 0)
+                // {
+                //     write(2, "parse error: invalid redirection\n", 33);
+                //     return (NULL);
+                // }
+                if (!tokens)
                 {
-                    write(2, "parse error: invalid redirection\n", 33);
+                    // write(2, "bash: syntax error near unexpected token `newline'\n", 50);
+                    bash_syntax_error(NULL);
+                    return (NULL);
+                }
+                if (is_redir(tokens->value) || ft_strcmp(tokens->value, "|") == 0)
+                {
+                    // write(2, "bash: syntax error near unexpected token `", 42);
+                    // write(2, tokens->value, ft_strlen(tokens->value));
+                    // write(2, "'\n", 2);
+                    bash_syntax_error(tokens->value);
                     return (NULL);
                 }
                 filename = expand_word(tokens->value, gc, env);
@@ -94,7 +110,9 @@ t_command *parse_tokens(t_token *tokens, int *has_pipe, t_gc **gc, t_env *env)
         // pipe at the end or double pipe
         if (tokens && (!tokens->next || ft_strcmp(tokens->next->value, "|") == 0)) // with pipe
         {
-            write(2, "parse error: empty command after pipe\n", 38);
+            // write(2, "parse error: empty command after pipe\n", 38); FIRST
+            // write(2, "bash: syntax error near unexpected token `|'\n", 44);
+            bash_syntax_error("|");
             return (NULL);
         }
         if (tokens)
