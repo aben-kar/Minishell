@@ -97,7 +97,6 @@ int ft_cd(char **args, t_env *env, t_gc **gc)
                     free(oldpwd);
                     return 1;
                 }
-
                 char *new_pwd = getcwd(NULL, 0);
                 if (!new_pwd)
                 {
@@ -107,7 +106,7 @@ int ft_cd(char **args, t_env *env, t_gc **gc)
                 }
 
                 update_pwd_oldpwd(oldpwd, &env, gc);
-                // free(new_pwd);
+                free(new_pwd);
                 free(oldpwd);
             }
             else // is file
