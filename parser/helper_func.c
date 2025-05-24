@@ -9,12 +9,12 @@ int	is_redir(char *s)
 int	redir_type(char	*s)
 {
 	if (!ft_strcmp(s, ">"))
-		return REDIR_OUT;
+		return (REDIR_OUT);
 	if (!ft_strcmp(s, ">>"))
-		return REDIR_APPEND;
+		return (REDIR_APPEND);
 	if (!ft_strcmp(s, "<"))
-		return REDIR_IN;
-	return REDIR_HEREDOC;
+		return (REDIR_IN);
+	return (REDIR_HEREDOC);
 }
 
 int	ft_isspace(char c)
@@ -25,8 +25,8 @@ int	ft_isspace(char c)
 int	is_operator(char c)
 {
 	if (c == '|' || c == '<' || c == '>')
-		return 1;
-	return 0;
+		return (1);
+	return (0);
 }
 
 int	ft_strcmp(const char *s1, const char *s2)
