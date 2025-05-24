@@ -1,4 +1,3 @@
-// #include "minishell.h"
 #include "../minishell.h"
 
 int	is_redir(char *s)
@@ -15,7 +14,7 @@ int	redir_type(char	*s)
 		return REDIR_APPEND;
 	if (!ft_strcmp(s, "<"))
 		return REDIR_IN;
-	return REDIR_HEREDOC; // "<<"
+	return REDIR_HEREDOC;
 }
 
 int	ft_isspace(char c)

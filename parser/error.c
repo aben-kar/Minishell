@@ -7,7 +7,6 @@ void	bash_syntax_error(const char *token)
         write(2, "bash: syntax error near unexpected token `newline'\n", 50);
         return;
     }
-
     write(2, "bash: syntax error near unexpected token `", 42);
     write(2, token, ft_strlen(token));
     write(2, "'\n", 2);

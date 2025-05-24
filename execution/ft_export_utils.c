@@ -10,7 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-// #include "minishell.h"
 #include "../minishell.h"
 
 void print_error(char *key, t_gc **gc)
@@ -36,7 +35,6 @@ int key_with_equal(char *arg, char **key, char **value, t_env **env, t_gc **gc)
 
     int key_len = equal - arg;
     *key = ft_substr_gc(arg, 0, key_len, gc);
-
     if (check_key(*key) == false)
         print_error(*key, gc);
     
@@ -44,21 +42,14 @@ int key_with_equal(char *arg, char **key, char **value, t_env **env, t_gc **gc)
         *value = ft_strdup_gc("", gc);
     else
         *value = ft_strdup_gc(equal + 1, gc);
-
     if (check_plus(*key) == 12)
-    {
         print_error(*key, gc);
-        // free(*key); free(*value);
-    }
-
     t_env *repetition = *env;
     while (repetition)
     {
         if (ft_strcmp(repetition->key, *key) == 0)
         {
-            // free(repetition->value); // maybe no free tist
             repetition->value = *value;
-            // free(*key);
             return (0);
         }
         repetition = repetition->next;

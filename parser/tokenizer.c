@@ -1,122 +1,74 @@
-// #include "minishell.h"
 #include "../minishell.h"
 
 t_token	*add_token(t_token *last, char *value, t_gc **gc)
 {
-	t_token *new = gc_alloc(sizeof(t_token), gc);
+	t_token	*new;
+
+	new = NULL;
+	new = gc_alloc(sizeof(t_token), gc);
 	new->value = value;
 	new->next = NULL;
 	if (last)
 		last->next = new;
-	return new;
+	return (new);
 }
-
-// t_token	*tokenize(const char *input, t_gc **gc) // ls | cat > ls | echo "hello" | grep hello 
-// {
-// 	int		i = 0;
-// 	t_token	*head = NULL;
-// 	t_token	*last = NULL;
-
-// 	while (input[i])
-// 	{
-// 		while (ft_isspace(input[i])) // skip space
-// 			i++;
-// 		if (input[i] == '\'' || input[i] == '"') // ""
-// 		{
-// 			char	quote = input[i++]; // ""
-// 			int		start = i;
-// 			while (input[i] && input[i] != quote)
-// 				i++;
-// 			char	*val = ft_substr_gc(input, start, i - start, gc);
-// 			last = add_token(last, val, gc);
-// 			if (!head)
-// 				head = last;
-// 			if (input[i])
-// 				i++;
-// 		}
-// 		else if (is_operator(input[i]))
-// 		{
-// 			int	start = i;
-// 			if ((input[i] == '>' || input[i] == '<') && input[i] == input[i+1])
-// 				i += 2;
-// 			else
-// 				i++;
-// 			char	*val = ft_substr_gc(input, start, i - start, gc);
-// 			last = add_token(last, val, gc);
-// 			if (!head)
-// 				head = last;
-// 		}
-// 		else if (input[i])
-// 		{
-// 			int	start = i;
-// 			while (input[i] && !ft_isspace(input[i]) && !is_operator(input[i]) 
-// 				&& input[i] != '\'' && input[i] != '"')
-// 					i++;
-// 			char	*val = ft_substr_gc(input, start, i - start, gc);
-// 			last = add_token(last, val, gc);
-// 			if (!head)
-// 				head = last;
-// 		}
-// 	}
-// 	return (head);
-// }
 
 t_token	*tokenize(const char *input, t_gc **gc)
 {
-	int		i = 0;
-	t_token	*head = NULL;
-	t_token	*last = NULL;
+	int		i;
+	t_token	*head;
+	t_token	*last;
+	char	*val;
+	int		start;
+	char	quote;
 
+	i = 0;
+	head = NULL;
+	last = NULL;
 	while (input[i])
 	{
 		while (ft_isspace(input[i]))
 			i++;
-
-		if (input[i] == '\'' || input[i] == '"') // quote
+		if (input[i] == '\'' || input[i] == '"')
 		{
-			char	quote = input[i];
-			int		start = i++; // include the opening quote
+			quote = input[i];
+			start = i++;
 			while (input[i] && input[i] != quote)
 				i++;
 			if (input[i] == quote)
-				i++; // include the closing quote
+				i++;
 			else
 			{
-				// write(2, "parse error: unclosed quote\n", 29); FIRST
-				// write(2, "bash: unexpected EOF while looking for matching `", 48);
-				// write(2, &quote, 1);
-				// write(2, "'\n", 2);
-				// write(2, "bash: syntax error: unexpected end of file\n", 43);
 				bash_unclosed_quote_error(quote);
 				return (NULL);
 			}
-			char *val = ft_substr_gc(input, start, i - start, gc); // include quotes
+			val = ft_substr_gc(input, start, i - start, gc);
 			last = add_token(last, val, gc);
 			if (!head)
 				head = last;
 		}
-		else if (is_operator(input[i])) // | > >> < <<
+		else if (is_operator(input[i]))
 		{
-			int	start = i;
+			start = i;
 			if ((input[i] == '>' || input[i] == '<') && input[i] == input[i + 1])
 				i += 2;
 			else
 				i++;
-			char *val = ft_substr_gc(input, start, i - start, gc);
+			val = ft_substr_gc(input, start, i - start, gc);
 			last = add_token(last, val, gc);
 			if (!head)
 				head = last;
 		}
-		else if (input[i]) // word
+		else if (input[i])
 		{
-			int	start = i;
+			start = i;
 			while (input[i] && !ft_isspace(input[i]) && !is_operator(input[i]) && input[i] != '\'' && input[i] != '"')
 				i++;
-			char *val = ft_substr_gc(input, start, i - start, gc);
+			val = ft_substr_gc(input, start, i - start, gc);
 			last = add_token(last, val, gc);
 			if (!head)
 				head = last;
 		}
 	}
-	return head;
+	return (head);
 }
