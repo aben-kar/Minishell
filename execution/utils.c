@@ -6,7 +6,7 @@
 /*   By: achraf <achraf@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 15:32:12 by acben-ka          #+#    #+#             */
-/*   Updated: 2025/05/23 01:29:19 by achraf           ###   ########.fr       */
+/*   Updated: 2025/05/23 23:38:38 by achraf           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ char **env_to_array(t_env *env, t_gc **gc)
     while (tmp)
     {
         envp[i] = ft_strjoin_gc(ft_strjoin_gc(tmp->key, "=", gc), tmp->value, gc);
-        // free(key_equal);
         tmp = tmp->next;
         i++;
     }

@@ -6,7 +6,7 @@
 /*   By: achraf <achraf@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 18:21:38 by acben-ka          #+#    #+#             */
-/*   Updated: 2025/05/23 02:09:22 by achraf           ###   ########.fr       */
+/*   Updated: 2025/05/24 00:12:31 by achraf           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,11 +64,11 @@ char *find_executable_path(t_command *shell, t_env *envp, t_gc **gc)
     }
     
     char **directory = get_path(envp, gc);
-    // if (!directory)
-    // {
-    //     write_error(shell->cmd[0], 2); // Command not found
-    //     return NULL;
-    // }
+    if (!directory)
+    {
+        write_error(shell->cmd[0], 2); // Command not found
+        return NULL;
+    }
     
     int i = 0;
     while (directory[i])

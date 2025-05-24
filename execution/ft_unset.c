@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_unset.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
+/*   By: achraf <achraf@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 14:50:45 by aben-kar          #+#    #+#             */
-/*   Updated: 2025/05/15 16:01:35 by acben-ka         ###   ########.fr       */
+/*   Updated: 2025/05/23 23:27:30 by achraf           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ void deleteNode(t_env **head, int position)
 
     if (position == 1) {
         *head = temp->next;
-        free(temp); // this whole file is tist mibi keep all frees
         temp = *head;
     }
     int i = 1;
@@ -53,7 +52,6 @@ void deleteNode(t_env **head, int position)
 
     if (temp != NULL) {
         prev->next = temp->next;
-        free(temp);
     }
 }
 

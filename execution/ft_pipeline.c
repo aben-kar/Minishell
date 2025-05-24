@@ -6,7 +6,7 @@
 /*   By: achraf <achraf@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 18:11:45 by achraf            #+#    #+#             */
-/*   Updated: 2025/05/23 02:06:15 by achraf           ###   ########.fr       */
+/*   Updated: 2025/05/23 15:55:14 by achraf           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ void execute_multi_pipe(t_command *cmd, t_env *env, t_gc **gc)
             signal(SIGQUIT, SIG_DFL); // TEST
             if (save_fd != -1)
             {
-                // printf ("halawa\n");
                 dup2(save_fd, STDIN_FILENO);
                 close(save_fd);
             }
@@ -116,13 +115,11 @@ void execute_multi_pipe(t_command *cmd, t_env *env, t_gc **gc)
             current = current->next;
         }
     }
-    int last_status = status;
+    int last_status = 0;
     while ((waitpid(-1, &status, 0)) > 0)
     {
         if (WIFEXITED(status))
-        {
             last_status = WEXITSTATUS(status);
-        }
         else if (WIFSIGNALED(status))
         {
             if (last_status == 127)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zaakrab <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: achraf <achraf@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/19 14:21:32 by acben-ka          #+#    #+#             */
-/*   Updated: 2025/05/16 01:26:20 by zaakrab          ###   ########.fr       */
+/*   Updated: 2025/05/23 23:37:46 by achraf           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,9 +67,7 @@ int ft_cd(char **args, t_env *env, t_gc **gc)
     if (args[0] && args[1])
     {
         ft_putendl_fd("cd: too many arguments", 1);
-        // printf("args[1] ==> %s\n", args[1]);
-        // printf("args[0] ==> %s\n", args[0]);
-        return (1);
+        return 1;
     }
     if (!args[0] || ((ft_strcmp(args[0], "~")) == 0)) // just "cd" go to home
     {
@@ -77,12 +75,12 @@ int ft_cd(char **args, t_env *env, t_gc **gc)
         if (!to_home)
         {
             ft_putendl_fd("cd: HOME not set", 2);
-            return (1);
+            return 1;
         }
         else if (chdir(to_home) == -1)
         {
             perror("cd");
-            return (1);
+            return 1;
         }
     }
 
@@ -105,23 +103,23 @@ int ft_cd(char **args, t_env *env, t_gc **gc)
                 {
                     ft_putendl_fd("cd: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory", 1);
                     free(oldpwd);
-                    return (1);
+                    return 1;
                 }
 
                 update_pwd_oldpwd(oldpwd, &env, gc);
-                free(new_pwd);
-                free (oldpwd);
+                // free(new_pwd);
+                free(oldpwd);
             }
             else // is file
             {
                 ft_putendl_fd("cd: Not a directory", 1);
-                return (1);
+                return 1;
             }
         }
         else // no valide name
         {
             ft_putendl_fd("cd: No such file or directory", 1);
-            return (1);
+            return 1;
         }
     }
     return (0);
