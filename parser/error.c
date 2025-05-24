@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   error.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: zaakrab <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/24 20:47:41 by zaakrab           #+#    #+#             */
+/*   Updated: 2025/05/24 20:47:44 by zaakrab          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../minishell.h"
 
-void	bash_syntax_error(const char *token)
+void    bash_syntax_error(const char *token)
 {
     if (!token)
     {
@@ -12,7 +24,7 @@ void	bash_syntax_error(const char *token)
     write (2, "'\n", 2);
 }
 
-void	bash_unclosed_quote_error(char quote)
+void    bash_unclosed_quote_error(char quote)
 {
     write (2, "bash: unexpected EOF while looking for matching `", 48);
     write (2, &quote, 1);
