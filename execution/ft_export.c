@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zaakrab <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 15:31:35 by acben-ka          #+#    #+#             */
-/*   Updated: 2025/05/16 01:31:38 by zaakrab          ###   ########.fr       */
+/*   Updated: 2025/05/25 18:31:04 by acben-ka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,32 +35,22 @@ int is_equal_alone(char *arg)
     if (*(equal - 1) == '+')
     {
         if (count_plus(arg) > 1)
-            return 13;
-        return 12; // valid KEY+=value
+            return 2;
+        return 1; // valid KEY+=value
     }
-
-    return 11; // '=' kayna
+    return 0; // '=' kayna
 }
 
-int check_plus(char *args)
+bool check_plus(char *args)
 {
     int i = 0;
     while (args[i])
     {
-        int len = ft_strlen(args) - 1;
-        if (args[len] == '+')
-        {
-            return 11;
-            break;
-        }
-        else if (!((args[i] >= 65 && args[i] <= 90) || (args[i] >= 97 && args[i] <= 122) || (args[i] >= 48 && args[i] <= 57) || (args[i] == 95)))
-        {
-            return 12;
-            break;
-        }
+        if (!(ft_isalnum(args[i]) || ft_isdigit(args[i]) || args[i] == '_'))
+            return (false);          
         i++;
     }
-    return 99;
+    return (true);
 }
 
 int ft_export(char **args, t_env **env, t_gc **gc)
@@ -82,9 +72,8 @@ int ft_export(char **args, t_env **env, t_gc **gc)
                 }
                 else
                 {
-                    char *eq = ft_strjoin_gc(line, "=\"\"", gc); // export ILYAS=
+                    char *eq = ft_strjoin_gc(line, "=\"\"", gc);
                     ft_putendl_fd(eq, 1);
-                    // free(eq);
                 }
             }
             else // without value
@@ -107,22 +96,22 @@ int ft_export(char **args, t_env **env, t_gc **gc)
                 int string_len = equal - args[i] + 1;
                 char *string = ft_substr_gc(args[i], 0, string_len, gc);
                 int check_is_equal = is_equal_alone(string);
-                
-                if (check_is_equal == 11)
-                    key_with_equal(args[i], &key, &value, &tmp, gc);
-                else if (check_is_equal == 12)
+                int exit_code;
+                if (check_is_equal == 0)
+                {
+                    exit_code = key_with_equal(args[i], &key, &value, &tmp, gc);
+                    return (exit_code);
+                }
+                else if (check_is_equal == 1)
                     key_with_plus(args[i], &key, &value, &tmp, gc);
                 else
                     print_error(args[i], gc);
             }
             else
             {
-                t_env *new_node = *env;
-
                 char *key = args[i];
                 char *value = NULL;
-
-                insert_at_end(&new_node, key, value, gc);
+                insert_at_end(&tmp, key, value, gc);
             }
             i++;
         }

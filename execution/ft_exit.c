@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: achraf <achraf@student.42.fr>              +#+  +:+       +#+        */
+/*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 16:42:44 by acben-ka          #+#    #+#             */
-/*   Updated: 2025/05/20 22:52:13 by achraf           ###   ########.fr       */
+/*   Updated: 2025/05/25 18:35:43 by acben-ka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ int ft_exit(char **args, t_gc **gc)
     }
     else if (*args)
     {
-        long long nbr = ft_atoi(*args);
+        long long nbr = ft_aatoi(*args);
         if (nbr == 11)
         {
             ft_putendl_fd("exit", 1);

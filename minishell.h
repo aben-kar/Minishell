@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zaakrab <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 16:23:09 by acben-ka          #+#    #+#             */
-/*   Updated: 2025/05/25 16:37:05 by zaakrab          ###   ########.fr       */
+/*   Updated: 2025/05/25 18:31:21 by acben-ka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ int ft_exit(char **args, t_gc **gc);
 t_env *init_copier_env(char **envp, t_gc **gc);
 void insert_at_end(t_env **head, char *key, char *value, t_gc **gc);
 void print_error(char *key, t_gc **gc);
-int check_plus(char *args);
+bool check_plus(char *args);
 int key_with_equal(char *arg, char **key, char **value, t_env **env, t_gc **gc);
 int key_with_plus(char *arg, char **key, char **value, t_env **env, t_gc **gc);
 // execution
