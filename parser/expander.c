@@ -6,7 +6,7 @@
 /*   By: zaakrab <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 20:48:15 by zaakrab           #+#    #+#             */
-/*   Updated: 2025/05/24 20:48:16 by zaakrab          ###   ########.fr       */
+/*   Updated: 2025/05/25 16:28:31 by zaakrab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,8 @@ static int	handle_dollar(const char *word, char **res, int i, t_gc **gc, t_env *
 
 	if (word[i + 1] == '?')
 	{
-		*res = ft_strjoin_gc(*res, ft_itoa_gc(g_exit_status, gc), gc);
+		char *exit_str = ft_itoa_gc(g_exit_status, gc);
+		*res = ft_strjoin_gc(*res, exit_str, gc);
 		return (i + 2);
 	}
 	j = i + 1;
@@ -63,7 +64,10 @@ static int	handle_dollar(const char *word, char **res, int i, t_gc **gc, t_env *
 		j++;
 	key = ft_strndup(word + i + 1, j - i - 1, gc);
 	val = get_env_val(key, env);
-	*res = ft_strjoin_gc(*res, ft_strdup_gc(val ? val : "", gc), gc);
+	if (val != NULL)
+		*res = ft_strjoin_gc(*res, ft_strdup_gc(val, gc), gc);
+	else
+		*res = ft_strjoin_gc(*res, ft_strdup_gc("", gc), gc);
 	return (j);
 }
 

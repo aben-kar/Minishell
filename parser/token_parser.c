@@ -6,7 +6,7 @@
 /*   By: zaakrab <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 20:48:31 by zaakrab           #+#    #+#             */
-/*   Updated: 2025/05/24 20:48:32 by zaakrab          ###   ########.fr       */
+/*   Updated: 2025/05/25 16:35:49 by zaakrab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,38 @@ static bool	check_and_handle_pipe_start(t_token *tokens)
 	return (true);
 }
 
+// static bool	handle_token(t_command *cmd, t_token **tokens, t_gc **gc, t_env *env)
+// {
+// 	int		type;
+// 	char	*filename;
+// 	char	*expanded;
+
+// 	if (is_redir((*tokens)->value))
+// 	{
+// 		type = redir_type((*tokens)->value);
+// 		*tokens = (*tokens)->next;
+// 		if (is_invalid_token(*tokens))
+// 		{
+// 			if (*tokens)
+// 				bash_syntax_error((*tokens)->value);
+// 			else
+// 				bash_syntax_error(NULL);
+// 			return (false);
+// 		}
+// 		filename = expand_word((*tokens)->value, gc, env);
+// 		cmd->redirects = add_redir(cmd->redirects, filename, type, gc);
+// 		cmd->has_redirect = true;
+// 	}
+// 	else
+// 	{
+// 		expanded = expand_word((*tokens)->value, gc, env);
+// 		if (!expanded)
+// 			return (false);
+// 		cmd->cmd = argv_add(cmd->cmd, expanded, gc);
+// 	}
+// 	return (true);
+// } // BEFORE HEREDOC HANDLER
+
 static bool	handle_token(t_command *cmd, t_token **tokens, t_gc **gc, t_env *env)
 {
 	int		type;
@@ -39,10 +71,18 @@ static bool	handle_token(t_command *cmd, t_token **tokens, t_gc **gc, t_env *env
 		*tokens = (*tokens)->next;
 		if (is_invalid_token(*tokens))
 		{
-			bash_syntax_error(*tokens ? (*tokens)->value : NULL);
+			if (*tokens)
+				bash_syntax_error((*tokens)->value);
+			else
+				bash_syntax_error(NULL);
 			return (false);
 		}
-		filename = expand_word((*tokens)->value, gc, env);
+		if (type == REDIR_HEREDOC)
+			filename = handle_heredoc((*tokens)->value, gc);
+		else
+			filename = expand_word((*tokens)->value, gc, env);
+		if (!filename)
+			return (false);
 		cmd->redirects = add_redir(cmd->redirects, filename, type, gc);
 		cmd->has_redirect = true;
 	}
