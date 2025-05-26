@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cmd.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: achraf <achraf@student.42.fr>              +#+  +:+       +#+        */
+/*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 22:26:01 by achraf            #+#    #+#             */
-/*   Updated: 2025/05/23 02:13:16 by achraf           ###   ########.fr       */
+/*   Updated: 2025/05/26 20:25:53 by acben-ka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,18 @@ void excute_external_cmd(t_command *cmd, t_env *env, t_gc **gc)
                     }
                     dup2(append_fd, STDOUT_FILENO);
                     close(append_fd);
+                }
+                else if (redir->type == REDIR_HEREDOC)
+                {
+                    int herdoc = open(redir->filename, O_RDONLY);
+                    if (herdoc < 0)
+                    {
+                        perror("open");
+                        exit(1);
+                    }
+                    dup2(herdoc, STDIN_FILENO);
+                    close(herdoc);
+                    unlink(redir->filename);
                 }
                 redir = redir->next;
             }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_pipeline.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: achraf <achraf@student.42.fr>              +#+  +:+       +#+        */
+/*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 18:11:45 by achraf            #+#    #+#             */
-/*   Updated: 2025/05/23 15:55:14 by achraf           ###   ########.fr       */
+/*   Updated: 2025/05/26 20:27:07 by acben-ka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,18 @@ void execute_multi_pipe(t_command *cmd, t_env *env, t_gc **gc)
                         }
                         dup2(append_fd, STDOUT_FILENO);
                         close(append_fd);
+                    }
+                    else if (redir->type == REDIR_HEREDOC)
+                    {
+                        int herdoc = open(redir->filename, O_RDONLY);
+                        if (herdoc < 0)
+                        {
+                            perror("open");
+                            exit(1);
+                        }
+                        dup2(herdoc, STDIN_FILENO);
+                        close(herdoc);
+                        unlink(redir->filename);
                     }
                     redir = redir->next;
                 }

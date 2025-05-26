@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zaakrab <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 20:47:41 by zaakrab           #+#    #+#             */
-/*   Updated: 2025/05/24 20:47:44 by zaakrab          ###   ########.fr       */
+/*   Updated: 2025/05/26 20:36:38 by acben-ka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	bash_syntax_error(const char *token)
 {
 	if (!token)
 	{
-		write (2, "bash: syntax error near unexpected token `newline'\n", 50);
+		write (2, "bash: syntax error near unexpected token `newline'\n", 51);
 		return ;
 	}
 	write (2, "bash: syntax error near unexpected token `", 42);

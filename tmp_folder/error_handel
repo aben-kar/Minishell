@@ -1,0 +1,21 @@
+$> ""''echo hola""'''' que""'' tal""'' ==> check before command (quotes). [valide].
+$> echo $ ==> $
+$> echo $? ==> 0
+$> echo $?$ ==> 0$
+$> echo $? | echo $? | echo $? ==> 0
+$> echo $9HOME ==> HOME.
+$> echo $hola* ==> Cas d'un variable inexistant.
+$> echo "$""" ==> '$' -> new line.
+$> echo '$''' ==> '$' -> new line.
+// 
+-> fihome mochkile quotes.
+$> echo "$HO"ME
+$> echo '$HO'ME
+$> echo "$HO""ME"
+$> echo '$HO''ME'
+$> echo "'$HO''ME'"
+//
+$> echo "$"HOME => $HOME.
+$> echo hola"''''''''''" => "hola''''''''''.
+$> "e"'c'ho 'b'"o"nj"o"'u'r => bonjour.
+$> $HOME => "bash: /home/vietdu91: Is a directory.
