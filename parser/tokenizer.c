@@ -62,7 +62,7 @@ static t_token	*handle_operator_token(const char *input, int *i,
 	return (last);
 }
 
-static bool	skip_quoted(const char *input, int *i)
+bool	skip_quoted(const char *input, int *i)
 {
 	char	quote;
 

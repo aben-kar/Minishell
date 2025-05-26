@@ -124,6 +124,7 @@ bool	is_quoted_delimiter(const char *delimiter);
 char	*strip_quotes(const char *str, t_gc **gc);
 char	*generate_temp_filename(t_gc **gc);
 char	*handle_heredoc(const char *delimiter, t_gc **gc, t_env *env);
+bool	skip_quoted(const char *input, int *i);
 int		contains_equal(const char *input, int *i);
 bool	skip_post_equal(const char *input, int *i);
 char	*extract_token_value(const char *input, int start, int end, t_gc **gc);
