@@ -113,6 +113,10 @@ void		handle_sigint(int sig);
 t_redirect	*add_redir(t_redirect *list, char *filename, int type, t_gc **gc);
 char    	**argv_add(char **argv, const char *value, t_gc **gc);
 t_command	*add_command(t_command *list, t_command *new);
+bool		handle_redirection(t_command *cmd, t_token **tokens,
+	t_gc **gc, t_env *env, int type);
+bool		handle_argument(t_command *cmd, t_token *token,
+	t_gc **gc, t_env *env);
 t_command   *parse_tokens(t_token *tokens, int *has_pipe, t_gc **gc, t_env *env);
 // void        free_tokens(t_token *tokens);
 // void        free_commands(t_command *cmds);
