@@ -120,8 +120,13 @@ bool		handle_argument(t_command *cmd, t_token *token,
 t_command   *parse_tokens(t_token *tokens, int *has_pipe, t_gc **gc, t_env *env);
 // void        free_tokens(t_token *tokens);
 // void        free_commands(t_command *cmds);
+bool	is_quoted_delimiter(const char *delimiter);
+char	*strip_quotes(const char *str, t_gc **gc);
 char	*generate_temp_filename(t_gc **gc);
-char	*handle_heredoc(const char *delimiter, t_gc **gc);
+char	*handle_heredoc(const char *delimiter, t_gc **gc, t_env *env);
+int		contains_equal(const char *input, int *i);
+bool	skip_post_equal(const char *input, int *i);
+char	*extract_token_value(const char *input, int start, int end, t_gc **gc);
 // gc libft funcs
 void	*ft_calloc_gc(size_t nelem, size_t size, t_gc **gc);
 char	*ft_itoa_gc(int n, t_gc **gc);

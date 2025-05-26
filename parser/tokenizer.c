@@ -36,7 +36,8 @@ static t_token	*handle_quoted_token(const char *input, int *i,
 		bash_unclosed_quote_error(quote);
 		return (NULL);
 	}
-	val = ft_substr_gc(input, start + 1, *i - start - 2, gc);
+	// val = ft_substr_gc(input, start + 1, *i - start - 2, gc);
+	val = ft_substr_gc(input, start, *i - start, gc);
 	last = add_token(last, val, gc);
 	if (!*head)
 		*head = last;
@@ -78,24 +79,47 @@ static bool	skip_quoted(const char *input, int *i)
 	return (false);
 }
 
+// static t_token	*handle_word_token(const char *input, int *i,
+// 	t_token *last, t_token **head, t_gc **gc)
+// {
+// 	int		start;
+// 	char	*val;
+
+// 	start = *i;
+// 	while (input[*i] && !ft_isspace(input[*i]) && !is_operator(input[*i]))
+// 	{
+// 		if (input[*i] == '\'' || input[*i] == '"')
+// 		{
+// 			if (!skip_quoted(input, i))
+// 				return (NULL);
+// 		}
+// 		else
+// 			(*i)++;
+// 	}
+// 	val = ft_substr_gc(input, start, *i - start, gc);
+// 	last = add_token(last, val, gc);
+// 	if (!*head)
+// 		*head = last;
+// 	return (last);
+// }
+
 static t_token	*handle_word_token(const char *input, int *i,
 	t_token *last, t_token **head, t_gc **gc)
 {
 	int		start;
+	int		eq_index;
 	char	*val;
 
 	start = *i;
-	while (input[*i] && !ft_isspace(input[*i]) && !is_operator(input[*i]))
+	eq_index = contains_equal(input, i);
+	if (eq_index == -2)
+		return (NULL);
+	if (eq_index != -1)
 	{
-		if (input[*i] == '\'' || input[*i] == '"')
-		{
-			if (!skip_quoted(input, i))
-				return (NULL);
-		}
-		else
-			(*i)++;
+		if (!skip_post_equal(input, i))
+			return (NULL);
 	}
-	val = ft_substr_gc(input, start, *i - start, gc);
+	val = extract_token_value(input, start, *i, gc);
 	last = add_token(last, val, gc);
 	if (!*head)
 		*head = last;

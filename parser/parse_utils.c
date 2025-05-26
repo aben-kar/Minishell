@@ -18,7 +18,7 @@ bool	handle_redirection(t_command *cmd, t_token **tokens,
 	char	*filename;
 
 	if (type == REDIR_HEREDOC)
-		filename = handle_heredoc((*tokens)->value, gc);
+		filename = handle_heredoc((*tokens)->value, gc, env);
 	else
 		filename = expand_word((*tokens)->value, gc, env);
 	if (!filename)
