@@ -78,39 +78,6 @@ static bool	skip_quoted(const char *input, int *i)
 	return (false);
 }
 
-// static t_token *handle_word_token(const char *input, int *i, t_token *last, t_token **head, t_gc **gc)
-// {
-// 	int		start;
-// 	char	quote;
-// 	char	*val;
-
-// 	start = *i;
-// 	while (input[*i] && !ft_isspace(input[*i]) && !is_operator(input[*i]))
-// 	{
-// 		if (input[*i] == '\'' || input[*i] == '"')
-// 		{
-// 			quote = input[*i];
-// 			(*i)++;
-// 			while (input[*i] && input[*i] != quote)
-// 				(*i)++;
-// 			if (input[*i] == quote)
-// 				(*i)++;
-// 			else
-// 			{
-// 				bash_unclosed_quote_error(quote);
-// 				return (NULL);
-// 			}
-// 		}
-// 		else
-// 			(*i)++;
-// 	}
-// 	val = ft_substr_gc(input, start, *i - start, gc);
-// 	last = add_token(last, val, gc);
-// 	if (!*head)
-// 		*head = last;
-// 	return (last);
-// }
-
 static t_token	*handle_word_token(const char *input, int *i,
 	t_token *last, t_token **head, t_gc **gc)
 {
