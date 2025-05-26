@@ -27,19 +27,20 @@ static int	handle_single_quote(const char *word, char **res, int i, t_gc **gc)
 {
 	int	j;
 
-    j = i + 1;
+	j = i + 1;
 	while (word[j] && word[j] != '\'')
 		j++;
 	*res = ft_strjoin_gc(*res, ft_strndup(word + i + 1, j - i - 1, gc), gc);
 	return (j + 1);
 }
 
-static int	handle_double_quote(const char *word, char **res, int i, t_gc **gc, t_env *env)
+static int	handle_double_quote(const char *word, char **res,
+	int i, t_gc **gc, t_env *env)
 {
 	int		j;
 	char	*inner;
 
-    j = i + 1;
+	j = i + 1;
 	while (word[j] && word[j] != '"')
 		j++;
 	inner = ft_strndup(word + i + 1, j - i - 1, gc);
@@ -47,15 +48,17 @@ static int	handle_double_quote(const char *word, char **res, int i, t_gc **gc, t
 	return (j + 1);
 }
 
-static int	handle_dollar(const char *word, char **res, int i, t_gc **gc, t_env *env)
+static int	handle_dollar(const char *word, char **res,
+	int i, t_gc **gc, t_env *env)
 {
 	char	*key;
 	char	*val;
 	int		j;
+	char	*exit_str;
 
 	if (word[i + 1] == '?')
 	{
-		char *exit_str = ft_itoa_gc(g_exit_status, gc);
+		exit_str = ft_itoa_gc(g_exit_status, gc);
 		*res = ft_strjoin_gc(*res, exit_str, gc);
 		return (i + 2);
 	}

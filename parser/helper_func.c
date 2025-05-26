@@ -14,7 +14,7 @@
 
 int	is_redir(char *s)
 {
-	return (!ft_strcmp(s, ">") || !ft_strcmp(s, "<") 
+	return (!ft_strcmp(s, ">") || !ft_strcmp(s, "<")
 		|| !ft_strcmp(s, "<<") || !ft_strcmp(s, ">>"));
 }
 

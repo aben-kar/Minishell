@@ -18,7 +18,8 @@ static void	skip_whitespace(const char *input, int *i)
 		(*i)++;
 }
 
-static t_token *handle_quoted_token(const char *input, int *i, t_token *last, t_token **head, t_gc **gc)
+static t_token	*handle_quoted_token(const char *input, int *i,
+	t_token *last, t_token **head, t_gc **gc)
 {
 	int		start;
 	char	quote;
@@ -42,7 +43,8 @@ static t_token *handle_quoted_token(const char *input, int *i, t_token *last, t_
 	return (last);
 }
 
-static t_token	*handle_operator_token(const char *input, int *i, t_token *last, t_token **head, t_gc **gc)
+static t_token	*handle_operator_token(const char *input, int *i,
+	t_token *last, t_token **head, t_gc **gc)
 {
 	int		start;
 	char	*val;

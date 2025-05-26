@@ -120,7 +120,8 @@ static bool	handle_token(t_command *cmd, t_token **tokens,
 	return (handle_argument(cmd, *tokens, gc, env));
 }
 
-static t_command	*parse_single_command(t_token **tokens, t_gc **gc, t_env *env)
+static t_command	*parse_single_command(t_token **tokens,
+	t_gc **gc, t_env *env)
 {
 	t_command	*cmd;
 
@@ -152,7 +153,8 @@ t_command	*parse_tokens(t_token *tokens, int *has_pipe, t_gc **gc, t_env *env)
 		if (!cmd)
 			return (NULL);
 		cmds = add_command(cmds, cmd);
-		if (tokens && (!tokens->next || ft_strcmp(tokens->next->value, "|") == 0))
+		if (tokens && (!tokens->next
+				|| ft_strcmp(tokens->next->value, "|") == 0))
 		{
 			bash_syntax_error("|");
 			return (NULL);

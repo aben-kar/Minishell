@@ -13,7 +13,8 @@
 #ifndef GC_H
 # define GC_H
 
-#include "../minishell.h"
+# include "../minishell.h"
+
 typedef struct s_gc
 {
 	void			*ptr;

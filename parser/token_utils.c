@@ -28,7 +28,7 @@ t_token	*add_token(t_token *last, char *value, t_gc **gc)
 t_redirect	*add_redir(t_redirect *list, char *filename, int type, t_gc **gc)
 {
 	t_redirect	*new;
-    t_redirect	*tmp;
+	t_redirect	*tmp;
 
     new = NULL;
     tmp = NULL;

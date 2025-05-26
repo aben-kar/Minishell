@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   heredoc_util.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: zaakrab <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/26 18:00:39 by zaakrab           #+#    #+#             */
+/*   Updated: 2025/05/26 18:00:40 by zaakrab          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../minishell.h"
 
 char	*generate_temp_filename(t_gc **gc)
@@ -5,7 +17,7 @@ char	*generate_temp_filename(t_gc **gc)
 	static int	counter;
 	char		*num;
 	char		*filename;
-	
+
 	counter = 0;
 	num = ft_itoa_gc(counter++, gc);
 	filename = ft_strjoin_gc("/tmp/.heredoc", num, gc);
@@ -22,7 +34,6 @@ char	*handle_heredoc(const char *delimiter, t_gc **gc)
 	fd = open(tempfile, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	if (fd < 0)
 		return (NULL);
-
 	while (1)
 	{
 		line = readline("> ");
@@ -30,7 +41,7 @@ char	*handle_heredoc(const char *delimiter, t_gc **gc)
 		{
 			if (line)
 				free(line);
-			break;
+			break ;
 		}
 		write(fd, line, ft_strlen(line));
 		write(fd, "\n", 1);
