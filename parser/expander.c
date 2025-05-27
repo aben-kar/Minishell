@@ -55,11 +55,15 @@ int	handle_dollar(const char *word, char **res,
 
 char	*expand_word(const char *word, t_gc **gc, t_env *env)
 {
-    char *res = ft_strdup_gc("", gc);
-    int i = 0;
-    bool in_single = false;
-    bool in_double = false;
+    char	*res;
+    int		i;
+    bool	in_single;
+    bool	in_double;
 
+	res = ft_strdup_gc("", gc);
+	i = 0;
+	in_single = false;
+	in_double = false;
     while (word[i])
     {
         if (word[i] == '\'' && !in_double)
@@ -73,9 +77,7 @@ char	*expand_word(const char *word, t_gc **gc, t_env *env)
             i++;
         }
         else if (word[i] == '$' && !in_single)
-        {
             i = handle_dollar(word, &res, i, gc, env);
-        }
         else
         {
             res = ft_strjoin_char_gc(res, word[i], gc);
