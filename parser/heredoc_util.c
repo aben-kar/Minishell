@@ -60,7 +60,10 @@ char	*handle_heredoc(const char *raw_delim, t_gc **gc, t_env *env)
 	tempfile = generate_temp_filename(gc);
 	fd = open(tempfile, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	if (fd < 0)
+	{
+		g_exit_status = 1;
 		return (NULL);
+	}
 	while (1)
 	{
 		line = readline("> ");
