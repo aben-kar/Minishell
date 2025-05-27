@@ -73,7 +73,7 @@ int main(int ac, char **av, char **envp)
 			cmds = NULL;
 			// print_command_structure(cmds); // testing tokens only
 			// env = ft_copier_env(env_list, envp, &gc);
-			input = readline("minishell$ ");
+			input = readline(CYAN "minishell$ " RESET);
 			if (input == NULL)
 			{
 				printf("exit\n");

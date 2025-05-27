@@ -6,7 +6,7 @@
 /*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 16:23:09 by acben-ka          #+#    #+#             */
-/*   Updated: 2025/05/25 18:31:21 by acben-ka         ###   ########.fr       */
+/*   Updated: 2025/05/27 15:36:42 by acben-ka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@
 #define	REDIR_APPEND 1 // normalmment hada khaso ikon REDIR_APPEND
 #define	REDIR_IN 2 // normalment hada khaso ikon REDIR_IN
 #define	REDIR_HEREDOC 3 // HADA RAH
+#define CYAN "\033[36m"	
+#define RESET "\033[0m"
 
 extern int	g_exit_status; // global varible
 typedef struct stat t_stat;

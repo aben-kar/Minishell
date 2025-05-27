@@ -19,3 +19,17 @@ $> echo "$"HOME => $HOME.
 $> echo hola"''''''''''" => "hola''''''''''.
 $> "e"'c'ho 'b'"o"nj"o"'u'r => bonjour.
 $> $HOME => "bash: /home/vietdu91: Is a directory.
+shelvl ==> unset -> set a 0.
+
+acben-ka@e2r10p10:~/Desktop/lalo$ echo "1 + 1 + $SHLVL = 3 '$"PWD"'" mamamma
+1 + 1 + 2 = 3 '$PWD' mamamma
+
+minishell$ echo "1 + 1 + $SHLVL = 3 '$"PWD"'" mamamma
+1 + 1 + 2 = 3 $ PWD mamamma
+
+minishell$ echo "'$PWD'"
+$PWD
+
+acben-ka@e2r10p10:~/Desktop/lalo$ echo "'$PWD'"
+'/home/acben-ka/Desktop/lalo'
+
