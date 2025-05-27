@@ -6,7 +6,7 @@
 /*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 15:31:35 by acben-ka          #+#    #+#             */
-/*   Updated: 2025/05/25 18:31:04 by acben-ka         ###   ########.fr       */
+/*   Updated: 2025/05/27 22:36:34 by acben-ka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,20 @@ bool check_plus(char *args)
     return (true);
 }
 
+// int heandel_equal(char *args)
+// {
+//     // int i = 0;
+//     while (args)
+//     {
+//         if (*(args - 1) == '\0')
+//             return 1;
+//         else if (*(args + 1) == '\0')
+//             return 2;
+//         args++;
+//     }
+//     return 0;
+// }
+
 int ft_export(char **args, t_env **env, t_gc **gc)
 {
     if (!args[0] || !*args)
@@ -88,13 +102,15 @@ int ft_export(char **args, t_env **env, t_gc **gc)
         int i = 0;
         while (args[i])
         {
+            // printf("%s\n", args[i]);
             char *equal = ft_strchr(args[i], '='); // test+=test
             if (equal)
             {
+                // printf ("hena\n");
                 char *key = NULL;
                 char *value = NULL;
                 int string_len = equal - args[i] + 1;
-                char *string = ft_substr_gc(args[i], 0, string_len, gc);
+                char *string = ft_substr_gc(args[i], 0, string_len, gc); // test=
                 int check_is_equal = is_equal_alone(string);
                 int exit_code;
                 if (check_is_equal == 0)
@@ -107,6 +123,10 @@ int ft_export(char **args, t_env **env, t_gc **gc)
                 else
                     print_error(args[i], gc);
             }
+            // if ((heandel_equal(equal) == 1) || (heandel_equal(equal) == 2))
+            // {
+            //     printf ("==> allo\n");
+            // }
             else
             {
                 char *key = args[i];

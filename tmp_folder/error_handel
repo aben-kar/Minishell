@@ -33,3 +33,14 @@ $PWD
 acben-ka@e2r10p10:~/Desktop/lalo$ echo "'$PWD'"
 '/home/acben-ka/Desktop/lalo'
 
+// error about export
+$> export "" -> error
+$> export = ->error
+$> export % -> error
+$> export $? -> error
+$> export ?=2 -> error
+
+$> export HOLA =bonjour ==> error
+$> export HOLA = bonjour ==> error\
+
+"$> export HOLA$USER=bonjour ===> HOLAvietdu91=bonjour
