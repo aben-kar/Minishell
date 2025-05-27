@@ -65,6 +65,8 @@ static t_command	*parse_single_command(t_token **tokens,
 			return (NULL);
 		*tokens = (*tokens)->next;
 	}
+	if (!cmd->cmd || !cmd->cmd[0])
+		return (NULL);
 	return (cmd);
 }
 
