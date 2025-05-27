@@ -132,6 +132,7 @@ bool	skip_post_equal(const char *input, int *i);
 char	*extract_token_value(const char *input, int start, int end, t_gc **gc);
 char	*expand_inside_double_quotes(const char *str, t_gc **gc, t_env *env);
 int		handle_dollar(const char *word, char **res, int i, t_gc **gc, t_env *env);
+// void	expand_command(t_command *cmd, t_env *env, t_gc **gc);
 // gc libft funcs
 void	*ft_calloc_gc(size_t nelem, size_t size, t_gc **gc);
 char	*ft_itoa_gc(int n, t_gc **gc);
@@ -142,6 +143,7 @@ char	*ft_strjoin_char_gc(const char *s, char c, t_gc **gc);
 char	**ft_split_gc(char const *s, char *c, t_gc **gc);
 // test
 // void print_command_structure(t_command *cmds);
+int count_args(char **args);
 
 
 #endif

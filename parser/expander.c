@@ -23,34 +23,34 @@ char	*get_env_val(const char *key, t_env *env)
 	return (NULL);
 }
 
-int	handle_dollar(const char *word, char **res,
-	int i, t_gc **gc, t_env *env)
+int	handle_dollar(const char *word, char **res, int i, t_gc **gc, t_env *env)
 {
-	char	*key;
-	char	*val;
-	int		j;
-	char	*exit_str;
+    char    *key;
+    char    *val;
+    int     j;
+    char    *exit_str;
 
-	if (word[i + 1] == '?')
-	{
-		exit_str = ft_itoa_gc(g_exit_status, gc);
-		*res = ft_strjoin_gc(*res, exit_str, gc);
-		return (i + 2);
-	}
-	if (!word[i + 1] || (!ft_isalpha(word[i + 1]) && word[i + 1] != '_'))
-	{
-		// Treat invalid variable like "$" or "$)" as literal "$"
-		*res = ft_strjoin_char_gc(*res, '$', gc);
-		return (i + 1);
-	}
-	j = i + 1;
-	while (ft_isalnum(word[j]) || word[j] == '_')
-		j++;
-	key = ft_strndup(word + i + 1, j - i - 1, gc);
-	val = get_env_val(key, env);
-	if (val)
-		*res = ft_strjoin_gc(*res, ft_strdup_gc(val, gc), gc);
-	return (j);
+    if (word[i + 1] == '?')
+    {
+        exit_str = ft_itoa_gc(g_exit_status, gc);
+        *res = ft_strjoin_gc(*res, exit_str, gc);
+        return (i + 2);
+    }
+    if (!word[i + 1] || (!ft_isalpha(word[i + 1]) && word[i + 1] != '_'))
+    {
+        *res = ft_strjoin_char_gc(*res, '$', gc);
+        return (i + 1);
+    }
+    j = i + 1;
+    while (ft_isalnum(word[j]) || word[j] == '_')
+        j++;
+    key = ft_strndup(word + i + 1, j - i - 1, gc);
+    val = get_env_val(key, env);
+    if (val)
+        *res = ft_strjoin_gc(*res, ft_strdup_gc(val, gc), gc);
+    else
+        *res = ft_strjoin_gc(*res, ft_strdup_gc("", gc), gc);
+    return (j);
 }
 
 char	*expand_word(const char *word, t_gc **gc, t_env *env)
@@ -86,3 +86,32 @@ char	*expand_word(const char *word, t_gc **gc, t_env *env)
     }
     return (res);
 }
+
+// void	expand_command(t_command *cmd, t_env *env, t_gc **gc)
+// {
+// 	int		i;
+// 	int		j;
+// 	char	*expanded;
+
+// 	if (!cmd || !cmd->cmd)
+// 		return ;
+// 	i = 0;
+// 	while (cmd->cmd[i])
+// 	{
+// 		expanded = expand_word(cmd->cmd[i], gc, env);
+// 		cmd->cmd[i] = expanded;
+// 		i++;
+// 	}
+// 	i = 0;
+// 	j = 0;
+// 	while (cmd->cmd[i])
+// 	{
+// 		if (i == 0 || cmd->cmd[i][0] != '\0')
+// 		{
+// 			cmd->cmd[j] = cmd->cmd[i];
+// 			j++;
+// 		}
+// 		i++;
+// 	}
+// 	cmd->cmd[j] = NULL;
+// }

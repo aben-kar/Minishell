@@ -41,23 +41,28 @@ static bool	handle_token(t_command *cmd, t_token **tokens,
 	return (handle_argument(cmd, *tokens, gc, env));
 }
 
-static t_command	*parse_single_command(t_token **tokens,
-	t_gc **gc, t_env *env)
+static t_command    *parse_single_command(t_token **tokens, t_gc **gc, t_env *env)
 {
-	t_command	*cmd;
+    t_command   *cmd;
 
-	cmd = ft_calloc_gc(1, sizeof(t_command), gc);
-	if (!cmd)
-		return (NULL);
-	while (*tokens && ft_strcmp((*tokens)->value, "|") != 0)
-	{
-		if (!handle_token(cmd, tokens, gc, env))
-			return (NULL);
-		*tokens = (*tokens)->next;
-	}
-	if (!cmd->cmd || !cmd->cmd[0])
-		return (NULL);
-	return (cmd);
+    cmd = ft_calloc_gc(1, sizeof(t_command), gc);
+    if (!cmd)
+        return (NULL);
+    while (*tokens && ft_strcmp((*tokens)->value, "|") != 0)
+    {
+        if (!handle_token(cmd, tokens, gc, env))
+            return (NULL);
+        *tokens = (*tokens)->next;
+    }
+    if (cmd->cmd && cmd->cmd[0] && cmd->cmd[0][0] == '$')
+    {
+        char *expanded = expand_word(cmd->cmd[0], gc, env);
+        if (!expanded || expanded[0] == '\0')
+            cmd->cmd[0] = "";
+        else
+            cmd->cmd[0] = expanded;
+    }
+    return (cmd);
 }
 
 t_command *parse_tokens(t_token *tokens, int *has_pipe, t_gc **gc, t_env *env)
