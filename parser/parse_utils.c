@@ -24,7 +24,10 @@ bool	handle_redirection(t_command *cmd, t_token **tokens,
 	else
 		filename = expand_word((*tokens)->value, gc, env);
 	if (!filename)
+	{
+		g_exit_status = 1;
 		return (false);
+	}
 	cmd->redirects = add_redir(cmd->redirects, filename, type, gc);
 	cmd->has_redirect = true;
 	return (true);

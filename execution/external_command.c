@@ -67,6 +67,7 @@ char *find_executable_path(t_command *shell, t_env *envp, t_gc **gc)
     if (!directory)
     {
         write_error(shell->cmd[0], 2); // Command not found
+        g_exit_status = 1; // test
         return NULL;
     }
     

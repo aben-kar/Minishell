@@ -103,23 +103,74 @@ bool	skip_quoted(const char *input, int *i)
 // 	return (last);
 // }
 
+// static t_token	*handle_word_token(const char *input, int *i,
+// 	t_token *last, t_token **head, t_gc **gc)
+// {
+// 	int		start;
+// 	int		eq_index;
+// 	char	*val;
+
+// 	start = *i;
+// 	eq_index = contains_equal(input, i);
+// 	if (eq_index == -2)
+// 		return (NULL);
+// 	if (eq_index != -1)
+// 	{
+// 		if (!skip_post_equal(input, i))
+// 			return (NULL);
+// 	}
+// 	val = extract_token_value(input, start, *i, gc);
+// 	last = add_token(last, val, gc);
+// 	if (!*head)
+// 		*head = last;
+// 	return (last);
+// }
+
 static t_token	*handle_word_token(const char *input, int *i,
 	t_token *last, t_token **head, t_gc **gc)
 {
 	int		start;
-	int		eq_index;
 	char	*val;
+	char	*tmp;
 
 	start = *i;
-	eq_index = contains_equal(input, i);
-	if (eq_index == -2)
-		return (NULL);
-	if (eq_index != -1)
+	val = ft_strdup_gc("", gc);
+
+	while (input[*i] && !ft_isspace(input[*i]) && !is_operator(input[*i]))
 	{
-		if (!skip_post_equal(input, i))
-			return (NULL);
+		if (input[*i] == '\'' || input[*i] == '"')
+		{
+			char quote = input[(*i)++];
+			start = *i;
+			while (input[*i] && input[*i] != quote)
+				(*i)++;
+			if (input[*i] == quote)
+			{
+				tmp = ft_substr_gc(input, start, *i - start, gc);
+				val = ft_strjoin_gc(val, tmp, gc);
+				(*i)++;
+			}
+			else
+			{
+				bash_unclosed_quote_error(quote);
+				return (NULL);
+			}
+		}
+		else
+		{
+			start = *i;
+			while (input[*i] && !ft_isspace(input[*i]) &&
+				!is_operator(input[*i]) && input[*i] != '\'' && input[*i] != '"')
+				(*i)++;
+			tmp = ft_substr_gc(input, start, *i - start, gc);
+			val = ft_strjoin_gc(val, tmp, gc);
+		}
 	}
-	val = extract_token_value(input, start, *i, gc);
+	if (*val == '\0') // empty token (e.g. nothing after redirect)
+	{
+		bash_syntax_error("unexpected newline or empty redirect target");
+		return (NULL);
+	}
 	last = add_token(last, val, gc);
 	if (!*head)
 		*head = last;
