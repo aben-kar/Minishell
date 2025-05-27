@@ -55,7 +55,7 @@ void	*ft_calloc(size_t nelem, size_t size);
 // char	**ft_split(const char *s, char c);
 char	**ft_split(char const *s, char *c);
 void	ft_putchar_fd(char c, int fd);
-void	ft_putstr_fd(char *str, int fd);
+void	ft_putstr_fd(const char *str, int fd);
 void	ft_putendl_fd(char *str, int fd);
 void	ft_putnbr_fd(int n, int fd);
 char	*ft_substr(const char *s, unsigned int start, size_t len);

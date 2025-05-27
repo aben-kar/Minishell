@@ -17,16 +17,6 @@ static bool	is_invalid_token(t_token *tok)
 	return (!tok || is_redir(tok->value) || ft_strcmp(tok->value, "|") == 0);
 }
 
-static bool	check_and_handle_pipe_start(t_token *tokens)
-{
-	if (tokens && ft_strcmp(tokens->value, "|") == 0)
-	{
-		bash_syntax_error("|");
-		return (false);
-	}
-	return (true);
-}
-
 static bool	handle_token(t_command *cmd, t_token **tokens,
 	t_gc **gc, t_env *env)
 {
@@ -70,33 +60,41 @@ static t_command	*parse_single_command(t_token **tokens,
 	return (cmd);
 }
 
-t_command	*parse_tokens(t_token *tokens, int *has_pipe, t_gc **gc, t_env *env)
+t_command *parse_tokens(t_token *tokens, int *has_pipe, t_gc **gc, t_env *env)
 {
-	t_command	*cmds;
-	t_command	*cmd;
+    t_command   *cmds = NULL;
+    t_command   *cmd = NULL;
+    *has_pipe = 0;
 
-	cmds = NULL;
-	cmd = NULL;
-	*has_pipe = 0;
-	if (!tokens || !check_and_handle_pipe_start(tokens))
-		return (NULL);
-	while (tokens)
-	{
-		cmd = parse_single_command(&tokens, gc, env);
-		if (!cmd)
-			return (NULL);
-		cmds = add_command(cmds, cmd);
-		if (tokens && (!tokens->next
-				|| ft_strcmp(tokens->next->value, "|") == 0))
-		{
-			bash_syntax_error("|");
-			return (NULL);
-		}
-		if (tokens)
-		{
-			*has_pipe = 1;
-			tokens = tokens->next;
-		}
-	}
-	return (cmds);
+    if (!tokens)
+        return (NULL);
+    t_token *tmp = tokens;
+    while (tmp)
+    {
+        if (ft_strcmp(tmp->value, "|") == 0)
+        {
+            *has_pipe = 1;
+            if (tmp == tokens || !tmp->next)
+            {
+                bash_syntax_error("|");
+                return (NULL);
+            }
+            if (ft_strcmp(tmp->next->value, "|") == 0)
+            {
+                bash_syntax_error("|");
+                return (NULL);
+            }
+        }
+        tmp = tmp->next;
+    }
+    while (tokens)
+    {
+        cmd = parse_single_command(&tokens, gc, env);
+        if (!cmd)
+            return (NULL);
+        cmds = add_command(cmds, cmd);
+        if (tokens && ft_strcmp(tokens->value, "|") == 0)
+            tokens = tokens->next;
+    }
+    return (cmds);
 }

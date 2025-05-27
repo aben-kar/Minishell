@@ -12,7 +12,7 @@
 
 #include "../minishell.h"
 
-int	is_redir(char *s)
+int	is_redir(const char *s)
 {
 	return (!ft_strcmp(s, ">") || !ft_strcmp(s, "<")
 		|| !ft_strcmp(s, "<<") || !ft_strcmp(s, ">>"));

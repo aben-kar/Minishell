@@ -12,22 +12,28 @@
 
 #include "../minishell.h"
 
-void	bash_syntax_error(const char *token)
+void bash_syntax_error(const char *token)
 {
-	if (!token)
-	{
-		write (2, "minishell: syntax error near unexpected token `newline'\n", ft_strlen("minishell: syntax error near unexpected token `newline'\n"));
-		return ;
-	}
-	write (2, "minishell: syntax error near unexpected token `", ft_strlen("minishell: syntax error near unexpected token `"));
-	write (2, token, ft_strlen(token));
-	write (2, "'\n", 2);
+    if (!token)
+        ft_putstr_fd("minishell: syntax error near unexpected token `newline'\n", 2);
+    else if (ft_strcmp(token, "|") == 0)
+        ft_putstr_fd("minishell: syntax error near unexpected token `|'\n", 2);
+    else if (is_redir(token))
+    {
+        ft_putstr_fd("minishell: syntax error near unexpected token `", 2);
+        ft_putstr_fd(token, 2);
+        ft_putstr_fd("'\n", 2);
+    }
+    else
+        ft_putstr_fd("minishell: syntax error\n", 2);
+    g_exit_status = 2;
 }
 
-void	bash_unclosed_quote_error(char quote)
+void bash_unclosed_quote_error(char quote)
 {
-	write (2, "minishell: unexpected EOF while looking for matching `", ft_strlen("minishell: unexpected EOF while looking for matching `"));
-	write (2, &quote, 1);
-	write (2, "'\n", 2);
-	write (2, "minishell: syntax error: unexpected end of file\n", ft_strlen("minishell: syntax error: unexpected end of file\n"));
+    ft_putstr_fd("minishell: unexpected EOF while looking for matching `", 2);
+    ft_putchar_fd(quote, 2);
+    ft_putstr_fd("'\n", 2);
+    ft_putstr_fd("minishell: syntax error: unexpected end of file\n", 2);
+    g_exit_status = 2;
 }
