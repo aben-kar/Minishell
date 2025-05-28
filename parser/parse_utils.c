@@ -13,40 +13,40 @@
 #include "../minishell.h"
 
 bool    handle_redirection(t_command *cmd, t_token **tokens,
-    t_gc **gc, t_env *env, int type)
+	t_gc **gc, t_env *env, int type)
 {
-    char    *filename;
-    char    *end;
+	char    *filename;
+	char    *end;
 
-    if (!tokens || !*tokens || !(*tokens)->value)
-    {
-        bash_syntax_error("newline");
-        return (false);
-    }
-    filename = (*tokens)->value;
-    if (type == REDIR_HEREDOC)
-        filename = handle_heredoc(filename, gc, env);
-    else
-        filename = expand_word(filename, gc, env);
-    if (!filename)
-    {
-        g_exit_status = 1;
-        return (false);
-    }
-    while (*filename && ft_isspace(*filename))
-        filename++;
-    end = filename + ft_strlen(filename) - 1;
-    while (end > filename && ft_isspace(*end))
-        end--;
-    *(end + 1) = '\0';
-    if (!*filename)
-    {
-        bash_syntax_error("newline");
-        return (false);
-    }
-    cmd->redirects = add_redir(cmd->redirects, filename, type, gc);
-    cmd->has_redirect = true;
-    return (true);
+	if (!tokens || !*tokens || !(*tokens)->value)
+	{
+		bash_syntax_error("newline");
+		return (false);
+	}
+	filename = (*tokens)->value;
+	if (type == REDIR_HEREDOC)
+		filename = handle_heredoc(filename, gc, env);
+	else
+		filename = expand_word(filename, gc, env);
+	if (!filename)
+	{
+		g_exit_status = 1;
+		return (false);
+	}
+	while (*filename && ft_isspace(*filename))
+		filename++;
+	end = filename + ft_strlen(filename) - 1;
+	while (end > filename && ft_isspace(*end))
+		end--;
+	*(end + 1) = '\0';
+	if (!*filename)
+	{
+		bash_syntax_error("newline");
+		return (false);
+	}
+	cmd->redirects = add_redir(cmd->redirects, filename, type, gc);
+	cmd->has_redirect = true;
+	return (true);
 }
 
 bool	handle_argument(t_command *cmd, t_token *token,
@@ -66,8 +66,8 @@ char	*expand_inside_double_quotes(const char *str, t_gc **gc, t_env *env)
 	char	*res;
 	int		i;
 
-    res = ft_strdup_gc("", gc);
-    i = 0;
+	res = ft_strdup_gc("", gc);
+	i = 0;
 	while (str[i])
 	{
 		if (str[i] == '$')

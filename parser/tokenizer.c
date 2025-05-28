@@ -54,51 +54,51 @@ bool	skip_quoted(const char *input, int *i)
 }
 
 static t_token *handle_word_token(const char *input, int *i,
-    t_token *last, t_token **head, t_gc **gc)
+	t_token *last, t_token **head, t_gc **gc)
 {
-    int     start;
-    char    *val;
+	int     start;
+	char    *val;
 
-    start = *i;
-    while (input[*i] && !ft_isspace(input[*i]) && !is_operator(input[*i]))
-    {
-        if (input[*i] == '\'' || input[*i] == '"')
-        {
-            if (!skip_quoted(input, i))
-                return (NULL);
-        }
-        else
-            (*i)++;
-    }
-    val = ft_substr_gc(input, start, *i - start, gc);
-    last = add_token(last, val, gc);
-    if (!*head)
-        *head = last;
-    return (last);
+	start = *i;
+	while (input[*i] && !ft_isspace(input[*i]) && !is_operator(input[*i]))
+	{
+		if (input[*i] == '\'' || input[*i] == '"')
+		{
+			if (!skip_quoted(input, i))
+				return (NULL);
+		}
+		else
+			(*i)++;
+	}
+	val = ft_substr_gc(input, start, *i - start, gc);
+	last = add_token(last, val, gc);
+	if (!*head)
+		*head = last;
+	return (last);
 }
 
 t_token *tokenize(const char *input, t_gc **gc)
 {
-    int     i;
-    t_token *head;
-    t_token *last;
+	int     i;
+	t_token *head;
+	t_token *last;
 
-    i = 0;
-    head = NULL;
-    last = NULL;
-    while (input[i])
-    {
-        skip_whitespace(input, &i);
-        if (!input[i])
-            break;
-            
-        if (is_operator(input[i]))
-            last = handle_operator_token(input, &i, last, &head, gc);
-        else
-            last = handle_word_token(input, &i, last, &head, gc);
-            
-        if (!last)
-            return (NULL);
-    }
-    return (head);
+	i = 0;
+	head = NULL;
+	last = NULL;
+	while (input[i])
+	{
+		skip_whitespace(input, &i);
+		if (!input[i])
+			break;
+			
+		if (is_operator(input[i]))
+			last = handle_operator_token(input, &i, last, &head, gc);
+		else
+			last = handle_word_token(input, &i, last, &head, gc);
+			
+		if (!last)
+			return (NULL);
+	}
+	return (head);
 }

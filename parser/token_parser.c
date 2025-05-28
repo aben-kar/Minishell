@@ -41,67 +41,80 @@ static bool	handle_token(t_command *cmd, t_token **tokens,
 	return (handle_argument(cmd, *tokens, gc, env));
 }
 
-static t_command    *parse_single_command(t_token **tokens, t_gc **gc, t_env *env)
+static t_command	*parse_single_command(t_token **tokens,
+	t_gc **gc, t_env *env)
 {
-    t_command   *cmd;
+	t_command	*cmd;
+	char		*expanded;
 
-    cmd = ft_calloc_gc(1, sizeof(t_command), gc);
-    if (!cmd)
-        return (NULL);
-    while (*tokens && ft_strcmp((*tokens)->value, "|") != 0)
-    {
-        if (!handle_token(cmd, tokens, gc, env))
-            return (NULL);
-        *tokens = (*tokens)->next;
-    }
-    if (!cmd->cmd || !cmd->cmd[0])
-        return (NULL);
-    if (cmd->cmd && cmd->cmd[0] && cmd->cmd[0][0] == '$')
-    {
-        char *expanded = expand_word(cmd->cmd[0], gc, env);
-        if (!expanded || expanded[0] == '\0')
-            cmd->cmd[0] = "";
-        else
-            cmd->cmd[0] = expanded;
-    }
-    return (cmd);
+	cmd = ft_calloc_gc(1, sizeof(t_command), gc);
+	if (!cmd)
+		return (NULL);
+	while (*tokens && ft_strcmp((*tokens)->value, "|") != 0)
+	{
+		if (!handle_token(cmd, tokens, gc, env))
+			return (NULL);
+		*tokens = (*tokens)->next;
+	}
+	if (!cmd->cmd || !cmd->cmd[0])
+		return (NULL);
+	if (cmd->cmd && cmd->cmd[0] && cmd->cmd[0][0] == '$')
+	{
+		expanded = expand_word(cmd->cmd[0], gc, env);
+		if (!expanded || expanded[0] == '\0')
+			cmd->cmd[0] = "";
+		else
+			cmd->cmd[0] = expanded;
+	}
+	return (cmd);
 }
 
-t_command *parse_tokens(t_token *tokens, int *has_pipe, t_gc **gc, t_env *env)
+static bool	validate_pipes(t_token *tokens, int *has_pipe)
 {
-    t_command   *cmds = NULL;
-    t_command   *cmd = NULL;
-    *has_pipe = 0;
+	t_token	*tmp;
 
-    if (!tokens)
-        return (NULL);
-    t_token *tmp = tokens;
-    while (tmp)
-    {
-        if (ft_strcmp(tmp->value, "|") == 0)
-        {
-            *has_pipe = 1;
-            if (tmp == tokens || !tmp->next)
-            {
-                bash_syntax_error("|");
-                return (NULL);
-            }
-            if (ft_strcmp(tmp->next->value, "|") == 0)
-            {
-                bash_syntax_error("|");
-                return (NULL);
-            }
-        }
-        tmp = tmp->next;
-    }
-    while (tokens)
-    {
-        cmd = parse_single_command(&tokens, gc, env);
-        if (!cmd)
-            return (NULL);
-        cmds = add_command(cmds, cmd);
-        if (tokens && ft_strcmp(tokens->value, "|") == 0)
-            tokens = tokens->next;
-    }
-    return (cmds);
+	tmp = tokens;
+	*has_pipe = 0;
+	while (tmp)
+	{
+		if (ft_strcmp(tmp->value, "|") == 0)
+		{
+			*has_pipe = 1;
+			if (tmp == tokens || !tmp->next)
+			{
+				bash_syntax_error("|");
+				return (false);
+			}
+			if (ft_strcmp(tmp->next->value, "|") == 0)
+			{
+				bash_syntax_error("|");
+				return (false);
+			}
+		}
+		tmp = tmp->next;
+	}
+	return (true);
+}
+
+t_command	*parse_tokens(t_token *tokens, int *has_pipe, t_gc **gc, t_env *env)
+{
+	t_command	*cmds;
+	t_command	*cmd;
+
+	cmds = NULL;
+	cmd = NULL;
+	if (!tokens)
+		return (NULL);
+	if (!validate_pipes(tokens, has_pipe))
+		return (NULL);
+	while (tokens)
+	{
+		cmd = parse_single_command(&tokens, gc, env);
+		if (!cmd)
+			return (NULL);
+		cmds = add_command(cmds, cmd);
+		if (tokens && ft_strcmp(tokens->value, "|") == 0)
+			tokens = tokens->next;
+	}
+	return (cmds);
 }
