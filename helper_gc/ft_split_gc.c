@@ -12,86 +12,6 @@
 
 #include "../minishell.h"
 
-// static int	ifchar(char c, char charset)
-// {
-// 	if (c == charset)
-// 		return (1);
-// 	return (0);
-// }
-
-// static int	count_words(const char *string, char charset)
-// {
-// 	int	count;
-// 	int	i;
-
-// 	count = 0;
-// 	i = 0;
-// 	while (string[i] != 0)
-// 	{
-// 		while (string[i] && ifchar(string[i], charset))
-// 			i++;
-// 		if (string[i] && !ifchar(string[i], charset))
-// 			count++;
-// 		while (string[i] && !ifchar(string[i], charset))
-// 			i++;
-// 	}
-// 	return (count);
-// }
-
-// static char	*substring(const char *str, int first, int last)
-// {
-// 	int		i;
-// 	char	*sub;
-
-// 	sub = (char *)malloc(sizeof(char) * (last - first + 1));
-// 	if (sub == NULL)
-// 		return (NULL);
-// 	i = 0;
-// 	while (first < last)
-// 		sub[i++] = str[first++];
-// 	sub[i] = 0;
-// 	return (sub);
-// }
-
-// static void	free_strings(char **strs, int k)
-// {
-// 	int	i;
-
-// 	i = 0;
-// 	while (i < k)
-// 		free (strs[i++]);
-// 	free(strs);
-// }
-
-// char	**ft_split(const char *s, char c)
-// {
-// 	int		i[3];
-// 	char	**strs;
-
-// 	if (!s)
-// 		return (NULL);
-// 	strs = (char **)malloc(sizeof(char *) * (count_words(s, c) + 1));
-// 	if (strs == NULL)
-// 		return (NULL);
-// 	i[0] = 0;
-// 	i[2] = 0;
-// 	while (i[2] < count_words(s, c))
-// 	{
-// 		while (s[i[0]] && ifchar(s[i[0]], c))
-// 			i[0]++;
-// 		i[1] = i[0];
-// 		while (s[i[1]] && !ifchar(s[i[1]], c))
-// 			i[1]++;
-// 		strs[i[2]] = substring(s, i[0], i[1]);
-// 		if (strs[i[2]] == NULL)
-// 			return (free_strings(strs, i[2]), NULL);
-// 		i[2]++;
-// 		i[0] = i[1];
-// 	}
-// 	strs[i[2]] = NULL;
-// 	return (strs);
-// }
-
 int	is_separator(char c, char *separators)
 {
 	int	i;
@@ -151,48 +71,30 @@ char	*ft_strsdup(char const *s, size_t *j, char *sp, t_gc **gc)
 	return (result);
 }
 
-// void	ft_free(char **prr)
-// {
-// 	int	i;
-
-// 	i = 0;
-// 	while (prr && prr[i])
-// 	{
-// 		free(prr[i]);
-// 		i++;
-// 	}
-// 	if (prr)
-// 		free(prr);
-// }
-
 char	**ft_split_gc(char const *s, char *c, t_gc **gc)
 {
-	size_t	j;
-	size_t	i;
+	size_t	i[2];
 	char	**prr;
 	size_t	len_word;
 
-	i = 0;
-	j = 0;
+	i[0] = 0;
+	i[1] = 0;
 	len_word = count_word(s, c);
 	if (!s || !len_word)
 		return (NULL);
 	prr = gc_alloc((len_word + 1) * sizeof(char *), gc);
 	if (prr == NULL)
 		return (NULL);
-	while (j < len_word)
+	while (i[1] < len_word)
 	{
-		while (is_separator(s[i], c) && s[i])
-			i++;
-		if (s[i])
+		while (is_separator(s[i[0]], c) && s[i[0]])
+			i[0]++;
+		if (s[i[0]])
 		{
-			prr[j] = ft_strsdup(s, &i, c, gc);
-			if (!prr[j])
-			{
-				// ft_free(prr);
-				return(NULL);
-			}
-			j++;
+			prr[i[1]] = ft_strsdup(s, &i[0], c, gc);
+			if (!prr[i[1]])
+				return (NULL);
+			i[1]++;
 		}
 	}
 	return (prr);

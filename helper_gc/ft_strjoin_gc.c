@@ -12,13 +12,13 @@
 
 #include "../minishell.h"
 
-char *ft_strjoin_gc(const char *s1, const char *s2, t_gc **gc)
+char	*ft_strjoin_gc(const char *s1, const char *s2, t_gc **gc)
 {
-	char *result;
-	int i;
-	int j;
-	int s1_len;
-	int s2_len;
+	char	*result;
+	int		i;
+	int		j;
+	int		s1_len;
+	int		s2_len;
 
 	if (!s1 && !s2)
 		return (ft_strdup(""));
