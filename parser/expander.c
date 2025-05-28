@@ -48,8 +48,8 @@ int handle_dollar(const char *word, char **res, int i, t_gc **gc, t_env *env)
     val = get_env_val(key, env);
     if (val)
         *res = ft_strjoin_gc(*res, ft_strdup_gc(val, gc), gc);
-    else
-        *res = ft_strjoin_gc(*res, ft_strdup_gc("", gc), gc);
+    // else
+    //     *res = ft_strjoin_gc(*res, ft_strdup_gc("", gc), gc); COMMENTED NOW
     return (j);
 }
 

@@ -63,9 +63,11 @@ bool	handle_argument(t_command *cmd, t_token *token,
 
 char	*expand_inside_double_quotes(const char *str, t_gc **gc, t_env *env)
 {
-	char	*res = ft_strdup_gc("", gc);
-	int		i = 0;
+	char	*res;
+	int		i;
 
+    res = ft_strdup_gc("", gc);
+    i = 0;
 	while (str[i])
 	{
 		if (str[i] == '$')

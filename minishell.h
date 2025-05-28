@@ -144,7 +144,7 @@ char	*ft_strjoin_char_gc(const char *s, char c, t_gc **gc);
 char	**ft_split_gc(char const *s, char *c, t_gc **gc);
 // test
 // void print_command_structure(t_command *cmds);
-int count_args(char **args);
+// int count_args(char **args);
 
 
 #endif
