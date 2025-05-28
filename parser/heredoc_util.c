@@ -74,10 +74,7 @@ char	*handle_heredoc(const char *raw_delim, t_gc **gc, t_env *env)
 				free(line);
 			break ;
 		}
-		// if (!quoted)
-			expanded = expand_word_always_expand(line, gc, env);
-		// else
-		// 	expanded = ft_strdup_gc(line, gc);
+		expanded = expand_word_always_expand(line, gc, env);
 		write(fd, expanded, ft_strlen(expanded));
 		write(fd, "\n", 1);
 		free(line);
