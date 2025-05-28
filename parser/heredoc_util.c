@@ -26,8 +26,8 @@ char	*strip_quotes(const char *str, t_gc **gc)
 	int	len;
 
 	len = ft_strlen(str);
-	if (len >= 2 && ((str[0] == '\'' && str[len - 1] == '\'') ||
-					 (str[0] == '"' && str[len - 1] == '"')))
+	if (len >= 2 && ((str[0] == '\'' && str[len - 1] == '\'')
+			|| (str[0] == '"' && str[len - 1] == '"')))
 		return (ft_strndup(str + 1, len - 2, gc));
 	return (ft_strdup_gc(str, gc));
 }
@@ -46,10 +46,29 @@ char	*generate_temp_filename(t_gc **gc)
 	return (filename);
 }
 
-char	*handle_heredoc(const char *raw_delim, t_gc **gc, t_env *env)
+static void	write_heredoc_lines(int fd, char *delimiter, t_gc **gc, t_env *env)
 {
 	char	*line;
 	char	*expanded;
+
+	while (1)
+	{
+		line = readline("> ");
+		if (!line || ft_strcmp(line, delimiter) == 0)
+		{
+			if (line)
+				free(line);
+			break ;
+		}
+		expanded = expand_word_always_expand(line, gc, env);
+		write(fd, expanded, ft_strlen(expanded));
+		write(fd, "\n", 1);
+		free(line);
+	}
+}
+
+char	*handle_heredoc(const char *raw_delim, t_gc **gc, t_env *env)
+{
 	char	*tempfile;
 	char	*delimiter;
 	int		fd;
@@ -65,20 +84,7 @@ char	*handle_heredoc(const char *raw_delim, t_gc **gc, t_env *env)
 		g_exit_status = -1;
 		return (NULL);
 	}
-	while (1)
-	{
-		line = readline("> ");
-		if (!line || ft_strcmp(line, delimiter) == 0)
-		{
-			if (line)
-				free(line);
-			break ;
-		}
-		expanded = expand_word_always_expand(line, gc, env);
-		write(fd, expanded, ft_strlen(expanded));
-		write(fd, "\n", 1);
-		free(line);
-	}
+	write_heredoc_lines(fd, delimiter, gc, env);
 	close(fd);
 	return (tempfile);
 }
