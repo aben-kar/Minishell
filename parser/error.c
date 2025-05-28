@@ -12,7 +12,7 @@
 
 #include "../minishell.h"
 
-void bash_syntax_error(const char *token)
+void    bash_syntax_error(const char *token)
 {
     if (!token)
         ft_putstr_fd("minishell: syntax error near unexpected token `newline'\n", 2);
@@ -29,7 +29,7 @@ void bash_syntax_error(const char *token)
     g_exit_status = 2;
 }
 
-void bash_unclosed_quote_error(char quote)
+void    bash_unclosed_quote_error(char quote)
 {
     ft_putstr_fd("minishell: unexpected EOF while looking for matching `", 2);
     ft_putchar_fd(quote, 2);

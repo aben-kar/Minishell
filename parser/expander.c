@@ -12,7 +12,7 @@
 
 #include "../minishell.h"
 
-char	*get_env_val(const char *key, t_env *env)
+char    *get_env_val(const char *key, t_env *env)
 {
 	while (env)
 	{
@@ -23,7 +23,7 @@ char	*get_env_val(const char *key, t_env *env)
 	return (NULL);
 }
 
-int	handle_dollar(const char *word, char **res, int i, t_gc **gc, t_env *env)
+int handle_dollar(const char *word, char **res, int i, t_gc **gc, t_env *env)
 {
     char    *key;
     char    *val;

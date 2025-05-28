@@ -12,10 +12,11 @@
 
 #include "../minishell.h"
 
-bool handle_redirection(t_command *cmd, t_token **tokens,
+bool    handle_redirection(t_command *cmd, t_token **tokens,
     t_gc **gc, t_env *env, int type)
 {
     char    *filename;
+    char    *end;
 
     if (!tokens || !*tokens || !(*tokens)->value)
     {
@@ -34,17 +35,15 @@ bool handle_redirection(t_command *cmd, t_token **tokens,
     }
     while (*filename && ft_isspace(*filename))
         filename++;
-    char *end = filename + ft_strlen(filename) - 1;
+    end = filename + ft_strlen(filename) - 1;
     while (end > filename && ft_isspace(*end))
         end--;
     *(end + 1) = '\0';
-    
     if (!*filename)
     {
         bash_syntax_error("newline");
         return (false);
     }
-    
     cmd->redirects = add_redir(cmd->redirects, filename, type, gc);
     cmd->has_redirect = true;
     return (true);
