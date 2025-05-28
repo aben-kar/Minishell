@@ -132,6 +132,7 @@ bool	skip_post_equal(const char *input, int *i);
 char	*extract_token_value(const char *input, int start, int end, t_gc **gc);
 char	*expand_inside_double_quotes(const char *str, t_gc **gc, t_env *env);
 int		handle_dollar(const char *word, char **res, int i, t_gc **gc, t_env *env);
+char    *expand_word_always_expand(const char *word, t_gc **gc, t_env *env);
 // void	expand_command(t_command *cmd, t_env *env, t_gc **gc);
 // gc libft funcs
 void	*ft_calloc_gc(size_t nelem, size_t size, t_gc **gc);

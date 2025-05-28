@@ -53,6 +53,26 @@ int	handle_dollar(const char *word, char **res, int i, t_gc **gc, t_env *env)
     return (j);
 }
 
+char    *expand_word_always_expand(const char *word, t_gc **gc, t_env *env)
+{
+	char	*res;
+	int		i;
+
+	res = ft_strdup_gc("", gc);
+	i = 0;
+	while (word[i])
+	{
+		if (word[i] == '$')
+			i = handle_dollar(word, &res, i, gc, env);
+		else
+		{
+			res = ft_strjoin_char_gc(res, word[i], gc);
+			i++;
+		}
+	}
+	return (res);
+}
+
 char	*expand_word(const char *word, t_gc **gc, t_env *env)
 {
     char	*res;
