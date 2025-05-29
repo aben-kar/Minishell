@@ -1,0 +1,228 @@
+// void print_export(t_env **env, t_gc **gc)
+// {
+//     t_env *current = *env;
+
+//     while (current)
+//     {
+//         char *line = ft_strjoin_gc("declare -x ", current->key, gc);
+//         if (current->value != NULL)
+//         {
+//             if (*(current->value))
+//             {
+//                 char *eq = ft_strjoin_gc(line, "=\"", gc);
+//                 char *val = ft_strjoin_gc(eq, current->value, gc);
+//                 char *final = ft_strjoin_gc(val, "\"", gc);
+//                 ft_putendl_fd(final, 1);
+//             }
+//             else
+//             {
+//                 char *eq = ft_strjoin_gc(line, "=\"\"", gc);
+//                 ft_putendl_fd(eq, 1);
+//             }
+//         }
+//         else                        // without value
+//             ft_putendl_fd(line, 1); // IYAS
+//         current = current->next;
+//     }
+// }
+
+// int alpha(char *args)
+// {
+//     int i = 0;
+//     while (args[i])
+//     {
+//         if ((args[i] >= 'a' && args[i] <= 'z') || (args[i] >= 'A' && args[i] <= 'Z') || (args[i] >= '0' && args[i] <= '9'))
+//             return (1);
+//         i++;
+//     }
+//     return (0);
+// }
+
+// void print_error(char *key, t_gc **gc)
+// {
+//     char *error_1 = ft_strjoin_gc("export: ", key, gc);
+//     char *error_2 = ft_strjoin_gc(error_1, ": not a valid identifier", gc);
+//     ft_putendl_fd(error_2, 1);
+//     g_exit_status = 1;
+// }
+
+// int count_plus(char *arg)
+// {
+//     char *equal = ft_strchr(arg, '=');
+//     int plus_count = 0;
+
+//     int i = 0;
+//     while (arg[i] && (&arg[i]) < equal)
+//     {
+//         if (arg[i] == '+')
+//             plus_count++;
+//         i++;
+//     }
+
+//     return (plus_count);
+// }
+
+// int equal_or_plus(char *arg)
+// {
+//     char *equal = ft_strchr(arg, '=');
+//     if (*(equal - 1) == '+')
+//     {
+//         if (count_plus(arg) > 1)
+//             return 2;
+//         return 1; // valid KEY+=value
+//     }
+//     return 0; // '=' kayna
+// }
+
+// void ft_export(char **args, t_env **env, t_gc **gc)
+// {
+//     if (!args[0] || !*args)
+//         print_export(env, gc);
+//     else
+//     {
+//         int i = 0;
+//         t_env *tmp = *env;
+//         while (args[i])
+//         {
+//             printf ("args ==> %s\n", args[i]);
+//             char *key = NULL;
+//             char *value = NULL;
+//             if (!alpha(args[i]))
+//             {
+//                 print_error(args[i], gc);
+//                 i++;
+//             }
+            
+//             char *equal = ft_strchr(args[i], '=');
+//             if (equal)
+//             {
+//                 // if (espace_before_equal(equal) == 1)
+//                 // {
+//                 //     print_error(args[i], gc);
+//                 //     // return ;
+//                 // }
+//                 int check_equal = equal_or_plus(*args);
+//                 if (check_equal == 0)
+//                 {
+//                     key_with_equal(args[i], &key, &value, &tmp, gc);
+//                 }
+//                 else if (check_equal == 1)
+//                 {
+//                     key_with_plus(args[i], &key, &value, &tmp, gc);
+//                 }
+//                 else
+//                 {
+//                     print_error(args[i], gc);
+//                 }
+//             }
+//             else
+//             {
+//                 char *key = args[i];
+//                 char *value = NULL;
+//                 insert_at_end(&tmp, key, value, gc);
+//             }
+//             i++;
+//         }
+//     }
+// }
+
+// ------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------------
+
+// bool check_key(char *args)
+// {
+//     int i = 0;
+//     while (args[i])
+//     {
+//         if (!(ft_isalnum(args[i]) || args[i] == '_' || args[i] == 36))
+//             return (false);
+//         i++;
+//     }
+//     return (true);
+// }
+
+// bool first_char(char *key)
+// {
+//     int i = 0;
+//     if ((key[i] >= '0' && key[i] <= '9') || key[i] == 61)
+//         return (false);
+//     return(true);
+// }
+
+// char *implement_key(char *args, t_gc **gc)
+// {
+//     char *key;
+//     int is_equal = equal_or_plus(args);
+//     char *equal = ft_strchr(args, '=');
+//     int position_equal;
+//     if (is_equal == 0)
+//     {
+//         position_equal = equal - args;
+//         key = ft_substr_gc(args, 0, position_equal, gc);
+//     }
+//     else
+//     {
+//         position_equal = equal - args - 1;
+//         key = ft_substr_gc(args, 0, position_equal, gc);
+//     }
+//     return (key);
+    
+// }
+// char *implement_value(char *args, t_gc **gc)
+// {
+//     char *value;
+//     char *equal = ft_strchr(args, '=');
+//     if (*(equal + 1) == '\0')
+//         value = ft_strdup_gc("", gc);
+//     else
+//         value = ft_strdup_gc(equal + 1, gc);
+//     return (value);
+// }
+
+// void key_with_equal(char *arg, char **key, char **value, t_env **env, t_gc **gc)
+// {
+//     t_env *tmp = *env;
+//     *key = implement_key(arg, gc);
+//     if ((first_char(*key) == false) || (check_key(*key) == false))
+//     {
+//         print_error(*key, gc);
+//         return ;
+//     }
+//     *value = implement_value(arg, gc);
+//     t_env *repetition = *env;
+//     while (repetition)
+//     {
+//         if (ft_strcmp(repetition->key, *key) == 0)
+//         {
+//             repetition->value = *value;
+//             return ;
+//         }
+//         repetition = repetition->next;
+//     }
+//     insert_at_end(&tmp, *key, *value, gc);
+// }
+
+// void key_with_plus(char *arg, char **key, char **value, t_env **env, t_gc **gc)
+// {
+//     t_env *tmp = *env;
+//     *key = implement_key(arg, gc);
+//     if ((first_char(*key) == false) || (check_key(*key) == false))
+//     {
+//         print_error(*key, gc);
+//         return ;
+//     }
+//     *value = implement_value(arg, gc);
+    
+//     t_env *repetition = *env;
+//     while (repetition)
+//     {
+//         if ((ft_strcmp(repetition->key, *key)) == 0)
+//         {
+//             char *new_val = ft_strjoin_gc(repetition->value, *value, gc);
+//             repetition->value = new_val;
+//             return ;
+//         }
+//         repetition = repetition->next;
+//     }
+//     insert_at_end(&tmp, *key, *value, gc);
+// }
