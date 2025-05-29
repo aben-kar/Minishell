@@ -97,7 +97,12 @@ char	*expand_word(const char *word, t_gc **gc, t_env *env)
 			i++;
 		}
 		else if (word[i] == '$' && !in_single)
-			i = handle_dollar(word, &res, i, gc, env);
+		{
+			if (word[i + 1] == '"' || word[i + 1] == '\'')
+				i++;
+			else
+				i = handle_dollar(word, &res, i, gc, env);
+		}
 		else
 		{
 			res = ft_strjoin_char_gc(res, word[i], gc);
