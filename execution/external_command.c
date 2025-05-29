@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   external_command.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
+/*   By: achraf <achraf@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 18:21:38 by acben-ka          #+#    #+#             */
-/*   Updated: 2025/05/26 21:30:37 by acben-ka         ###   ########.fr       */
+/*   Updated: 2025/05/29 01:03:52 by achraf           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,7 @@ char **get_path(t_env *envp, t_gc **gc)
         {
             split_path = ft_split_gc(found + 5, ":", gc);
             if (!split_path)
-            {
-                write(2, "PATH Not Found In Environment./n", 31);
                 return (NULL);
-            }
             return (split_path);
         }
         copier_env++;
@@ -44,8 +41,9 @@ char *find_executable_path(t_command *shell, t_env *envp, t_gc **gc)
 {
     if (!shell->cmd || !shell->cmd[0] || !shell->cmd[0][0])
     {
-        printf("empty cmd\n");
-        return NULL;
+        shell->cmd = shell->cmd + 1;
+        if (!shell->cmd || !shell->cmd[0] || !shell->cmd[0][0])
+            return NULL;
     }
     
     if (ft_strchr(shell->cmd[0], '/'))
@@ -66,8 +64,8 @@ char *find_executable_path(t_command *shell, t_env *envp, t_gc **gc)
     char **directory = get_path(envp, gc);
     if (!directory)
     {
-        write_error(shell->cmd[0], 2); // Command not found
-        g_exit_status = 1; // test
+        write_error(shell->cmd[0], 0);
+        // g_exit_status = 1; // test
         return NULL;
     }
     

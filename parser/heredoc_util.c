@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_util.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zaakrab <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: achraf <achraf@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 18:00:39 by zaakrab           #+#    #+#             */
-/*   Updated: 2025/05/26 18:00:40 by zaakrab          ###   ########.fr       */
+/*   Updated: 2025/05/28 22:23:15 by achraf           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ char	*handle_heredoc(const char *raw_delim, t_gc **gc, t_env *env)
 	char	*delimiter;
 	int		fd;
 	bool	quoted;
+	(void)quoted;
 
 	quoted = is_quoted_delimiter(raw_delim);
 	delimiter = strip_quotes(raw_delim, gc);

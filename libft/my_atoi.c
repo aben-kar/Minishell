@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_aatoi.c                                         :+:      :+:    :+:   */
+/*   my_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
+/*   By: achraf <achraf@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 18:31:44 by acben-ka          #+#    #+#             */
-/*   Updated: 2025/05/25 18:33:01 by acben-ka         ###   ########.fr       */
+/*   Updated: 2025/05/29 00:46:50 by achraf           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,9 @@ long long	ft_aatoi(char *s)
 		int digit = s[i] - '0';
 
 		if (((rs * sign) > (LLONG_MAX - digit) / 10))
-			return (11);
+			return (LLONG_MAX);
 		if (((rs * sign) < (LLONG_MIN + digit) / 10))
-			return (11);
+			return (LLONG_MIN);
 		rs = rs * 10 + digit;
 		i++;
 	}

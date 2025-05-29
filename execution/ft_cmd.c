@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cmd.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
+/*   By: achraf <achraf@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 22:26:01 by achraf            #+#    #+#             */
-/*   Updated: 2025/05/26 20:25:53 by acben-ka         ###   ########.fr       */
+/*   Updated: 2025/05/29 01:26:42 by achraf           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,17 +16,17 @@ void excute_external_cmd(t_command *cmd, t_env *env, t_gc **gc)
 {
     char **copier_env = env_to_array(env, gc);
     char *cmd_path = find_executable_path(cmd, env, gc);
-    
+
     // Ila mal9nach l command, l exit status deja set f find_executable_path
     if (!cmd_path)
         return; // Hir return bla matset g_exit_status merra khra
-    
+
     int id = fork();
     if (id == 0)
     {
         signal(SIGINT, SIG_DFL);
         signal(SIGQUIT, SIG_DFL);
-        
+
         // Handle redirections
         if (cmd->has_redirect)
         {
@@ -68,6 +68,7 @@ void excute_external_cmd(t_command *cmd, t_env *env, t_gc **gc)
                 }
                 else if (redir->type == REDIR_HEREDOC)
                 {
+                    printf("dkhel\n");
                     int herdoc = open(redir->filename, O_RDONLY);
                     if (herdoc < 0)
                     {
@@ -81,7 +82,7 @@ void excute_external_cmd(t_command *cmd, t_env *env, t_gc **gc)
                 redir = redir->next;
             }
         }
-        
+
         if (execve(cmd_path, cmd->cmd, copier_env) == -1)
             exit(127); // Execve failed
     }
@@ -108,7 +109,69 @@ void built_in(t_command *cmd, t_env *env, t_gc **gc)
     char *builtins[] = {"echo", "cd", "pwd", "export", "unset", "env", "exit", NULL};
     int j = 0;
     int found = 0;
+    int save_in = -1;
+    int save_out = -1;
 
+    if (cmd->has_redirect)
+    {
+        save_in = dup(STDIN_FILENO);
+        save_out = dup(STDOUT_FILENO);
+        if (cmd->has_redirect)
+        {
+            t_redirect *redir = cmd->redirects;
+            while (redir)
+            {
+                if (redir->type == REDIR_IN)
+                {
+                    int in_fd = open(redir->filename, O_RDONLY);
+                    if (in_fd < 0)
+                    {
+                        perror("open");
+                        exit(1);
+                    }
+                    dup2(in_fd, STDIN_FILENO);
+                    close(in_fd);
+                }
+                else if (redir->type == REDIR_OUT)
+                {
+                    int out_fd = open(redir->filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+                    if (out_fd < 0)
+                    {
+                        perror("open");
+                        exit(1);
+                    }
+                    dup2(out_fd, STDOUT_FILENO);
+                    close(out_fd);
+                }
+                else if (redir->type == REDIR_APPEND)
+                {
+                    int append_fd = open(redir->filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
+                    if (append_fd < 0)
+                    {
+                        perror("open");
+                        exit(1);
+                    }
+                    dup2(append_fd, STDOUT_FILENO);
+                    close(append_fd);
+                }
+                else if (redir->type == REDIR_HEREDOC)
+                {
+                    printf("dkhel\n");
+                    int herdoc = open(redir->filename, O_RDONLY);
+                    if (herdoc < 0)
+                    {
+                        perror("open");
+                        exit(1);
+                    }
+                    dup2(herdoc, STDIN_FILENO);
+                    close(herdoc);
+                    unlink(redir->filename);
+                }
+                redir = redir->next;
+            }
+        }
+    }
+    
     while (builtins[j])
     {
         if ((ft_strcmp(cmd->cmd[0], builtins[j])) == 0)
@@ -131,6 +194,19 @@ void built_in(t_command *cmd, t_env *env, t_gc **gc)
             break;
         }
         j++;
+    }
+    if (cmd->has_redirect)
+    {
+        if (save_in != -1)
+        {
+            dup2(save_in, STDIN_FILENO);
+            close(save_in);
+        }
+        if (save_out != 1)
+        {
+            dup2(save_out, STDOUT_FILENO);
+            close(save_out);
+        }
     }
     if (found == 0)
     {

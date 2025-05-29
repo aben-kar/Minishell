@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
+/*   By: achraf <achraf@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 15:31:35 by acben-ka          #+#    #+#             */
-/*   Updated: 2025/05/27 22:36:34 by acben-ka         ###   ########.fr       */
+/*   Updated: 2025/05/28 22:57:44 by achraf           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,25 +47,25 @@ bool check_plus(char *args)
     while (args[i])
     {
         if (!(ft_isalnum(args[i]) || ft_isdigit(args[i]) || args[i] == '_'))
-            return (false);          
+            return (false);
         i++;
     }
     return (true);
 }
 
-// int heandel_equal(char *args)
-// {
-//     // int i = 0;
-//     while (args)
-//     {
-//         if (*(args - 1) == '\0')
-//             return 1;
-//         else if (*(args + 1) == '\0')
-//             return 2;
-//         args++;
-//     }
-//     return 0;
-// }
+int handel_equal(char *args)
+{
+    // int i = 0;
+    while (args)
+    {
+        if (*(args - 1) == '\0')
+            return 1;
+        else if (*(args + 1) == '\0')
+            return 2;
+        args++;
+    }
+    return 0;
+}
 
 int ft_export(char **args, t_env **env, t_gc **gc)
 {
@@ -90,51 +90,60 @@ int ft_export(char **args, t_env **env, t_gc **gc)
                     ft_putendl_fd(eq, 1);
                 }
             }
-            else // without value
+            else                        // without value
                 ft_putendl_fd(line, 1); // IYAS
             tmp = tmp->next;
         }
     }
 
-    else
+    
+    
+    t_env *tmp = *env;
+    int i = 0;
+    while (args[i])
     {
-        t_env *tmp = *env;
-        int i = 0;
-        while (args[i])
+        if (!ft_isalpha(args[i][0]) && !(ft_isalpha(args[i][0]) && ft_isdigit(args[i][0])))
         {
-            // printf("%s\n", args[i]);
-            char *equal = ft_strchr(args[i], '='); // test+=test
-            if (equal)
+            print_error(args[i], gc);
+            return 1;
+        }
+        char *equal = ft_strchr(args[i], '='); // test+=test
+        if (equal)
+        {
+            if (handel_equal(equal) == 1)
             {
-                // printf ("hena\n");
-                char *key = NULL;
-                char *value = NULL;
-                int string_len = equal - args[i] + 1;
-                char *string = ft_substr_gc(args[i], 0, string_len, gc); // test=
-                int check_is_equal = is_equal_alone(string);
-                int exit_code;
-                if (check_is_equal == 0)
-                {
-                    exit_code = key_with_equal(args[i], &key, &value, &tmp, gc);
-                    return (exit_code);
-                }
-                else if (check_is_equal == 1)
-                    key_with_plus(args[i], &key, &value, &tmp, gc);
-                else
-                    print_error(args[i], gc);
+                print_error(args[i], gc);
+                return (1);
             }
-            // if ((heandel_equal(equal) == 1) || (heandel_equal(equal) == 2))
-            // {
-            //     printf ("==> allo\n");
-            // }
+            char *key = NULL;
+            char *value = NULL;
+            int string_len = equal - args[i] + 1;
+            char *string = ft_substr_gc(args[i], 0, string_len, gc); // test=
+            int check_is_equal = is_equal_alone(string);
+            int exit_code;
+            if (check_is_equal == 0)
+            {
+                exit_code = key_with_equal(args[i], &key, &value, &tmp, gc);
+                return (exit_code);
+            }
+            else if (check_is_equal == 1)
+            {
+                exit_code = key_with_plus(args[i], &key, &value, &tmp, gc);
+                return (exit_code);
+            }
             else
             {
-                char *key = args[i];
-                char *value = NULL;
-                insert_at_end(&tmp, key, value, gc);
+                print_error(args[i], gc);
+                return(1);   
             }
-            i++;
         }
+        else
+        {
+            char *key = args[i];
+            char *value = NULL;
+            insert_at_end(&tmp, key, value, gc);
+        }
+        i++;
     }
     return (0);
 }
