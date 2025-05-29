@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_pipeline.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: achraf <achraf@student.42.fr>              +#+  +:+       +#+        */
+/*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 18:11:45 by achraf            #+#    #+#             */
-/*   Updated: 2025/05/29 03:12:15 by achraf           ###   ########.fr       */
+/*   Updated: 2025/05/29 15:30:07 by acben-ka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,9 +165,7 @@ void execute_multi_pipe(t_command *cmd, t_env *env, t_gc **gc)
         {
             int exit_status = handle_exit_status(status);
             if (j == cmd_count - 1)
-            {
                 last_status = exit_status; // nsetiw last status
-            }
         }
         j++;
     }

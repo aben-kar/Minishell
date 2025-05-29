@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   external_command.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: achraf <achraf@student.42.fr>              +#+  +:+       +#+        */
+/*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 18:21:38 by acben-ka          #+#    #+#             */
-/*   Updated: 2025/05/29 01:03:52 by achraf           ###   ########.fr       */
+/*   Updated: 2025/05/29 16:23:06 by acben-ka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ char **get_path(t_env *envp, t_gc **gc)
 
 char *find_executable_path(t_command *shell, t_env *envp, t_gc **gc)
 {
+    // t_stat info;
     if (!shell->cmd || !shell->cmd[0] || !shell->cmd[0][0])
     {
         shell->cmd = shell->cmd + 1;
@@ -48,6 +49,11 @@ char *find_executable_path(t_command *shell, t_env *envp, t_gc **gc)
     
     if (ft_strchr(shell->cmd[0], '/'))
     {
+        // if ((stat(shell->cmd[0], &info) == 0) && S_ISDIR(info.st_mode))
+        // {
+        //     write_error(shell->cmd[0], 3); // Is a directory
+        //     return NULL;
+        // }
         if (access(shell->cmd[0], F_OK) != 0)
         {
             write_error(shell->cmd[0], 0); // No such file or directory
@@ -65,7 +71,6 @@ char *find_executable_path(t_command *shell, t_env *envp, t_gc **gc)
     if (!directory)
     {
         write_error(shell->cmd[0], 0);
-        // g_exit_status = 1; // test
         return NULL;
     }
     
@@ -113,9 +118,7 @@ bool check_command(t_command *cmd)
 void execute_command(t_command *shell, t_env *env, t_gc **gc)
 {
     if (check_command(shell) == true) // external command
-    {
         excute_external_cmd(shell, env, gc);
-    }
     
     else if (check_command(shell) == false)
         built_in(shell, env, gc);

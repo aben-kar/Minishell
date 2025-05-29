@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: achraf <achraf@student.42.fr>              +#+  +:+       +#+        */
+/*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 15:32:12 by acben-ka          #+#    #+#             */
-/*   Updated: 2025/05/23 23:38:38 by achraf           ###   ########.fr       */
+/*   Updated: 2025/05/29 16:19:45 by acben-ka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,12 @@ char **env_to_array(t_env *env, t_gc **gc)
 }
 void write_error(char *cmd, int error_code)
 {
+    // if (error_code == 3)
+    // {
+    //     ft_putstr_fd(cmd, 2);
+    //     ft_putstr_fd(": is a directory\n", 2);
+    //     g_exit_status = 126; // Is a directory
+    // }
     if (error_code == 2) // Command not found
     {
         ft_putstr_fd(cmd, 2);
