@@ -48,8 +48,11 @@ $> export HOLA = bonjour ==> error\
 
 
 
-"$> export HOLA$USER=bonjour ===> HOLAvietdu91=bonjourcat << de'l'
+"$> export HOLA$USER=bonjour ===> HOLAvietdu91=bonjour
+////////////////////////////////////////////////
+cat << de'l'
 do not expand when quotes in delimiter and skip quotes
+////////////////////////////////////////////////
 minishell$ export ok= ok2=
 minishell$ env | grep ok
 export ok=a b | ambiguis redirect (test bash)

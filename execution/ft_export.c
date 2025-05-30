@@ -6,15 +6,65 @@
 /*   By: achraf <achraf@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 15:31:35 by acben-ka          #+#    #+#             */
-/*   Updated: 2025/05/28 22:57:44 by achraf           ###   ########.fr       */
+/*   Updated: 2025/05/30 03:03:50 by achraf           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 // #include "minishell.h"
 #include "../minishell.h"
 
+void print_export(t_env **env, t_gc **gc)
+{
+    t_env *current = *env;
+
+    while (current)
+    {
+        char *line = ft_strjoin_gc("declare -x ", current->key, gc);
+        if (current->value != NULL)
+        {
+            if (*(current->value))
+            {
+                char *eq = ft_strjoin_gc(line, "=\"", gc);
+                char *val = ft_strjoin_gc(eq, current->value, gc);
+                char *final = ft_strjoin_gc(val, "\"", gc);
+                ft_putendl_fd(final, 1);
+            }
+            else
+            {
+                char *eq = ft_strjoin_gc(line, "=\"\"", gc);
+                ft_putendl_fd(eq, 1);
+            }
+        }
+        else                        // without value
+            ft_putendl_fd(line, 1); // IYAS
+        current = current->next;
+    }
+}
+
+int alpha(char *args)
+{
+    int i = 0;
+    while (args[i])
+    {
+        if ((args[i] >= 'a' && args[i] <= 'z') || (args[i] >= 'A' && args[i] <= 'Z'))
+            return (1);
+        i++;
+    }
+    return (0);
+}
+
+void print_error(char *key, t_gc **gc)
+{
+    char *error_1 = ft_strjoin_gc("export: ", key, gc);
+    char *error_2 = ft_strjoin_gc(error_1, ": not a valid identifier", gc);
+    ft_putendl_fd(error_2, 1);
+    g_exit_status = 1;
+}
+
 int count_plus(char *arg)
 {
+    if (!arg || !arg[0])
+        return 0;
     char *equal = ft_strchr(arg, '=');
     int plus_count = 0;
 
@@ -29,7 +79,7 @@ int count_plus(char *arg)
     return (plus_count);
 }
 
-int is_equal_alone(char *arg)
+int equal_or_plus(char *arg)
 {
     char *equal = ft_strchr(arg, '=');
     if (*(equal - 1) == '+')
@@ -41,103 +91,42 @@ int is_equal_alone(char *arg)
     return 0; // '=' kayna
 }
 
-bool check_plus(char *args)
-{
-    int i = 0;
-    while (args[i])
-    {
-        if (!(ft_isalnum(args[i]) || ft_isdigit(args[i]) || args[i] == '_'))
-            return (false);
-        i++;
-    }
-    return (true);
-}
-
-int handel_equal(char *args)
-{
-    // int i = 0;
-    while (args)
-    {
-        if (*(args - 1) == '\0')
-            return 1;
-        else if (*(args + 1) == '\0')
-            return 2;
-        args++;
-    }
-    return 0;
-}
-
-int ft_export(char **args, t_env **env, t_gc **gc)
+void ft_export(char **args, t_env **env, t_gc **gc)
 {
     if (!args[0] || !*args)
-    {
-        t_env *tmp = *env;
-        while (tmp)
-        {
-            char *line = ft_strjoin_gc("declare -x ", tmp->key, gc);
-            if (tmp->value != NULL)
-            {
-                if (*(tmp->value))
-                {
-                    char *eq = ft_strjoin_gc(line, "=\"", gc);
-                    char *val = ft_strjoin_gc(eq, tmp->value, gc);
-                    char *final = ft_strjoin_gc(val, "\"", gc);
-                    ft_putendl_fd(final, 1);
-                }
-                else
-                {
-                    char *eq = ft_strjoin_gc(line, "=\"\"", gc);
-                    ft_putendl_fd(eq, 1);
-                }
-            }
-            else                        // without value
-                ft_putendl_fd(line, 1); // IYAS
-            tmp = tmp->next;
-        }
-    }
+        print_export(env, gc);
 
-    
-    
-    t_env *tmp = *env;
     int i = 0;
+    t_env *tmp = *env;
     while (args[i])
     {
-        if (!ft_isalpha(args[i][0]) && !(ft_isalpha(args[i][0]) && ft_isdigit(args[i][0])))
+        char *key = NULL;
+        char *value = NULL;
+        if (!alpha(args[i]))
         {
             print_error(args[i], gc);
-            return 1;
+            i++;
+            continue;
         }
-        char *equal = ft_strchr(args[i], '='); // test+=test
+        
+        char *equal = ft_strchr(args[i], '=');
         if (equal)
         {
-            if (handel_equal(equal) == 1)
+            int check_equal = equal_or_plus(args[i]);
+            if (check_equal == 0)
             {
-                print_error(args[i], gc);
-                return (1);
+                key_with_equal(args[i], &key, &value, &tmp, gc);
             }
-            char *key = NULL;
-            char *value = NULL;
-            int string_len = equal - args[i] + 1;
-            char *string = ft_substr_gc(args[i], 0, string_len, gc); // test=
-            int check_is_equal = is_equal_alone(string);
-            int exit_code;
-            if (check_is_equal == 0)
+            else if (check_equal == 1)
             {
-                exit_code = key_with_equal(args[i], &key, &value, &tmp, gc);
-                return (exit_code);
-            }
-            else if (check_is_equal == 1)
-            {
-                exit_code = key_with_plus(args[i], &key, &value, &tmp, gc);
-                return (exit_code);
+                key_with_plus(args[i], &key, &value, &tmp, gc);
             }
             else
             {
                 print_error(args[i], gc);
-                return(1);   
             }
         }
-        else
+        else if (!equal)
         {
             char *key = args[i];
             char *value = NULL;
@@ -145,5 +134,4 @@ int ft_export(char **args, t_env **env, t_gc **gc)
         }
         i++;
     }
-    return (0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_pipeline.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
+/*   By: achraf <achraf@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 18:11:45 by achraf            #+#    #+#             */
-/*   Updated: 2025/05/29 15:30:07 by acben-ka         ###   ########.fr       */
+/*   Updated: 2025/05/30 04:09:15 by achraf           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,8 +164,16 @@ void execute_multi_pipe(t_command *cmd, t_env *env, t_gc **gc)
         if ((waitpid(pids[j], &status, 0)) > 0)
         {
             int exit_status = handle_exit_status(status);
+            
             if (j == cmd_count - 1)
+            {
+                if (exit_status == 131)
+                    write(1, "quit (core dumped)\n", 19);
+                else if (exit_status == 130)
+                    write(1, "\n", 1);
                 last_status = exit_status; // nsetiw last status
+                
+            }
         }
         j++;
     }

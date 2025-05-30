@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
+/*   By: achraf <achraf@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 16:23:09 by acben-ka          #+#    #+#             */
-/*   Updated: 2025/05/27 15:36:42 by acben-ka         ###   ########.fr       */
+/*   Updated: 2025/05/30 04:11:18 by achraf           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ typedef struct s_env // about env
 int ft_echo(char **args);
 int ft_cd(char **args, t_env *env, t_gc **gc);
 int ft_pwd(void);
-int ft_export(char **args, t_env **env, t_gc **gc);
+void ft_export(char **args, t_env **env, t_gc **gc);
 int ft_env(t_env *env);
 int ft_unset(char **args, t_env **env);
 int ft_exit(char **args, t_gc **gc);
@@ -79,9 +79,10 @@ int ft_exit(char **args, t_gc **gc);
 t_env *init_copier_env(char **envp, t_gc **gc);
 void insert_at_end(t_env **head, char *key, char *value, t_gc **gc);
 void print_error(char *key, t_gc **gc);
-bool check_plus(char *args);
-int key_with_equal(char *arg, char **key, char **value, t_env **env, t_gc **gc);
-int key_with_plus(char *arg, char **key, char **value, t_env **env, t_gc **gc);
+// bool check_plus(char *args);
+int equal_or_plus(char *arg);
+void key_with_equal(char *arg, char **key, char **value, t_env **env, t_gc **gc);
+void key_with_plus(char *arg, char **key, char **value, t_env **env, t_gc **gc);
 // execution
 void execute_command(t_command *shell, t_env *env, t_gc **gc);
 char **env_to_array(t_env *env, t_gc **gc);
@@ -93,6 +94,7 @@ void write_error(char *cmd, int error_code);
 // multi-pipe
 void execute_multi_pipe(t_command *cmd, t_env *env, t_gc **gc);
 void excute_cmd_in_pipe(t_command *cmd, t_env *env, t_gc **gc);
+int handle_exit_status(int status);
 
 // ---------------------------------------------------------------------
 

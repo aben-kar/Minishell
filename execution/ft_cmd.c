@@ -6,12 +6,22 @@
 /*   By: achraf <achraf@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 22:26:01 by achraf            #+#    #+#             */
-/*   Updated: 2025/05/29 01:26:42 by achraf           ###   ########.fr       */
+/*   Updated: 2025/05/30 04:15:41 by achraf           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
+int contains_space(char *str)
+{
+    while (*str)
+    {
+        if (*str == ' ')
+            return 1;
+        str++;
+    }
+    return 0;
+}
 void excute_external_cmd(t_command *cmd, t_env *env, t_gc **gc)
 {
     char **copier_env = env_to_array(env, gc);
@@ -46,6 +56,11 @@ void excute_external_cmd(t_command *cmd, t_env *env, t_gc **gc)
                 }
                 else if (redir->type == REDIR_OUT)
                 {
+                    if (!redir->filename || !redir->filename[0] || contains_space(redir->filename))
+                    {
+                        ft_putendl_fd("ambiguous redirect", 2);
+                        exit(1);
+                    }
                     int out_fd = open(redir->filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
                     if (out_fd < 0)
                     {
@@ -92,14 +107,12 @@ void excute_external_cmd(t_command *cmd, t_env *env, t_gc **gc)
         signal(SIGQUIT, SIG_IGN);
         int status;
         waitpid(id, &status, 0);
-        if (WIFSIGNALED(status))
-        {
-            g_exit_status = 128 + WTERMSIG(status);
-            if (g_exit_status == 131)
-                write(1, "quit (core dumped)\n", 19);
-            else if (g_exit_status == 130)
-                write(1, "\n", 1);
-        }
+        int exit_code = handle_exit_status(status);
+        if (exit_code == 131)
+            write(1, "quit (core dumped)\n", 19);
+        else if (exit_code == 130)
+            write(1, "\n", 1);
+        g_exit_status = exit_code;
         setup_signals();
     }
 }
@@ -171,7 +184,7 @@ void built_in(t_command *cmd, t_env *env, t_gc **gc)
             }
         }
     }
-    
+
     while (builtins[j])
     {
         if ((ft_strcmp(cmd->cmd[0], builtins[j])) == 0)
@@ -186,7 +199,7 @@ void built_in(t_command *cmd, t_env *env, t_gc **gc)
             else if ((ft_strcmp(cmd->cmd[0], "env")) == 0) // env
                 g_exit_status = ft_env(env);
             else if ((ft_strcmp(cmd->cmd[0], "export")) == 0) // export
-                g_exit_status = ft_export(cmd->cmd + 1, &env, gc);
+                ft_export(cmd->cmd + 1, &env, gc);
             else if ((ft_strcmp(cmd->cmd[0], "unset")) == 0) // unset
                 g_exit_status = ft_unset(cmd->cmd + 1, &env);
             else if ((ft_strcmp(cmd->cmd[0], "exit")) == 0) // exit
