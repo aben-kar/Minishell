@@ -83,7 +83,6 @@ void excute_external_cmd(t_command *cmd, t_env *env, t_gc **gc)
                 }
                 else if (redir->type == REDIR_HEREDOC)
                 {
-                    printf("dkhel\n");
                     int herdoc = open(redir->filename, O_RDONLY);
                     if (herdoc < 0)
                     {
