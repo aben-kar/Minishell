@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: achraf <achraf@student.42.fr>              +#+  +:+       +#+        */
+/*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 15:31:35 by acben-ka          #+#    #+#             */
-/*   Updated: 2025/05/30 03:03:50 by achraf           ###   ########.fr       */
+/*   Updated: 2025/05/31 07:36:06 by acben-ka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,16 @@ int equal_or_plus(char *arg)
     }
     return 0; // '=' kayna
 }
+bool multiple_key(t_env *env, char *key)
+{
+    while (env)
+    {
+        if (ft_strcmp(env->key, key) == 0)
+            return true;
+        env = env->next;
+    }
+    return (false);
+}
 
 void ft_export(char **args, t_env **env, t_gc **gc)
 {
@@ -129,8 +139,17 @@ void ft_export(char **args, t_env **env, t_gc **gc)
         else if (!equal)
         {
             char *key = args[i];
-            char *value = NULL;
-            insert_at_end(&tmp, key, value, gc);
+            if ((first_char(key) == false) || (check_key(key) == false))
+            {
+                print_error(key, gc);
+                i++;
+                continue;
+            }
+            if (!multiple_key(tmp, key))
+            {
+                char *value = NULL;
+                insert_at_end(&tmp, key, value, gc);
+            }
         }
         i++;
     }

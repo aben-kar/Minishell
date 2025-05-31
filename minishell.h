@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: achraf <achraf@student.42.fr>              +#+  +:+       +#+        */
+/*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 16:23:09 by acben-ka          #+#    #+#             */
-/*   Updated: 2025/05/30 04:11:18 by achraf           ###   ########.fr       */
+/*   Updated: 2025/05/31 07:36:35 by acben-ka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,8 @@ void write_error(char *cmd, int error_code);
 void execute_multi_pipe(t_command *cmd, t_env *env, t_gc **gc);
 void excute_cmd_in_pipe(t_command *cmd, t_env *env, t_gc **gc);
 int handle_exit_status(int status);
+bool check_key(char *args);
+bool first_char(char *key);
 
 // ---------------------------------------------------------------------
 
