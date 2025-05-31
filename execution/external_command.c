@@ -44,7 +44,11 @@ char *find_executable_path(t_command *shell, t_env *envp, t_gc **gc)
     {
         shell->cmd = shell->cmd + 1;
         if (!shell->cmd || !shell->cmd[0] || !shell->cmd[0][0])
-            return NULL;
+        {
+            ft_putstr_fd("minishell: command not found\n", 2);
+            g_exit_status = 127;
+            return (NULL);
+        }
     }
     
     if (ft_strchr(shell->cmd[0], '/'))
