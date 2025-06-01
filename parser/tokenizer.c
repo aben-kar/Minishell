@@ -64,6 +64,11 @@ static t_token *handle_word_token(const char *input, int *i,
 	{
 		if (input[*i] == '\'' || input[*i] == '"')
 		{
+			if (input[*i + 1] == '"' || input[*i + 1] == '\'')
+			{
+				ft_putstr_fd("Command '' not found\n", 2);
+				return (NULL);
+			}
 			if (!skip_quoted(input, i))
 				return (NULL);
 		}
