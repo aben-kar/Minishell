@@ -33,3 +33,17 @@ char	*strip_quotes(const char *str, t_gc **gc)
 		return (ft_strndup(str + 1, len - 2, gc));
 	return (ft_strdup_gc(str, gc));
 }
+
+char	*generate_temp_filename(t_gc **gc)
+{
+	static int	counter;
+	char		*num;
+	char		*filename;
+
+	num = NULL;
+	filename = NULL;
+	counter = counter + 1;
+	num = ft_itoa_gc(counter, gc);
+	filename = ft_strjoin_gc("/tmp/.heredoc", num, gc);
+	return (filename);
+}

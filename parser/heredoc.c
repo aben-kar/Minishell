@@ -12,6 +12,32 @@
 
 #include "../minishell.h"
 
+static t_herdoc_line	*new_heredoc_node(char *line, bool quoted,
+	t_gc **gc, t_env *env)
+{
+	t_herdoc_line	*node;
+
+	node = gc_alloc(sizeof(t_herdoc_line), gc);
+	if (!node)
+		return (NULL);
+	if (quoted)
+		node->line = ft_strdup_gc(line, gc);
+	else
+		node->line = expand_word_always_expand(line, gc, env);
+	node->next = NULL;
+	return (node);
+}
+
+static void	append_heredoc_node(t_herdoc_line **head,
+	t_herdoc_line **tail, t_herdoc_line *new_node)
+{
+	if (!*head)
+		*head = new_node;
+	else
+		(*tail)->next = new_node;
+	*tail = new_node;
+}
+
 static t_herdoc_line	*collect_heredoc_lines(char *delimiter, bool quoted,
 	t_gc **gc, t_env *env)
 {
@@ -19,7 +45,6 @@ static t_herdoc_line	*collect_heredoc_lines(char *delimiter, bool quoted,
 	t_herdoc_line	*tail;
 	t_herdoc_line	*new_node;
 	char			*line;
-	char			*expanded;
 
 	head = NULL;
 	tail = NULL;
@@ -28,24 +53,13 @@ static t_herdoc_line	*collect_heredoc_lines(char *delimiter, bool quoted,
 		line = readline("> ");
 		if (!line || ft_strcmp(line, delimiter) == 0)
 		{
-			if (line)
-				free(line);
+			free(line);
 			break ;
 		}
-		new_node = gc_alloc(sizeof(t_herdoc_line), gc);
+		new_node = new_heredoc_node(line, quoted, gc, env);
 		if (!new_node)
 			break ;
-		if (quoted)
-			expanded = ft_strdup_gc(line, gc);
-		else
-			expanded = expand_word_always_expand(line, gc, env);
-		new_node->line = expanded;
-		new_node->next = NULL;
-		if (!head)
-			head = new_node;
-		else
-			tail->next = new_node;
-		tail = new_node;
+		append_heredoc_node(&head, &tail, new_node);
 		free(line);
 	}
 	return (head);
@@ -59,20 +73,6 @@ static void	write_heredoc_lines(int fd, t_herdoc_line *lines)
 		write(fd, "\n", 1);
 		lines = lines->next;
 	}
-}
-
-char	*generate_temp_filename(t_gc **gc)
-{
-	static int	counter;
-	char		*num;
-	char		*filename;
-
-	num = NULL;
-	filename = NULL;
-	counter = counter + 1;
-	num = ft_itoa_gc(counter, gc);
-	filename = ft_strjoin_gc("/tmp/.heredoc", num, gc);
-	return (filename);
 }
 
 char	*handle_heredoc(const char *raw_delim, t_gc **gc, t_env *env)
