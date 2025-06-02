@@ -6,7 +6,7 @@
 /*   By: achraf <achraf@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 14:47:31 by acben-ka          #+#    #+#             */
-/*   Updated: 2025/05/24 02:02:58 by achraf           ###   ########.fr       */
+/*   Updated: 2025/06/02 16:05:21 by achraf           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,46 @@ void insert_at_end(t_env **head, char *key, char *value, t_gc **gc) // char **en
         temp = temp->next;
     temp->next = new_node;
 
-    // return head;
+}
+
+void handle_shlvl_env(t_env **head, char *equal, t_gc **gc)
+{
+    int shlvl = 1;
+    char *key = ft_strdup_gc("SHLVL", gc);
+    
+    if (*(equal + 1) != '\0')
+        shlvl = ft_atoi(equal + 1) + 1;
+    
+    char *shlvl_str = ft_itoa(shlvl);
+    char *value = ft_strdup_gc(shlvl_str, gc);
+    free(shlvl_str);
+    
+    insert_at_end(head, key, value, gc);
+}
+
+void handle_regular_env(t_env **head, char *envp_line, char *equal, t_gc **gc)
+{
+    int key_len = equal - envp_line;
+    char *key = ft_substr_gc(envp_line, 0, key_len, gc);
+    char *value = ft_strdup_gc(equal + 1, gc);
+    
+    insert_at_end(head, key, value, gc);
+}
+
+void process_env_line(t_env **head, char *envp_line, t_gc **gc)
+{
+    char *equal = ft_strchr(envp_line, '=');
+    
+    if (!equal)
+        return;
+    
+    int key_len = equal - envp_line;
+    char *temp_key = ft_substr_gc(envp_line, 0, key_len, gc);
+    
+    if (ft_strcmp(temp_key, "SHLVL") == 0)
+        handle_shlvl_env(head, equal, gc);
+    else
+        handle_regular_env(head, envp_line, equal, gc);
 }
 
 t_env *init_copier_env(char **envp, t_gc **gc)
@@ -68,33 +107,9 @@ t_env *init_copier_env(char **envp, t_gc **gc)
 
     while (envp[i])
     {
-        char *equal = ft_strchr(envp[i], '=');
-        if (equal)
-        {
-            int key_len = equal - envp[i];
-            char *key = ft_substr_gc(envp[i], 0, key_len, gc);
-
-            if (ft_strcmp(key, "SHLVL") == 0)
-            {
-                int shlvl = 1;
-                if (*(equal + 1) != '\0')
-                    shlvl = ft_atoi(equal + 1) + 1;
-                char *shlvl_str = ft_itoa(shlvl);
-                char *value = ft_strdup_gc(shlvl_str, gc);
-                free(shlvl_str);
-                insert_at_end(&head, key, value, gc);
-            }
-            else
-            {
-                char *value = ft_strdup_gc(equal + 1, gc);
-                insert_at_end(&head, key, value, gc);
-            }
-        }
+        process_env_line(&head, envp[i], gc);
         i++;
     }
+    
     return head;
 }
-
-// PWD=/home/acben-ka/Desktop
-// SHLVL=1
-// _=/usr/bin/env

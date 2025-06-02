@@ -6,7 +6,7 @@
 /*   By: achraf <achraf@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 16:23:09 by acben-ka          #+#    #+#             */
-/*   Updated: 2025/05/30 04:11:18 by achraf           ###   ########.fr       */
+/*   Updated: 2025/06/02 16:29:16 by achraf           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,13 +94,17 @@ void execute_command(t_command *shell, t_env *env, t_gc **gc);
 char **env_to_array(t_env *env, t_gc **gc);
 char *find_executable_path(t_command *shell, t_env *envp, t_gc **gc);
 bool check_command(t_command *cmd);
-void excute_external_cmd(t_command *cmd, t_env *env, t_gc **gc);
+void execute_external_cmd(t_command *cmd, t_env *env, t_gc **gc);
 void built_in(t_command *cmd, t_env *env, t_gc **gc);
 void write_error(char *cmd, int error_code);
 // multi-pipe
 void execute_multi_pipe(t_command *cmd, t_env *env, t_gc **gc);
 void excute_cmd_in_pipe(t_command *cmd, t_env *env, t_gc **gc);
 int handle_exit_status(int status);
+bool first_char(char *key);
+int alpha(char *args);
+bool check_key(char *args);
+void handel_redirection(t_command *cmd);
 
 // ---------------------------------------------------------------------
 

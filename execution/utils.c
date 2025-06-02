@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
+/*   By: achraf <achraf@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 15:32:12 by acben-ka          #+#    #+#             */
-/*   Updated: 2025/05/29 16:19:45 by acben-ka         ###   ########.fr       */
+/*   Updated: 2025/06/02 16:10:09 by achraf           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,13 @@
 
 char **env_to_array(t_env *env, t_gc **gc)
 {
-    int i = 0;
+    int i;
     t_env *tmp = env;
     int size = 0;
     char **envp;
+
+    if (!env || !gc)
+        return (NULL);
     
     while (tmp)
     {
@@ -44,13 +47,21 @@ char **env_to_array(t_env *env, t_gc **gc)
 }
 void write_error(char *cmd, int error_code)
 {
-    // if (error_code == 3)
-    // {
-    //     ft_putstr_fd(cmd, 2);
-    //     ft_putstr_fd(": is a directory\n", 2);
-    //     g_exit_status = 126; // Is a directory
-    // }
-    if (error_code == 2) // Command not found
+    if (!cmd)
+        return ;
+    if (error_code == 4)
+    {
+        ft_putstr_fd(cmd, 2);
+        ft_putstr_fd(": syntax error near unexpected token `)'\n", 2);
+        g_exit_status = 2;
+    }   
+    else if (error_code == 3)
+    {
+        ft_putstr_fd(cmd, 2);
+        ft_putstr_fd(": is a directory\n", 2);
+        g_exit_status = 126; // Is a directory
+    }
+    else if (error_code == 2) // Command not found
     {
         ft_putstr_fd(cmd, 2);
         ft_putstr_fd(": command not found\n", 2);
@@ -69,5 +80,4 @@ void write_error(char *cmd, int error_code)
         ft_putstr_fd(": No such file or directory\n", 2);
         g_exit_status = 127;
     }
-    // Add more error codes as needed
 }

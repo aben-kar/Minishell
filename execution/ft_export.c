@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
+/*   By: achraf <achraf@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 15:31:35 by acben-ka          #+#    #+#             */
-/*   Updated: 2025/05/31 07:36:06 by acben-ka         ###   ########.fr       */
+/*   Updated: 2025/06/02 16:24:05 by achraf           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ void print_export(t_env **env, t_gc **gc)
         current = current->next;
     }
 }
+
 
 int alpha(char *args)
 {
@@ -101,56 +102,61 @@ bool multiple_key(t_env *env, char *key)
     return (false);
 }
 
-void ft_export(char **args, t_env **env, t_gc **gc)
+void handle_no_equal_case(char *arg, t_env **env, t_gc **gc)
 {
-    if (!args[0] || !*args)
-        print_export(env, gc);
-
-    int i = 0;
     t_env *tmp = *env;
+
+    if (!first_char(arg) || !check_key(arg))
+        return print_error(arg, gc);
+
+    if (!multiple_key(tmp, arg))
+    {
+        char *value = NULL;
+        insert_at_end(&tmp, arg, value, gc);
+    }
+}
+
+void handle_equal_case(char *arg, t_env **env, t_gc **gc)
+{
+    t_env *tmp = *env;
+    char *key = NULL;
+    char *value = NULL;
+
+    int check_equal = equal_or_plus(arg);
+    if (check_equal == 0)
+        key_with_equal(arg, &key, &value, &tmp, gc);
+    else if (check_equal == 1)
+        key_with_plus(arg, &key, &value, &tmp, gc);
+    else
+        print_error(arg, gc);
+}
+
+void process_single_arg(char *arg, t_env **env, t_gc **gc)
+{
+    if (!alpha(arg))
+        return print_error(arg, gc);
+
+    char *equal = ft_strchr(arg, '=');
+    if (equal)
+        handle_equal_case(arg, env, gc);
+    else
+        handle_no_equal_case(arg, env, gc);
+}
+
+void process_export_args(char **args, t_env **env, t_gc **gc)
+{
+    int i = 0;
     while (args[i])
     {
-        char *key = NULL;
-        char *value = NULL;
-        if (!alpha(args[i]))
-        {
-            print_error(args[i], gc);
-            i++;
-            continue;
-        }
-        
-        char *equal = ft_strchr(args[i], '=');
-        if (equal)
-        {
-            int check_equal = equal_or_plus(args[i]);
-            if (check_equal == 0)
-            {
-                key_with_equal(args[i], &key, &value, &tmp, gc);
-            }
-            else if (check_equal == 1)
-            {
-                key_with_plus(args[i], &key, &value, &tmp, gc);
-            }
-            else
-            {
-                print_error(args[i], gc);
-            }
-        }
-        else if (!equal)
-        {
-            char *key = args[i];
-            if ((first_char(key) == false) || (check_key(key) == false))
-            {
-                print_error(key, gc);
-                i++;
-                continue;
-            }
-            if (!multiple_key(tmp, key))
-            {
-                char *value = NULL;
-                insert_at_end(&tmp, key, value, gc);
-            }
-        }
+        process_single_arg(args[i], env, gc);
         i++;
     }
 }
+
+void ft_export(char **args, t_env **env, t_gc **gc)
+{
+    if (!args[0] || !*args)
+        return print_export(env, gc);
+    process_export_args(args, env, gc);
+}
+

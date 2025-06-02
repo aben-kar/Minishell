@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
+/*   By: achraf <achraf@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/19 14:21:32 by acben-ka          #+#    #+#             */
-/*   Updated: 2025/05/29 23:40:54 by acben-ka         ###   ########.fr       */
+/*   Updated: 2025/06/02 15:47:19 by achraf           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,25 +33,21 @@ void update_pwd_oldpwd(char *oldpwd, t_env **env, t_gc **gc)
     t_env *current = *env;
     char *newpwd = getcwd(NULL, 0);
 
-    // Update OLDPWD
     while (current)
     {
         if (ft_strcmp(current->key, "OLDPWD") == 0)
         {
-            // free(current->value);
             current->value = ft_strdup_gc(oldpwd, gc);
             break;
         }
         current = current->next;
     }
 
-    // Update PWD
     current = *env;
     while (current)
     {
         if (ft_strcmp(current->key, "PWD") == 0)
         {
-            // free(current->value);
             current->value = ft_strdup_gc(newpwd, gc);
             break;
         }
@@ -60,66 +56,81 @@ void update_pwd_oldpwd(char *oldpwd, t_env **env, t_gc **gc)
     free(newpwd);
 }
 
-int ft_cd(char **args, t_env *env, t_gc **gc)
+int handle_home_cd(t_env *env)
+{
+    char *to_home = print_home(env);
+    
+    if (!to_home)
+    {
+        ft_putendl_fd("cd: HOME not set", 2);
+        return 1;
+    }
+    else if (chdir(to_home) == -1)
+    {
+        perror("cd");
+        return 1;
+    }
+    return 0;
+}
+
+int validate_path(char *path)
 {
     t_stat info;
-    t_env *tmp = env;
+    
+    if ((stat(path, &info)) != 0)
+    {
+        ft_putendl_fd("cd: No such file or directory", 1);
+        return 1;
+    }
+    
+    if (!S_ISDIR(info.st_mode))
+    {
+        ft_putendl_fd("cd: Not a directory", 1);
+        return 1;
+    }
+    return 0;
+}
+
+int change_directory(char *path, t_env **env, t_gc **gc)
+{
+    char *oldpwd = getcwd(NULL, 0);
+    
+    if (chdir(path) != 0)
+    {
+        ft_putendl_fd("cd: Permission denied", 1);
+        free(oldpwd);
+        return 1;
+    }
+    
+    char *new_pwd = getcwd(NULL, 0);
+    if (!new_pwd || !oldpwd)
+    {
+        ft_putendl_fd("cd: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory", 1);
+        free(oldpwd);
+        return 1;
+    }
+    
+    update_pwd_oldpwd(oldpwd, env, gc);
+    free(new_pwd);
+    free(oldpwd);
+    return 0;
+}
+
+int ft_cd(char **args, t_env *env, t_gc **gc)
+{
     if (args[0] && args[1])
     {
         ft_putendl_fd("cd: too many arguments", 1);
         return 1;
     }
-    if (!args[0] || ((ft_strcmp(args[0], "~")) == 0)) // just "cd" go to home
+    
+    if (!args[0] || ((ft_strcmp(args[0], "~")) == 0))
     {
-        char *to_home = print_home(tmp);
-        if (!to_home)
-        {
-            ft_putendl_fd("cd: HOME not set", 2);
-            return 1;
-        }
-        else if (chdir(to_home) == -1)
-        {
-            perror("cd");
-            return 1;
-        }
+        return handle_home_cd(env);
     }
-
-    else if (args[0])
-    {
-        if ((stat(args[0], &info)) == 0) // check is valide name
-        {
-            if (S_ISDIR(info.st_mode)) // chaeck is a directory
-            {
-                char *oldpwd = getcwd(NULL, 0);
-                if (chdir(args[0]) != 0)
-                {
-                    ft_putendl_fd("cd: Permission denied", 1);
-                    free(oldpwd);
-                    return 1;
-                }
-                char *new_pwd = getcwd(NULL, 0);
-                if (!new_pwd || !oldpwd)
-                {
-                    ft_putendl_fd("cd: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory", 1);
-                    free(oldpwd);
-                    return 1;
-                }
-
-                update_pwd_oldpwd(oldpwd, &env, gc);
-                free(new_pwd);
-                free(oldpwd);
-            }
-            else // is file
-            {
-                ft_putendl_fd("cd: Not a directory", 1);
-                return 1;
-            }
-        }
-        else // no valide name
-        {
-            ft_putendl_fd("cd: No such file or directory", 1);
-            return 1;
-        }
-    }
-    return (0);
+    
+    if (validate_path(args[0]) != 0)
+        return 1;
+        
+    return change_directory(args[0], &env, gc);
 }
