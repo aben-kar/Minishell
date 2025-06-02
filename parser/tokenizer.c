@@ -6,13 +6,14 @@
 /*   By: zaakrab <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 20:48:03 by zaakrab           #+#    #+#             */
-/*   Updated: 2025/05/24 20:48:04 by zaakrab          ###   ########.fr       */
+/*   Updated: 2025/06/02 22:29:50 by zaakrab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-static t_token	*handle_operator_token(const char *input, int *i, t_tokctx *ctx)
+static t_token	*handle_operator_token(const char *input,
+	int *i, t_token_helper *ctx)
 {
 	int		start;
 	char	*val;
@@ -55,7 +56,8 @@ static bool	scan_word_loop(const char *input, int *i)
 	return (true);
 }
 
-static t_token	*handle_word_token(const char *input, int *i, t_tokctx *ctx)
+static t_token	*handle_word_token(const char *input,
+	int *i, t_token_helper *ctx)
 {
 	int		start;
 	char	*val;
@@ -72,8 +74,8 @@ static t_token	*handle_word_token(const char *input, int *i, t_tokctx *ctx)
 
 t_token	*tokenize(const char *input, t_gc **gc)
 {
-	int			i;
-	t_tokctx	ctx;
+	int				i;
+	t_token_helper	ctx;
 
 	i = 0;
 	ctx.head = NULL;

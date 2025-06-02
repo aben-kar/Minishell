@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: achraf <achraf@student.42.fr>              +#+  +:+       +#+        */
+/*   By: zaakrab <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 16:23:09 by acben-ka          #+#    #+#             */
-/*   Updated: 2025/05/30 04:11:18 by achraf           ###   ########.fr       */
+/*   Updated: 2025/06/02 22:28:44 by zaakrab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,11 +108,11 @@ int handle_exit_status(int status);
 void		bash_syntax_error(const char *token);
 void		bash_unclosed_quote_error(char quote);
 t_token		*add_token(t_token *last, char *value, t_gc **gc);
+void		skip_whitespace(const char *input, int *i);
 t_token		*tokenize(const char *input, t_gc **gc);
+t_command	*parse_tokens(t_token *tokens, int *has_pipe, t_gc **gc, t_env *env);
 char		*get_env_val(const char *key, t_env *env);
-// char		*expand_var(char *word, t_gc **gc, t_env *env);
 char		*expand_word(const char *word, t_gc **gc, t_env *env);
-char		*create_here_doc(char *delimiter);
 int			is_redir(const char *s);
 int			redir_type(char	*s);
 int			ft_isspace(char c);
@@ -124,38 +124,29 @@ void		handle_sigint(int sig);
 t_redirect	*add_redir(t_redirect *list, char *filename, int type, t_gc **gc);
 char    	**argv_add(char **argv, const char *value, t_gc **gc);
 t_command	*add_command(t_command *list, t_command *new);
+char		*generate_temp_filename(t_gc **gc);
+char		*handle_heredoc(const char *delimiter, t_gc **gc, t_env *env);
+bool		is_quoted_delimiter(const char *delimiter);
+char		*strip_quotes(const char *str, t_gc **gc);
+int			handle_dollar(const char *word, int i, t_expand_helper *ctx);
+int			handle_char(const char *word, int i, t_expand_helper *ctx);
+bool		skip_quoted(const char *input, int *i);
+char		*expand_word_always_expand(const char *word, t_gc **gc, t_env *env);
+int			handle_exit_code(t_expand_helper *ctx);
+int			handle_simple_dollar(t_expand_helper *ctx);
+int			get_key_end_index(const char *word, int i);
+int			handle_dollar_inner(const char *word, int i, t_expand_helper *ctx);
+bool		handle_argument(t_command *cmd, t_token *token, t_minus_param *ctx);
 bool		handle_redirection(t_command *cmd, t_token **tokens,
-	t_expctx *ctx, int type);
-bool		handle_argument(t_command *cmd, t_token *token, t_expctx *ctx);
-t_command   *parse_tokens(t_token *tokens, int *has_pipe, t_gc **gc, t_env *env);
-// void        free_tokens(t_token *tokens);
-// void        free_commands(t_command *cmds);
-bool	is_quoted_delimiter(const char *delimiter);
-char	*strip_quotes(const char *str, t_gc **gc);
-char	*generate_temp_filename(t_gc **gc);
-char	*handle_heredoc(const char *delimiter, t_gc **gc, t_env *env);
-bool	skip_quoted(const char *input, int *i);
-int		contains_equal(const char *input, int *i);
-bool	skip_post_equal(const char *input, int *i);
-void	skip_whitespace(const char *input, int *i);
-int		handle_dollar(const char *word, int i, t_expand_ctx *ctx);
-int		handle_char(const char *word, int i, t_expand_ctx *ctx);
-int		handle_exit_code(t_expand_ctx *ctx);
-int		handle_simple_dollar(t_expand_ctx *ctx);
-int		get_key_end_index(const char *word, int i);
-int		handle_dollar_inner(const char *word, int i, t_expand_ctx *ctx);
-char	*extract_token_value(const char *input, int start, int end, t_gc **gc);
-// char	*expand_inside_double_quotes(const char *str, t_gc **gc, t_env *env);
-char    *expand_word_always_expand(const char *word, t_gc **gc, t_env *env);
-// void	expand_command(t_command *cmd, t_env *env, t_gc **gc);
+	t_minus_param *ctx, int type);
 // gc libft funcs
-void	*ft_calloc_gc(size_t nelem, size_t size, t_gc **gc);
-char	*ft_itoa_gc(int n, t_gc **gc);
-char	*ft_strdup_gc(const char *s1, t_gc **gc);
-char	*ft_substr_gc(const char *s, unsigned int start, size_t len, t_gc **gc);
-char	*ft_strjoin_gc(const char *s1, const char *s2, t_gc **gc);
-char	*ft_strjoin_char_gc(const char *s, char c, t_gc **gc);
-char	**ft_split_gc(char const *s, char *c, t_gc **gc);
+void		*ft_calloc_gc(size_t nelem, size_t size, t_gc **gc);
+char		*ft_itoa_gc(int n, t_gc **gc);
+char		*ft_strdup_gc(const char *s1, t_gc **gc);
+char		*ft_substr_gc(const char *s, unsigned int start, size_t len, t_gc **gc);
+char		*ft_strjoin_gc(const char *s1, const char *s2, t_gc **gc);
+char		*ft_strjoin_char_gc(const char *s, char c, t_gc **gc);
+char		**ft_split_gc(char const *s, char *c, t_gc **gc);
 // test
 // void print_command_structure(t_command *cmds);
 // int count_args(char **args);

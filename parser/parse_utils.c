@@ -6,13 +6,13 @@
 /*   By: zaakrab <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 18:02:24 by zaakrab           #+#    #+#             */
-/*   Updated: 2025/05/26 18:02:25 by zaakrab          ###   ########.fr       */
+/*   Updated: 2025/06/02 22:20:05 by zaakrab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-bool	handle_argument(t_command *cmd, t_token *token, t_expctx *ctx)
+bool	handle_argument(t_command *cmd, t_token *token, t_minus_param *ctx)
 {
 	char	*expanded;
 
@@ -33,7 +33,7 @@ static bool	is_token_invalid(t_token **tokens)
 	return (false);
 }
 
-static char	*expand_filename(int type, char *value, t_expctx *ctx)
+static char	*expand_filename(int type, char *value, t_minus_param *ctx)
 {
 	if (type == REDIR_HEREDOC)
 		return (handle_heredoc(value, ctx->gc, ctx->env));
@@ -56,7 +56,7 @@ static void	trim_filename(char **filename)
 }
 
 bool	handle_redirection(t_command *cmd, t_token **tokens,
-	t_expctx *ctx, int type)
+	t_minus_param *ctx, int type)
 {
 	char	*filename;
 
@@ -78,23 +78,3 @@ bool	handle_redirection(t_command *cmd, t_token **tokens,
 	cmd->has_redirect = true;
 	return (true);
 }
-
-// char	*expand_inside_double_quotes(const char *str, t_gc **gc, t_env *env)
-// {
-// 	char	*res;
-// 	int		i;
-
-// 	res = ft_strdup_gc("", gc);
-// 	i = 0;
-// 	while (str[i])
-// 	{
-// 		if (str[i] == '$')
-// 			i = handle_dollar(str, &res, i, gc, env);
-// 		else
-// 		{
-// 			res = ft_strjoin_char_gc(res, str[i], gc);
-// 			i++;
-// 		}
-// 	}
-// 	return (res);
-// }

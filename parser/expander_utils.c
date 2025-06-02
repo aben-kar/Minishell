@@ -6,7 +6,7 @@
 /*   By: zaakrab <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 16:22:38 by zaakrab           #+#    #+#             */
-/*   Updated: 2025/06/02 16:22:40 by zaakrab          ###   ########.fr       */
+/*   Updated: 2025/06/02 22:17:35 by zaakrab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ char	*get_env_val(const char *key, t_env *env)
 	return (NULL);
 }
 
-int	handle_dollar(const char *word, int i, t_expand_ctx *ctx)
+int	handle_dollar(const char *word, int i, t_expand_helper *ctx)
 {
 	if (word[i + 1] == '?')
 		return (handle_exit_code(ctx));
@@ -34,7 +34,7 @@ int	handle_dollar(const char *word, int i, t_expand_ctx *ctx)
 	return (handle_dollar_inner(word, i, ctx));
 }
 
-int	handle_char(const char *word, int i, t_expand_ctx *ctx)
+int	handle_char(const char *word, int i, t_expand_helper *ctx)
 {
 	*(ctx->res) = ft_strjoin_char_gc(*(ctx->res), word[i], ctx->gc);
 	return (i + 1);

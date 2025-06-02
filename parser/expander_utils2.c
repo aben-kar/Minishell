@@ -6,7 +6,7 @@
 /*   By: zaakrab <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 16:22:45 by zaakrab           #+#    #+#             */
-/*   Updated: 2025/06/02 16:22:46 by zaakrab          ###   ########.fr       */
+/*   Updated: 2025/06/02 22:18:14 by zaakrab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 char	*expand_word_always_expand(const char *word, t_gc **gc, t_env *env)
 {
 	int				i;
-	t_expand_ctx	ctx;
+	t_expand_helper	ctx;
 	char			*result;
 
 	i = 0;
@@ -33,7 +33,7 @@ char	*expand_word_always_expand(const char *word, t_gc **gc, t_env *env)
 	return (result);
 }
 
-int	handle_exit_code(t_expand_ctx *ctx)
+int	handle_exit_code(t_expand_helper *ctx)
 {
 	char	*exit_str;
 
@@ -42,7 +42,7 @@ int	handle_exit_code(t_expand_ctx *ctx)
 	return (2);
 }
 
-int	handle_simple_dollar(t_expand_ctx *ctx)
+int	handle_simple_dollar(t_expand_helper *ctx)
 {
 	*(ctx->res) = ft_strjoin_char_gc(*(ctx->res), '$', ctx->gc);
 	return (1);
@@ -58,7 +58,7 @@ int	get_key_end_index(const char *word, int i)
 	return (j);
 }
 
-int	handle_dollar_inner(const char *word, int i, t_expand_ctx *ctx)
+int	handle_dollar_inner(const char *word, int i, t_expand_helper *ctx)
 {
 	char	*key;
 	char	*val;

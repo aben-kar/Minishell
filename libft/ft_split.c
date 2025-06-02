@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zaakrab <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 21:16:50 by zaakrab           #+#    #+#             */
-/*   Updated: 2025/05/13 16:29:53 by acben-ka         ###   ########.fr       */
+/*   Updated: 2025/06/02 22:33:12 by zaakrab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -190,7 +190,7 @@ char	**ft_split(char const *s, char *c)
 			if (!prr[j])
 			{
 				ft_free(prr);
-				return(NULL);
+				return (NULL);
 			}
 			j++;
 		}

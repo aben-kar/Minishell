@@ -6,7 +6,7 @@
 /*   By: zaakrab <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 20:48:31 by zaakrab           #+#    #+#             */
-/*   Updated: 2025/05/25 16:35:49 by zaakrab          ###   ########.fr       */
+/*   Updated: 2025/06/02 22:21:36 by zaakrab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static bool	is_invalid_token(t_token *tok)
 	return (!tok || is_redir(tok->value) || ft_strcmp(tok->value, "|") == 0);
 }
 
-static bool	handle_token(t_command *cmd, t_token **tokens, t_expctx *ctx)
+static bool	handle_token(t_command *cmd, t_token **tokens, t_minus_param *ctx)
 {
 	int		type;
 	char	*value;
@@ -40,7 +40,7 @@ static bool	handle_token(t_command *cmd, t_token **tokens, t_expctx *ctx)
 	return (handle_argument(cmd, *tokens, ctx));
 }
 
-static t_command	*parse_single_command(t_token **tokens, t_expctx *ctx)
+static t_command	*parse_single_command(t_token **tokens, t_minus_param *ctx)
 {
 	t_command	*cmd;
 	char		*expanded;
@@ -96,9 +96,9 @@ static bool	validate_pipes(t_token *tokens, int *has_pipe)
 
 t_command	*parse_tokens(t_token *tokens, int *has_pipe, t_gc **gc, t_env *env)
 {
-	t_command	*cmds;
-	t_command	*cmd;
-	t_expctx	ctx;
+	t_command		*cmds;
+	t_command		*cmd;
+	t_minus_param	ctx;
 
 	cmds = NULL;
 	cmd = NULL;
