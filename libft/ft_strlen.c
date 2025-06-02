@@ -12,12 +12,13 @@
 
 #include "libft.h"
 
-size_t	ft_strlen(const char *s)
+size_t ft_strlen(const char *s)
 {
-	size_t	i;
-
-	i = 0;
-	while (s[i] != 0)
-		i++;
-	return (i);
+    if (!s)  // Only check for NULL pointer
+        return 0;
+    
+    size_t i = 0;
+    while (s[i])
+        i++;
+    return i;
 }

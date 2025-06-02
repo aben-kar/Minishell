@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_pipeline.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: achraf <achraf@student.42.fr>              +#+  +:+       +#+        */
+/*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 18:11:45 by achraf            #+#    #+#             */
-/*   Updated: 2025/06/02 16:20:16 by achraf           ###   ########.fr       */
+/*   Updated: 2025/06/03 00:15:31 by acben-ka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ void setup_child_process(t_command *current, int save_fd, int fd[2], t_env *env,
     }
 
     if (current->has_redirect)
-        handel_redirection(current);
+        handel_redirection_1(current);
 
     excute_cmd_in_pipe(current, env, gc);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_helper_pipe.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: achraf <achraf@student.42.fr>              +#+  +:+       +#+        */
+/*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 19:00:57 by achraf            #+#    #+#             */
-/*   Updated: 2025/05/29 02:48:54 by achraf           ###   ########.fr       */
+/*   Updated: 2025/06/03 00:11:09 by acben-ka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void excute_cmd_in_pipe(t_command *cmds, t_env *env, t_gc **gc)
 {
     if (check_command(cmds) == false)
     {
-        built_in(cmds, env, gc);
+        built_in(cmds, &env, gc);
         exit(g_exit_status);
     }
     else

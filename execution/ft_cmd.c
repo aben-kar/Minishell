@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cmd.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: achraf <achraf@student.42.fr>              +#+  +:+       +#+        */
+/*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 22:26:01 by achraf            #+#    #+#             */
-/*   Updated: 2025/06/02 16:27:17 by achraf           ###   ########.fr       */
+/*   Updated: 2025/06/03 00:12:30 by acben-ka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void handle_append_redirect(t_redirect *redir)
 
 void handle_heredoc_redirect(t_redirect *redir)
 {
-    printf("dkhel\n");
+    
     int herdoc = open(redir->filename, O_RDONLY);
     if (herdoc < 0)
     {
@@ -89,7 +89,7 @@ void handle_heredoc_redirect(t_redirect *redir)
     unlink(redir->filename);
 }
 
-void handel_redirection(t_command *cmd)
+void handel_redirection_1(t_command *cmd)
 {
     t_redirect *redir = cmd->redirects;
     
@@ -103,7 +103,6 @@ void handel_redirection(t_command *cmd)
             handle_append_redirect(redir);
         else if (redir->type == REDIR_HEREDOC)
             handle_heredoc_redirect(redir);
-            
         redir = redir->next;
     }
 }
@@ -113,7 +112,7 @@ void setup_child_process_1(t_command *cmd)
     signal(SIGINT, SIG_DFL);
     signal(SIGQUIT, SIG_DFL);
     if (cmd->has_redirect)
-        handel_redirection(cmd);
+        handel_redirection_1(cmd);
 }
 
 void execute_child_process(t_command *cmd, char **copier_env, char *cmd_path)
@@ -144,7 +143,6 @@ void execute_external_cmd(t_command *cmd, t_env *env, t_gc **gc)
 {
     char **copier_env = env_to_array(env, gc);
     char *cmd_path = find_executable_path(cmd, env, gc);
-    
     if (!cmd_path)
         return;
 
@@ -161,7 +159,7 @@ void handle_builtin_redirection(t_command *cmd, int *save_in, int *save_out, int
     {
         *save_in = dup(STDIN_FILENO);
         *save_out = dup(STDOUT_FILENO);
-        handel_redirection(cmd);
+        handel_redirection_1(cmd);
     }
     else
     {
@@ -178,7 +176,7 @@ void handle_builtin_redirection(t_command *cmd, int *save_in, int *save_out, int
     }
 }
 
-int execute_builtin_command(t_command *cmd, t_env *env, t_gc **gc)
+int execute_builtin_command(t_command *cmd, t_env **env, t_gc **gc)
 {
     char *builtins[] = {"echo", "cd", "pwd", "export", "unset", "env", "exit", NULL};
     int j = -1;
@@ -190,15 +188,15 @@ int execute_builtin_command(t_command *cmd, t_env *env, t_gc **gc)
             if ((ft_strcmp(cmd->cmd[0], "echo") == 0))
                 return ft_echo(cmd->cmd + 1);
             else if (ft_strcmp(cmd->cmd[0], "cd") == 0)
-                return ft_cd(cmd->cmd + 1, env, gc);
+                return ft_cd(cmd->cmd + 1, *env, gc);
             else if ((ft_strcmp(cmd->cmd[0], "pwd")) == 0)
                 return ft_pwd();
             else if ((ft_strcmp(cmd->cmd[0], "env")) == 0)
-                return ft_env(env);
+                return ft_env(*env);
             else if ((ft_strcmp(cmd->cmd[0], "export")) == 0)
-                return (ft_export(cmd->cmd + 1, &env, gc), g_exit_status);
+                return (ft_export(cmd->cmd + 1, env, gc), g_exit_status);
             else if ((ft_strcmp(cmd->cmd[0], "unset")) == 0)
-                return ft_unset(cmd->cmd + 1, &env);
+                return ft_unset(cmd->cmd + 1, env);
             else if ((ft_strcmp(cmd->cmd[0], "exit")) == 0)
                 return ft_exit(cmd->cmd + 1, gc);
         }
@@ -207,7 +205,7 @@ int execute_builtin_command(t_command *cmd, t_env *env, t_gc **gc)
     return 127; // Command not found
 }
 
-void built_in(t_command *cmd, t_env *env, t_gc **gc)
+void built_in(t_command *cmd, t_env **env, t_gc **gc)
 {
     int save_in = -1;
     int save_out = -1;

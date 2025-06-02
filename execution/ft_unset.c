@@ -6,14 +6,12 @@
 /*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 14:50:45 by aben-kar          #+#    #+#             */
-/*   Updated: 2025/05/31 07:35:41 by acben-ka         ###   ########.fr       */
+/*   Updated: 2025/06/03 00:10:51 by acben-ka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 // #include "minishell.h"
 #include "../minishell.h"
-
-// algorithme deyal unset
 
 int find_position(char *key, t_env *env)
 {
@@ -23,9 +21,7 @@ int find_position(char *key, t_env *env)
     while (tmp)
     {
         if ((ft_strcmp(key, tmp->key)) == 0)
-        {
             return i;
-        }
         tmp = tmp->next;
         i++;
     }
@@ -40,7 +36,7 @@ void deleteNode(t_env **head, int position)
     
     if (position == 1)
     {
-        *head = temp->next;
+        *head = (*head)->next;
         return;
     }
     
@@ -52,10 +48,7 @@ void deleteNode(t_env **head, int position)
         temp = temp->next;
         i++;
     }
-    if (temp != NULL)
-    {
-        prev->next = temp->next;
-    }
+    prev->next = temp->next;
 }
 
 int ft_unset(char **args, t_env **env)
@@ -66,8 +59,9 @@ int ft_unset(char **args, t_env **env)
     while (args[i])
     {
         int position = find_position(args[i], *env);
-        if (position != 0)
+        if (position) {
             deleteNode(env, position);
+        }
         i++;
     }
     return 0;
