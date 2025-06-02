@@ -12,6 +12,12 @@
 
 #include "../minishell.h"
 
+void	skip_whitespace(const char *input, int *i)
+{
+	while (input[*i] && ft_isspace(input[*i]))
+		(*i)++;
+}
+
 t_token	*add_token(t_token *last, char *value, t_gc **gc)
 {
 	t_token	*new;

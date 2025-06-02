@@ -17,8 +17,7 @@ static bool	is_invalid_token(t_token *tok)
 	return (!tok || is_redir(tok->value) || ft_strcmp(tok->value, "|") == 0);
 }
 
-static bool	handle_token(t_command *cmd, t_token **tokens,
-	t_gc **gc, t_env *env)
+static bool	handle_token(t_command *cmd, t_token **tokens, t_expctx *ctx)
 {
 	int		type;
 	char	*value;
@@ -36,23 +35,22 @@ static bool	handle_token(t_command *cmd, t_token **tokens,
 			bash_syntax_error(value);
 			return (false);
 		}
-		return (handle_redirection(cmd, tokens, gc, env, type));
+		return (handle_redirection(cmd, tokens, ctx, type));
 	}
-	return (handle_argument(cmd, *tokens, gc, env));
+	return (handle_argument(cmd, *tokens, ctx));
 }
 
-static t_command	*parse_single_command(t_token **tokens,
-	t_gc **gc, t_env *env)
+static t_command	*parse_single_command(t_token **tokens, t_expctx *ctx)
 {
 	t_command	*cmd;
 	char		*expanded;
 
-	cmd = ft_calloc_gc(1, sizeof(t_command), gc);
+	cmd = ft_calloc_gc(1, sizeof(t_command), ctx->gc);
 	if (!cmd)
 		return (NULL);
 	while (*tokens && ft_strcmp((*tokens)->value, "|") != 0)
 	{
-		if (!handle_token(cmd, tokens, gc, env))
+		if (!handle_token(cmd, tokens, ctx))
 			return (NULL);
 		*tokens = (*tokens)->next;
 	}
@@ -60,7 +58,7 @@ static t_command	*parse_single_command(t_token **tokens,
 		return (NULL);
 	if (cmd->cmd && cmd->cmd[0] && cmd->cmd[0][0] == '$')
 	{
-		expanded = expand_word(cmd->cmd[0], gc, env);
+		expanded = expand_word(cmd->cmd[0], ctx->gc, ctx->env);
 		if (!expanded || expanded[0] == '\0')
 			cmd->cmd[0] = "";
 		else
@@ -100,6 +98,7 @@ t_command	*parse_tokens(t_token *tokens, int *has_pipe, t_gc **gc, t_env *env)
 {
 	t_command	*cmds;
 	t_command	*cmd;
+	t_expctx	ctx;
 
 	cmds = NULL;
 	cmd = NULL;
@@ -107,9 +106,11 @@ t_command	*parse_tokens(t_token *tokens, int *has_pipe, t_gc **gc, t_env *env)
 		return (NULL);
 	if (!validate_pipes(tokens, has_pipe))
 		return (NULL);
+	ctx.gc = gc;
+	ctx.env = env;
 	while (tokens)
 	{
-		cmd = parse_single_command(&tokens, gc, env);
+		cmd = parse_single_command(&tokens, &ctx);
 		if (!cmd)
 			return (NULL);
 		cmds = add_command(cmds, cmd);

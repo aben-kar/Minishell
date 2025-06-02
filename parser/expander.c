@@ -12,102 +12,54 @@
 
 #include "../minishell.h"
 
-char    *get_env_val(const char *key, t_env *env)
+static void	update_quote_state(char c, bool *in_single, bool *in_double)
 {
-	while (env)
-	{
-		if (ft_strcmp(env->key, key) == 0)
-			return (env->value);
-		env = env->next;
-	}
-	return (NULL);
+	if (c == '\'' && !*in_double)
+		*in_single = !*in_single;
+	if (c == '"' && !*in_single)
+		*in_double = !*in_double;
 }
 
-int handle_dollar(const char *word, char **res, int i, t_gc **gc, t_env *env)
+static void	init_expand_ctx(t_expand_ctx *ctx, t_gc **gc,
+	t_env *env, char **res)
 {
-	char    *key;
-	char    *val;
-	int     j;
-	char    *exit_str;
+	*res = ft_strdup_gc("", gc);
+	ctx->gc = gc;
+	ctx->env = env;
+	ctx->res = res;
+}
 
-	if (word[i + 1] == '?')
-	{
-		exit_str = ft_itoa_gc(g_exit_status, gc);
-		*res = ft_strjoin_gc(*res, exit_str, gc);
-		return (i + 2);
-	}
-	if (!word[i + 1] || (!ft_isalpha(word[i + 1]) && word[i + 1] != '_'))
-	{
-		*res = ft_strjoin_char_gc(*res, '$', gc);
+static int	handle_expansion(const char *word, int i, t_expand_ctx *ctx,
+	bool *in_single)
+{
+	if (word[i + 1] == '"' || word[i + 1] == '\'')
 		return (i + 1);
-	}
-	j = i + 1;
-	while (ft_isalnum(word[j]) || word[j] == '_')
-		j++;
-	key = ft_strndup(word + i + 1, j - i - 1, gc);
-	val = get_env_val(key, env);
-	if (val)
-		*res = ft_strjoin_gc(*res, ft_strdup_gc(val, gc), gc);
-	// else
-	//     *res = ft_strjoin_gc(*res, ft_strdup_gc("", gc), gc); COMMENTED NOW
-	return (j);
-}
-
-char    *expand_word_always_expand(const char *word, t_gc **gc, t_env *env)
-{
-	char	*res;
-	int		i;
-
-	res = ft_strdup_gc("", gc);
-	i = 0;
-	while (word[i])
-	{
-		if (word[i] == '$')
-			i = handle_dollar(word, &res, i, gc, env);
-		else
-		{
-			res = ft_strjoin_char_gc(res, word[i], gc);
-			i++;
-		}
-	}
-	return (res);
+	if (!*in_single)
+		return (handle_dollar(word, i, ctx));
+	return (handle_char(word, i, ctx));
 }
 
 char	*expand_word(const char *word, t_gc **gc, t_env *env)
 {
-	char	*res;
-	int		i;
-	bool	in_single;
-	bool	in_double;
+	int				i;
+	bool			in_single;
+	bool			in_double;
+	t_expand_ctx	ctx;
+	char			*res;
 
-	res = ft_strdup_gc("", gc);
 	i = 0;
 	in_single = false;
 	in_double = false;
+	init_expand_ctx(&ctx, gc, env, &res);
 	while (word[i])
 	{
-		if (word[i] == '\'' && !in_double)
-		{
-			in_single = !in_single;
+		update_quote_state(word[i], &in_single, &in_double);
+		if ((word[i] == '\'' && !in_double) || (word[i] == '"' && !in_single))
 			i++;
-		}
-		else if (word[i] == '"' && !in_single)
-		{
-			in_double = !in_double;
-			i++;
-		}
-		else if (word[i] == '$' && !in_single)
-		{
-			if (word[i + 1] == '"' || word[i + 1] == '\'')
-				i++;
-			else
-				i = handle_dollar(word, &res, i, gc, env);
-		}
+		else if (word[i] == '$')
+			i = handle_expansion(word, i, &ctx, &in_single);
 		else
-		{
-			res = ft_strjoin_char_gc(res, word[i], gc);
-			i++;
-		}
+			i = handle_char(word, i, &ctx);
 	}
 	return (res);
 }

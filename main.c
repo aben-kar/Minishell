@@ -1,7 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: zaakrab <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/02 16:22:59 by zaakrab           #+#    #+#             */
+/*   Updated: 2025/06/02 16:23:01 by zaakrab          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 // define global variable
-int g_exit_status = 0;
+int	g_exit_status = 0;
 
 // void print_node(t_command *head)
 // {
@@ -53,65 +65,57 @@ int g_exit_status = 0;
 //     }
 // }
 
-int main(int ac, char **av, char **envp)
+static void	handle_input(char *input, t_env *env_list, t_gc **gc)
 {
-	(void)av;
-	if (ac == 1)
-	{
-		char		*input;
-		t_token		*tokens;
-		t_command	*cmds;
-		int			has_pipe;
-		t_gc		*gc = NULL;
-		t_env		*env_list = init_copier_env(envp, &gc);
-		// t_env		*env;
+	t_token		*tokens;
+	t_command	*cmds;
+	int			has_pipe;
 
-		while (1)
+	tokens = tokenize(input, gc);
+	if (!tokens)
+		return ;
+	cmds = parse_tokens(tokens, &has_pipe, gc, env_list);
+	if (!cmds)
+		return ;
+	if (has_pipe)
+		execute_multi_pipe(cmds, env_list, gc);
+	else
+		execute_command(cmds, env_list, gc);
+}
+
+static void	minishell_loop(t_env *env_list, t_gc **gc)
+{
+	char	*input;
+
+	while (1)
+	{
+		setup_signals();
+		rl_catch_signals = 0;
+		input = readline(CYAN "minishell$ " RESET);
+		if (!input)
 		{
-			setup_signals();
-			rl_catch_signals = 0;
-			cmds = NULL;
-			tokens = NULL;
-			input = NULL;
-			has_pipe = 0;
-			// print_command_structure(cmds); // testing tokens only
-			// env = ft_copier_env(env_list, envp, &gc);
-			input = readline(CYAN "minishell$ " RESET);
-			if (input == NULL)
-			{
-				printf("exit\n");
-				break;
-			}
-			// add_history
-			if (*input) // ignore empty inputs
-				add_history(input); // t9dr tnavigi lhistory b arrows..
-			tokens = tokenize(input, &gc);				 // assumes tokenize may call gc_alloc()
-			if (!tokens)
-			{
-    			free(input);
-    			continue; // skip to next prompt after error (like unclosed quote)
-			}
-			cmds = parse_tokens(tokens, &has_pipe, &gc, env_list); // same here
-			if (!cmds)
-			{
-				free (input);
-				continue;
-			}
-			// print_node(cmds);
-			if (input && *input)
-			{
-				if (has_pipe)
-				{
-					execute_multi_pipe(cmds, env_list, &gc);
-				}
-				else
-				{
-					execute_command(cmds, env_list, &gc);
-				}
-			}
-			free(input);
+			printf("exit\n");
+			break ;
 		}
-		clear_history();
-		gc_free_all(&gc);
+		if (*input)
+			add_history(input);
+		handle_input(input, env_list, gc);
+		free(input);
 	}
+}
+
+int	main(int ac, char **av, char **envp)
+{
+	t_gc	*gc;
+	t_env	*env_list;
+
+	(void)av;
+	if (ac != 1)
+		return (1);
+	gc = NULL;
+	env_list = init_copier_env(envp, &gc);
+	minishell_loop(env_list, &gc);
+	clear_history();
+	gc_free_all(&gc);
+	return (0);
 }

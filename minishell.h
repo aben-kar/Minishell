@@ -6,7 +6,7 @@
 /*   By: achraf <achraf@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 16:23:09 by acben-ka          #+#    #+#             */
-/*   Updated: 2025/06/02 16:29:16 by achraf           ###   ########.fr       */
+/*   Updated: 2025/05/30 04:11:18 by achraf           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@
 # include "libft/libft.h"
 # include "parser/gc.h"
 # include <errno.h>
+# include "parser/helper_struct.h"
 
 // about herdoc
 #define	REDIR_OUT 0 // normalment hada khaso ikon REDIR_OUT
@@ -94,17 +95,13 @@ void execute_command(t_command *shell, t_env *env, t_gc **gc);
 char **env_to_array(t_env *env, t_gc **gc);
 char *find_executable_path(t_command *shell, t_env *envp, t_gc **gc);
 bool check_command(t_command *cmd);
-void execute_external_cmd(t_command *cmd, t_env *env, t_gc **gc);
+void excute_external_cmd(t_command *cmd, t_env *env, t_gc **gc);
 void built_in(t_command *cmd, t_env *env, t_gc **gc);
 void write_error(char *cmd, int error_code);
 // multi-pipe
 void execute_multi_pipe(t_command *cmd, t_env *env, t_gc **gc);
 void excute_cmd_in_pipe(t_command *cmd, t_env *env, t_gc **gc);
 int handle_exit_status(int status);
-bool first_char(char *key);
-int alpha(char *args);
-bool check_key(char *args);
-void handel_redirection(t_command *cmd);
 
 // ---------------------------------------------------------------------
 
@@ -128,9 +125,8 @@ t_redirect	*add_redir(t_redirect *list, char *filename, int type, t_gc **gc);
 char    	**argv_add(char **argv, const char *value, t_gc **gc);
 t_command	*add_command(t_command *list, t_command *new);
 bool		handle_redirection(t_command *cmd, t_token **tokens,
-	t_gc **gc, t_env *env, int type);
-bool		handle_argument(t_command *cmd, t_token *token,
-	t_gc **gc, t_env *env);
+	t_expctx *ctx, int type);
+bool		handle_argument(t_command *cmd, t_token *token, t_expctx *ctx);
 t_command   *parse_tokens(t_token *tokens, int *has_pipe, t_gc **gc, t_env *env);
 // void        free_tokens(t_token *tokens);
 // void        free_commands(t_command *cmds);
@@ -141,9 +137,15 @@ char	*handle_heredoc(const char *delimiter, t_gc **gc, t_env *env);
 bool	skip_quoted(const char *input, int *i);
 int		contains_equal(const char *input, int *i);
 bool	skip_post_equal(const char *input, int *i);
+void	skip_whitespace(const char *input, int *i);
+int		handle_dollar(const char *word, int i, t_expand_ctx *ctx);
+int		handle_char(const char *word, int i, t_expand_ctx *ctx);
+int		handle_exit_code(t_expand_ctx *ctx);
+int		handle_simple_dollar(t_expand_ctx *ctx);
+int		get_key_end_index(const char *word, int i);
+int		handle_dollar_inner(const char *word, int i, t_expand_ctx *ctx);
 char	*extract_token_value(const char *input, int start, int end, t_gc **gc);
 // char	*expand_inside_double_quotes(const char *str, t_gc **gc, t_env *env);
-int		handle_dollar(const char *word, char **res, int i, t_gc **gc, t_env *env);
 char    *expand_word_always_expand(const char *word, t_gc **gc, t_env *env);
 // void	expand_command(t_command *cmd, t_env *env, t_gc **gc);
 // gc libft funcs

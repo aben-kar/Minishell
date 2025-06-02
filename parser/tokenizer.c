@@ -12,14 +12,7 @@
 
 #include "../minishell.h"
 
-static void	skip_whitespace(const char *input, int *i)
-{
-	while (input[*i] && ft_isspace(input[*i]))
-		(*i)++;
-}
-
-static t_token	*handle_operator_token(const char *input, int *i,
-	t_token *last, t_token **head, t_gc **gc)
+static t_token	*handle_operator_token(const char *input, int *i, t_tokctx *ctx)
 {
 	int		start;
 	char	*val;
@@ -29,81 +22,74 @@ static t_token	*handle_operator_token(const char *input, int *i,
 		*i += 2;
 	else
 		(*i)++;
-	val = ft_substr_gc(input, start, *i - start, gc);
-	last = add_token(last, val, gc);
-	if (!*head)
-		*head = last;
-	return (last);
+	val = ft_substr_gc(input, start, *i - start, ctx->gc);
+	ctx->last = add_token(ctx->last, val, ctx->gc);
+	if (!ctx->head)
+		ctx->head = ctx->last;
+	return (ctx->last);
 }
 
-bool	skip_quoted(const char *input, int *i)
+static bool	is_quote_error(const char *input, int i)
 {
-	char	quote;
-
-	quote = input[*i];
-	(*i)++;
-	while (input[*i] && input[*i] != quote)
-		(*i)++;
-	if (input[*i] == quote)
-	{
-		(*i)++;
-		return (true);
-	}
-	bash_unclosed_quote_error(quote);
-	return (false);
+	return ((input[i] == '\'' || input[i] == '"')
+		&& (input[i + 1] == '"' || input[i + 1] == '\''));
 }
 
-static t_token *handle_word_token(const char *input, int *i,
-	t_token *last, t_token **head, t_gc **gc)
+static bool	scan_word_loop(const char *input, int *i)
 {
-	int     start;
-	char    *val;
-
-	start = *i;
 	while (input[*i] && !ft_isspace(input[*i]) && !is_operator(input[*i]))
 	{
 		if (input[*i] == '\'' || input[*i] == '"')
 		{
-			if (input[*i + 1] == '"' || input[*i + 1] == '\'')
+			if (is_quote_error(input, *i))
 			{
 				ft_putstr_fd("Command '' not found\n", 2);
-				return (NULL);
+				return (false);
 			}
 			if (!skip_quoted(input, i))
-				return (NULL);
+				return (false);
 		}
 		else
 			(*i)++;
 	}
-	val = ft_substr_gc(input, start, *i - start, gc);
-	last = add_token(last, val, gc);
-	if (!*head)
-		*head = last;
-	return (last);
+	return (true);
 }
 
-t_token *tokenize(const char *input, t_gc **gc)
+static t_token	*handle_word_token(const char *input, int *i, t_tokctx *ctx)
 {
-	int     i;
-	t_token *head;
-	t_token *last;
+	int		start;
+	char	*val;
+
+	start = *i;
+	if (!scan_word_loop(input, i))
+		return (NULL);
+	val = ft_substr_gc(input, start, *i - start, ctx->gc);
+	ctx->last = add_token(ctx->last, val, ctx->gc);
+	if (!ctx->head)
+		ctx->head = ctx->last;
+	return (ctx->last);
+}
+
+t_token	*tokenize(const char *input, t_gc **gc)
+{
+	int			i;
+	t_tokctx	ctx;
 
 	i = 0;
-	head = NULL;
-	last = NULL;
+	ctx.head = NULL;
+	ctx.last = NULL;
+	ctx.gc = gc;
 	while (input[i])
 	{
 		skip_whitespace(input, &i);
 		if (!input[i])
-			break;
-			
+			break ;
 		if (is_operator(input[i]))
-			last = handle_operator_token(input, &i, last, &head, gc);
+			ctx.last = handle_operator_token(input, &i, &ctx);
 		else
-			last = handle_word_token(input, &i, last, &head, gc);
-			
-		if (!last)
+			ctx.last = handle_word_token(input, &i, &ctx);
+		if (!ctx.last)
 			return (NULL);
 	}
-	return (head);
+	return (ctx.head);
 }

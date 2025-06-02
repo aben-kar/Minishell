@@ -12,52 +12,70 @@
 
 #include "../minishell.h"
 
-bool    handle_redirection(t_command *cmd, t_token **tokens,
-	t_gc **gc, t_env *env, int type)
+bool	handle_argument(t_command *cmd, t_token *token, t_expctx *ctx)
 {
-	char    *filename;
-	char    *end;
+	char	*expanded;
 
+	expanded = expand_word(token->value, ctx->gc, ctx->env);
+	if (!expanded)
+		return (false);
+	cmd->cmd = argv_add(cmd->cmd, expanded, ctx->gc);
+	return (true);
+}
+
+static bool	is_token_invalid(t_token **tokens)
+{
 	if (!tokens || !*tokens || !(*tokens)->value)
 	{
 		bash_syntax_error("newline");
-		return (false);
+		return (true);
 	}
-	filename = (*tokens)->value;
+	return (false);
+}
+
+static char	*expand_filename(int type, char *value, t_expctx *ctx)
+{
 	if (type == REDIR_HEREDOC)
-		filename = handle_heredoc(filename, gc, env);
-	else
-		filename = expand_word(filename, gc, env);
+		return (handle_heredoc(value, ctx->gc, ctx->env));
+	return (expand_word(value, ctx->gc, ctx->env));
+}
+
+static void	trim_filename(char **filename)
+{
+	char	*start;
+	char	*end;
+
+	start = *filename;
+	while (*start && ft_isspace(*start))
+		start++;
+	end = start + ft_strlen(start) - 1;
+	while (end > start && ft_isspace(*end))
+		end--;
+	*(end + 1) = '\0';
+	*filename = start;
+}
+
+bool	handle_redirection(t_command *cmd, t_token **tokens,
+	t_expctx *ctx, int type)
+{
+	char	*filename;
+
+	if (is_token_invalid(tokens))
+		return (false);
+	filename = expand_filename(type, (*tokens)->value, ctx);
 	if (!filename)
 	{
 		g_exit_status = 1;
 		return (false);
 	}
-	while (*filename && ft_isspace(*filename))
-		filename++;
-	end = filename + ft_strlen(filename) - 1;
-	while (end > filename && ft_isspace(*end))
-		end--;
-	*(end + 1) = '\0';
+	trim_filename(&filename);
 	if (!*filename)
 	{
 		bash_syntax_error("newline");
 		return (false);
 	}
-	cmd->redirects = add_redir(cmd->redirects, filename, type, gc);
+	cmd->redirects = add_redir(cmd->redirects, filename, type, ctx->gc);
 	cmd->has_redirect = true;
-	return (true);
-}
-
-bool	handle_argument(t_command *cmd, t_token *token,
-	t_gc **gc, t_env *env)
-{
-	char	*expanded;
-
-	expanded = expand_word(token->value, gc, env);
-	if (!expanded)
-		return (false);
-	cmd->cmd = argv_add(cmd->cmd, expanded, gc);
 	return (true);
 }
 
