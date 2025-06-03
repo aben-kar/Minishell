@@ -6,7 +6,7 @@
 /*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 00:45:19 by acben-ka          #+#    #+#             */
-/*   Updated: 2025/06/03 00:55:53 by acben-ka         ###   ########.fr       */
+/*   Updated: 2025/06/03 22:30:00 by acben-ka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ char *check_path_access(char *dir, char *cmd, t_gc **gc)
 {
     if (!dir || !cmd || !gc)
         return NULL;
-
     while (*dir)
     {
         char *add_slash = ft_strjoin_gc(dir, "/", gc);
@@ -77,9 +76,7 @@ char *search_in_path_dirs(t_command *shell, t_env *envp, t_gc **gc)
         write_error(shell->cmd[0], 0);
         return NULL;
     }
-
-    if (!shell->cmd || !shell->cmd[0] || !shell->cmd[0][0])
-        return NULL;
+    
     int i = 0;
     while (directory[i])
     {
@@ -115,6 +112,5 @@ char *check_direct_path(t_command *shell)
         write_error(shell->cmd[0], 1); // Permission denied
         return NULL;
     }
-
     return shell->cmd[0];
 }

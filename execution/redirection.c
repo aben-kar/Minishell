@@ -6,7 +6,7 @@
 /*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 00:59:32 by acben-ka          #+#    #+#             */
-/*   Updated: 2025/06/03 01:19:34 by acben-ka         ###   ########.fr       */
+/*   Updated: 2025/06/03 23:23:32 by acben-ka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,9 @@ void handel_redirection_1(t_command *cmd)
         if (redir->type == REDIR_IN)
             handle_input_redirect(redir);
         else if (redir->type == REDIR_OUT)
+        {
             handle_output_redirect(redir);
+        }
         else if (redir->type == REDIR_APPEND)
             handle_append_redirect(redir);
         else if (redir->type == REDIR_HEREDOC)

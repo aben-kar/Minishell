@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: achraf <achraf@student.42.fr>              +#+  +:+       +#+        */
+/*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 15:32:12 by acben-ka          #+#    #+#             */
-/*   Updated: 2025/06/02 16:10:09 by achraf           ###   ########.fr       */
+/*   Updated: 2025/06/03 23:28:08 by acben-ka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,13 @@ void write_error(char *cmd, int error_code)
 {
     if (!cmd)
         return ;
-    if (error_code == 4)
+    if (error_code == 5) // No such file or directory
+    {
+        ft_putstr_fd(cmd, 2);
+        ft_putstr_fd(": No such file or directory\n", 2);
+        g_exit_status = 1;
+    }
+    else if (error_code == 4)
     {
         ft_putstr_fd(cmd, 2);
         ft_putstr_fd(": syntax error near unexpected token `)'\n", 2);

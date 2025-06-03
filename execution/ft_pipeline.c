@@ -6,7 +6,7 @@
 /*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 18:11:45 by achraf            #+#    #+#             */
-/*   Updated: 2025/06/03 01:40:00 by acben-ka         ###   ########.fr       */
+/*   Updated: 2025/06/04 00:53:38 by acben-ka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,45 @@ void execute_multi_cmd(t_command *cmd, t_env *env, t_gc **gc)
     pids = gc_alloc(sizeof(pid_t) * cmd_count, gc);
     while (current)
     {
+        if (!current->cmd || !current->cmd[0] || !current->cmd[0][0])
+        {
+            if (current->has_redirect)
+            {
+                t_redirect *redir = current->redirects;
+                while (redir)
+                {
+                    if (redir->type == REDIR_IN)
+                    {
+                        if (access(redir->filename, F_OK) == 0)
+                            return;
+                        else
+                            write_error(redir->filename, 5);
+                    }
+                    else if (redir->type == REDIR_OUT)
+                    {
+                        int out_fd = open(redir->filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+                        if (out_fd < 0)
+                        {
+                            perror("open");
+                            exit(1);
+                        }
+                    }
+                    else if (redir->type == REDIR_APPEND)
+                    {
+                        int append_fd = open(redir->filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
+                        if (append_fd < 0)
+                        {
+                            perror("open");
+                            exit(1);
+                        }
+                    }
+                    redir = redir->next;
+                }
+                current = current->next;
+                continue;
+            }
+            current->cmd = current->cmd + 1;
+        }
         if (create_pipe_if_needed(fd, current) == -1)
             return;
 
@@ -117,4 +156,3 @@ void execute_multi_cmd(t_command *cmd, t_env *env, t_gc **gc)
     }
     wait_for_all(pids, cmd_count);
 }
-

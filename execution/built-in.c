@@ -6,7 +6,7 @@
 /*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 00:42:08 by acben-ka          #+#    #+#             */
-/*   Updated: 2025/06/03 00:58:05 by acben-ka         ###   ########.fr       */
+/*   Updated: 2025/06/04 00:42:14 by acben-ka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 bool check_command(t_command *cmd)
 {
-    if (!cmd || !cmd->cmd || !cmd->cmd[0])
+    if (!cmd || !cmd->cmd || !cmd->cmd[0] || !cmd->cmd[0][0])
         return false;
     int i = 0;
 
@@ -54,6 +54,8 @@ void handle_builtin_redirection(t_command *cmd, int *save_in, int *save_out, int
 
 int execute_builtin_command(t_command *cmd, t_env **env, t_gc **gc)
 {
+    if (!cmd || !cmd->cmd || !cmd->cmd[0])
+        return 0;
     char *builtins[] = {"echo", "cd", "pwd", "export", "unset", "env", "exit", NULL};
     int j = -1;
 

@@ -6,7 +6,7 @@
 /*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 19:00:57 by achraf            #+#    #+#             */
-/*   Updated: 2025/06/03 01:39:46 by acben-ka         ###   ########.fr       */
+/*   Updated: 2025/06/04 00:43:01 by acben-ka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,10 @@
 
 void excute_cmd_in_pipe(t_command *cmds, t_env *env, t_gc **gc)
 {
+    // if (!cmds || !cmds->cmd || !cmds->cmd[0] || !cmds->cmd[0][0]) {
+    //     exit(0); // Commande vide - sortie propre
+    // }
+    
     if (check_command(cmds) == false)
     {
         built_in(cmds, &env, gc);
