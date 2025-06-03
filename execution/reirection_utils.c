@@ -1,33 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_cd.c                                            :+:      :+:    :+:   */
+/*   reirection_utils.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/19 14:21:32 by acben-ka          #+#    #+#             */
-/*   Updated: 2025/06/03 01:38:25 by acben-ka         ###   ########.fr       */
+/*   Created: 2025/06/03 00:57:34 by acben-ka          #+#    #+#             */
+/*   Updated: 2025/06/03 01:01:14 by acben-ka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// #include "minishell.h"
 #include "../minishell.h"
 
-int ft_cd(char **args, t_env *env, t_gc **gc)
+int contains_space(char *str)
 {
-    if (args[0] && args[1])
+    while (*str)
     {
-        ft_putendl_fd("cd: too many arguments", 1);
-        return 1;
+        if (*str == ' ')
+            return 1;
+        str++;
     }
-    
-    if (!args[0] || ((ft_strcmp(args[0], "~")) == 0))
+    return 0;
+}
+
+int validate_filename(char *filename)
+{
+    if (!filename || !filename[0] || contains_space(filename))
     {
-        return handle_home_cd(env);
+        ft_putendl_fd("ambiguous redirect", 2);
+        exit(1);
     }
-    
-    if (validate_path(args[0]) != 0)
-        return 1;
-        
-    return change_directory(args[0], &env, gc);
+    return 1;
 }

@@ -6,7 +6,7 @@
 /*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 16:22:59 by zaakrab           #+#    #+#             */
-/*   Updated: 2025/06/03 00:15:03 by acben-ka         ###   ########.fr       */
+/*   Updated: 2025/06/03 01:44:10 by acben-ka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,11 +79,9 @@ static void	handle_input(char *input, t_env **env_list, t_gc **gc)
 		return ;
 	// print_node(cmds);
 	if (has_pipe)
-		execute_multi_pipe(cmds, *env_list, gc);
+		execute_multi_cmd(cmds, *env_list, gc);
 	else
-	{
 		execute_command(cmds, env_list, gc);
-	}
 }
 
 static void	minishell_loop(t_env *env_list, t_gc **gc)

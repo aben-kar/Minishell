@@ -3,26 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: achraf <achraf@student.42.fr>              +#+  +:+       +#+        */
+/*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 00:52:34 by aben-kar          #+#    #+#             */
-/*   Updated: 2025/06/02 16:10:43 by achraf           ###   ########.fr       */
+/*   Updated: 2025/06/03 01:39:19 by acben-ka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-bool check_key(char *args)
-{
-    int i = 0;
-    while (args[i])
-    {
-        if (!(ft_isalnum(args[i]) || args[i] == '_' || args[i] == 36))
-            return (false);
-        i++;
-    }
-    return (true);
-}
 
 bool first_char(char *key)
 {

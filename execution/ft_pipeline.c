@@ -6,51 +6,11 @@
 /*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 18:11:45 by achraf            #+#    #+#             */
-/*   Updated: 2025/06/03 00:15:31 by acben-ka         ###   ########.fr       */
+/*   Updated: 2025/06/03 01:40:00 by acben-ka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-int handle_exit_status(int status)
-{
-    if (WIFEXITED(status))
-    {
-        // Child exited normally - return its exit code
-        return WEXITSTATUS(status);
-    }
-    else if (WIFSIGNALED(status))
-    {
-        int sig = 128 + WTERMSIG(status);
-        return sig;
-    }
-    return 1; // Fallback
-}
-
-int count_commands(t_command *cmd)
-{
-    int count = 0;
-    while (cmd)
-    {
-        count++;
-        cmd = cmd->next;
-    }
-    return count;
-}
-
-int create_pipe_if_needed(int fd[2], t_command *current)
-{
-    if (current->next)
-    {
-        if (pipe(fd) == -1)
-        {
-            perror("pipe");
-            g_exit_status = 1;
-            return -1;
-        }
-    }
-    return 0;
-}
 
 pid_t fork_process()
 {
@@ -127,7 +87,7 @@ void wait_for_all(pid_t *pids, int cmd_count)
     setup_signals();
 }
 
-void execute_multi_pipe(t_command *cmd, t_env *env, t_gc **gc)
+void execute_multi_cmd(t_command *cmd, t_env *env, t_gc **gc)
 {
     int fd[2];
     int save_fd = -1;

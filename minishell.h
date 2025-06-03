@@ -6,7 +6,7 @@
 /*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 16:23:09 by acben-ka          #+#    #+#             */
-/*   Updated: 2025/06/03 00:09:55 by acben-ka         ###   ########.fr       */
+/*   Updated: 2025/06/03 01:37:28 by acben-ka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,13 +103,27 @@ void execute_external_cmd(t_command *cmd, t_env *env, t_gc **gc);
 void built_in(t_command *cmd, t_env **env, t_gc **gc);
 void write_error(char *cmd, int error_code);
 // multi-pipe
-void execute_multi_pipe(t_command *cmd, t_env *env, t_gc **gc);
+void execute_multi_cmd(t_command *cmd, t_env *env, t_gc **gc);
 void excute_cmd_in_pipe(t_command *cmd, t_env *env, t_gc **gc);
 int handle_exit_status(int status);
 int alpha(char *args);
 bool check_key(char *args);
 bool first_char(char *key);
 void handel_redirection_1(t_command *cmd);
+char *check_direct_path(t_command *shell);
+char *search_in_path_dirs(t_command *shell, t_env *envp, t_gc **gc);
+int validate_filename(char *filename);
+int contains_space(char *str);
+int handle_home_cd(t_env *env);
+int validate_path(char *path);
+int change_directory(char *path, t_env **env, t_gc **gc);
+void ft_env_null(t_env **head, t_gc **gc);
+void process_env_line(t_env **head, char *envp_line, t_gc **gc);
+bool multiple_key(t_env *env, char *key);
+int equal_or_plus(char *arg);
+void print_export(t_env **env, t_gc **gc);
+int count_commands(t_command *cmd);
+int create_pipe_if_needed(int fd[2], t_command *current);
 
 // ---------------------------------------------------------------------
 
