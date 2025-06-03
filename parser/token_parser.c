@@ -6,7 +6,7 @@
 /*   By: zaakrab <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 20:48:31 by zaakrab           #+#    #+#             */
-/*   Updated: 2025/06/02 22:21:36 by zaakrab          ###   ########.fr       */
+/*   Updated: 2025/06/03 02:24:13 by zaakrab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,8 @@ static t_command	*parse_single_command(t_token **tokens, t_minus_param *ctx)
 			return (NULL);
 		*tokens = (*tokens)->next;
 	}
-	if (!cmd->cmd || !cmd->cmd[0])
+	// if (!cmd->cmd || !cmd->cmd[0])
+	if ((!cmd->cmd || !cmd->cmd[0]) && !cmd->has_redirect)
 		return (NULL);
 	if (cmd->cmd && cmd->cmd[0] && cmd->cmd[0][0] == '$')
 	{
