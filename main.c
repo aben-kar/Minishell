@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
+/*   By: achraf <achraf@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 16:22:59 by zaakrab           #+#    #+#             */
-/*   Updated: 2025/06/03 22:46:03 by acben-ka         ###   ########.fr       */
+/*   Updated: 2025/06/04 14:09:12 by achraf           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,5 +118,6 @@ int	main(int ac, char **av, char **envp)
 	minishell_loop(env_list, &gc);
 	clear_history();
 	gc_free_all(&gc);
+	//hello
 	return (0);
 }
