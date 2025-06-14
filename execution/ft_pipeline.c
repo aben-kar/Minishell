@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_pipeline.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
+/*   By: achraf <achraf@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 18:11:45 by achraf            #+#    #+#             */
-/*   Updated: 2025/06/04 00:53:38 by acben-ka         ###   ########.fr       */
+/*   Updated: 2025/06/14 20:36:50 by achraf           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,22 +24,22 @@ pid_t fork_process()
     return id;
 }
 
-void setup_child_process(t_command *current, int save_fd, int fd[2], t_env *env, t_gc **gc)
+void setup_child_process(t_command *current, t_pipeline *vr, t_env *env, t_gc **gc)
 {
     signal(SIGINT, SIG_DFL);
     signal(SIGQUIT, SIG_DFL);
 
-    if (save_fd != -1)
+    if (vr->save_fd != -1)
     {
-        dup2(save_fd, STDIN_FILENO);
-        close(save_fd);
+        dup2(vr->save_fd, STDIN_FILENO);
+        close(vr->save_fd);
     }
 
     if (current->next)
     {
-        close(fd[0]);
-        dup2(fd[1], STDOUT_FILENO);
-        close(fd[1]);
+        close(vr->fd[0]);
+        dup2(vr->fd[1], STDOUT_FILENO);
+        close(vr->fd[1]);
     }
 
     if (current->has_redirect)
@@ -48,19 +48,19 @@ void setup_child_process(t_command *current, int save_fd, int fd[2], t_env *env,
     excute_cmd_in_pipe(current, env, gc);
 }
 
-void handle_parent_process(pid_t *pids, int id, int *i, int *save_fd, int fd[2], t_command *current)
+void handle_parent_process(pid_t *pids, int *i, t_pipeline *vr, t_command *current)
 {
     signal(SIGINT, SIG_IGN);
     signal(SIGQUIT, SIG_IGN);
-    pids[(*i)++] = id;
+    pids[(*i)++] = vr->id;
 
-    if (*save_fd != -1)
-        close(*save_fd);
+    if (vr->save_fd != -1)
+        close(vr->save_fd);
 
     if (current->next)
     {
-        close(fd[1]);
-        *save_fd = fd[0];
+        close(vr->fd[1]);
+        vr->save_fd = vr->fd[0];
     }
 }
 
@@ -68,7 +68,10 @@ void wait_for_all(pid_t *pids, int cmd_count)
 {
     int status;
     int last_status = 0;
-    for (int j = 0; j < cmd_count; j++)
+    int j;
+
+    j = 0;
+    while (j < cmd_count)
     {
         if (waitpid(pids[j], &status, 0) > 0)
         {
@@ -82,6 +85,7 @@ void wait_for_all(pid_t *pids, int cmd_count)
                 last_status = exit_status;
             }
         }
+        j++;
     }
     g_exit_status = last_status;
     setup_signals();
@@ -89,9 +93,8 @@ void wait_for_all(pid_t *pids, int cmd_count)
 
 void execute_multi_cmd(t_command *cmd, t_env *env, t_gc **gc)
 {
-    int fd[2];
-    int save_fd = -1;
-    pid_t id;
+    t_pipeline vr;
+    vr.save_fd = -1;
     pid_t *pids;
     t_command *current = cmd;
     int cmd_count = count_commands(cmd);
@@ -104,53 +107,26 @@ void execute_multi_cmd(t_command *cmd, t_env *env, t_gc **gc)
         {
             if (current->has_redirect)
             {
-                t_redirect *redir = current->redirects;
-                while (redir)
-                {
-                    if (redir->type == REDIR_IN)
-                    {
-                        if (access(redir->filename, F_OK) == 0)
-                            return;
-                        else
-                            write_error(redir->filename, 5);
-                    }
-                    else if (redir->type == REDIR_OUT)
-                    {
-                        int out_fd = open(redir->filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-                        if (out_fd < 0)
-                        {
-                            perror("open");
-                            exit(1);
-                        }
-                    }
-                    else if (redir->type == REDIR_APPEND)
-                    {
-                        int append_fd = open(redir->filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
-                        if (append_fd < 0)
-                        {
-                            perror("open");
-                            exit(1);
-                        }
-                    }
-                    redir = redir->next;
-                }
+                redir_without_cmd(current);
                 current = current->next;
                 continue;
             }
             current->cmd = current->cmd + 1;
         }
-        if (create_pipe_if_needed(fd, current) == -1)
+        if (pipe(vr.fd) == -1 && current->next)
+        {
+            perror("pipe");
+            return;
+        }
+        vr.id = fork_process();
+        if (vr.id == -1)
             return;
 
-        id = fork_process();
-        if (id == -1)
-            return;
-
-        if (id == 0)
-            setup_child_process(current, save_fd, fd, env, gc);
+        if (vr.id == 0)
+            setup_child_process(current, &vr, env, gc);
         else
         {
-            handle_parent_process(pids, id, &i, &save_fd, fd, current);
+            handle_parent_process(pids, &i, &vr, current);
             current = current->next;
         }
     }

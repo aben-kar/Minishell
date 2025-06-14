@@ -3,74 +3,86 @@
 /*                                                        :::      ::::::::   */
 /*   execute_commande.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
+/*   By: achraf <achraf@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 00:42:58 by acben-ka          #+#    #+#             */
-/*   Updated: 2025/06/03 23:34:43 by acben-ka         ###   ########.fr       */
+/*   Updated: 2025/06/14 17:58:19 by achraf           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void execute_command(t_command *shell, t_env **env, t_gc **gc)
+void	redir_without_cmd(t_command *cmd)
 {
-    if (!shell->cmd || !shell->cmd[0] || !shell->cmd[0][0] || !env | !gc)
-    {
-        if (shell->has_redirect)
-        {
-            t_redirect *redir = shell->redirects;
-            while (redir)
-            {
-                if (redir->type == REDIR_IN)
-                {
-                    if (access(redir->filename, F_OK) == 0)
-                        return;
-                    else
-                        write_error(redir->filename, 5);
-                    return;
-                }
-                else if (redir->type == REDIR_OUT)
-                {
-                    int out_fd = open(redir->filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-                    if (out_fd < 0)
-                    {
-                        perror("open");
-                        exit(1);
-                    }
-                    return;
-                }
-                else if (redir->type == REDIR_APPEND)
-                {
-                    int append_fd = open(redir->filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
-                    if (append_fd < 0)
-                    {
-                        perror("open");
-                        exit(1);
-                    }
-                    return;
-                }
-                redir = redir->next;
-            }
-        }
-        shell->cmd = shell->cmd + 1;
-        if (!shell->cmd || !shell->cmd[0] || !shell->cmd[0][0])
-            return;
-    }
-    if (!(alpha(shell->cmd[0]) || shell->cmd[0][0] == '/') || (ft_strcmp(shell->cmd[0], "()") == 0))
-    {
-        if (ft_strcmp(shell->cmd[0], "()") == 0)
-        {
-            write_error(shell->cmd[0], 4);
-            return;
-        }
-        write_error(shell->cmd[0], 2);
-        return;
-    }
-    if (check_command(shell) == true) // external command
-    {
-        execute_external_cmd(shell, *env, gc);
-    }
+	t_redirect	*redir;
 
-    else if (check_command(shell) == false)
-        built_in(shell, env, gc);
+	redir = cmd->redirects;
+	while (redir)
+	{
+		if (redir->type == REDIR_IN)
+		{
+			redir_in(redir);
+			return ;
+		}
+		else if (redir->type == REDIR_OUT)
+		{
+			redir_out(redir);
+			return ;
+		}
+		else if (redir->type == REDIR_APPEND)
+		{
+			redir_append(redir);
+			return ;
+		}
+		redir = redir->next;
+	}
+}
+
+bool	valid_cmd(t_command *cmd)
+{
+	if (cmd->has_redirect)
+	{
+		redir_without_cmd(cmd);
+		return (false);
+	}
+	return (true);
+}
+
+int	is_cmd_alpha(t_command *cmd)
+{
+	if (ft_strcmp(cmd->cmd[0], "()") == 0)
+	{
+		write_error(cmd->cmd[0], 4);
+		return (2);
+	}
+	write_error(cmd->cmd[0], 2);
+	return (0);
+}
+
+void	execute_command(t_command *shell, t_env **env, t_gc **gc)
+{
+	if (!shell->cmd || !shell->cmd[0] || !shell->cmd[0][0] || !env || !gc)
+	{
+		if (valid_cmd(shell) == false)
+			return ;
+		if (!shell->cmd || !shell->cmd[0])
+			return ;
+		shell->cmd = shell->cmd + 1;
+		if (!shell->cmd || !shell->cmd[0] || !shell->cmd[0][0])
+			return ;
+	}
+	if (!(alpha(shell->cmd[0]) || shell->cmd[0][0] == '/') 
+		|| (ft_strcmp(shell->cmd[0], "()") == 0))
+	{
+		if (is_cmd_alpha(shell) == 2)
+			return ;
+		else
+			return ;
+	}
+	if (check_command(shell) == true)
+	{
+		execute_external_cmd(shell, *env, gc);
+	}
+	else if (check_command(shell) == false)
+		built_in(shell, env, gc);
 }

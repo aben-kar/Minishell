@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
+/*   By: achraf <achraf@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 16:23:09 by acben-ka          #+#    #+#             */
-/*   Updated: 2025/06/03 01:37:28 by acben-ka         ###   ########.fr       */
+/*   Updated: 2025/06/14 20:43:28 by achraf           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,25 @@ typedef struct s_herdoc_line
 	struct s_herdoc_line	*next;
 }	t_herdoc_line;
 
+typedef struct s_pipeline
+{
+	int fd[2];
+	int save_fd;
+	int id;
+} t_pipeline;
+
+typedef struct s_variable
+{
+	char **built_in;
+	int j;
+	char	*line;
+	char	*eq;
+	char	*val;
+	char	*final;
+} t_variable;
+
+
+
 // Built-in command
 int ft_echo(char **args);
 int ft_cd(char **args, t_env *env, t_gc **gc);
@@ -104,6 +123,7 @@ void built_in(t_command *cmd, t_env **env, t_gc **gc);
 void write_error(char *cmd, int error_code);
 // multi-pipe
 void execute_multi_cmd(t_command *cmd, t_env *env, t_gc **gc);
+// void execute_multi_cmd(t_command *cmd, t_env *env, t_pipeline *var,t_gc **gc);
 void excute_cmd_in_pipe(t_command *cmd, t_env *env, t_gc **gc);
 int handle_exit_status(int status);
 int alpha(char *args);
@@ -112,7 +132,7 @@ bool first_char(char *key);
 void handel_redirection_1(t_command *cmd);
 char *check_direct_path(t_command *shell);
 char *search_in_path_dirs(t_command *shell, t_env *envp, t_gc **gc);
-int validate_filename(char *filename);
+int validate_filename(char *filename, int setup);
 int contains_space(char *str);
 int handle_home_cd(t_env *env);
 int validate_path(char *path);
@@ -123,7 +143,11 @@ bool multiple_key(t_env *env, char *key);
 int equal_or_plus(char *arg);
 void print_export(t_env **env, t_gc **gc);
 int count_commands(t_command *cmd);
-int create_pipe_if_needed(int fd[2], t_command *current);
+char *my_strjoin(char *s1, char *s2, t_gc **gc);
+void redir_in(t_redirect *redir);
+void redir_out(t_redirect *redir);
+void redir_append(t_redirect *redir);
+void	redir_without_cmd(t_command *cmd);
 
 // ---------------------------------------------------------------------
 

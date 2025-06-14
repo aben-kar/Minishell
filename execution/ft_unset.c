@@ -3,66 +3,72 @@
 /*                                                        :::      ::::::::   */
 /*   ft_unset.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
+/*   By: achraf <achraf@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 14:50:45 by aben-kar          #+#    #+#             */
-/*   Updated: 2025/06/03 00:10:51 by acben-ka         ###   ########.fr       */
+/*   Updated: 2025/06/14 20:49:10 by achraf           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 // #include "minishell.h"
 #include "../minishell.h"
 
-int find_position(char *key, t_env *env)
+int	find_position(char *key, t_env *env)
 {
-    t_env *tmp = env;
+	t_env	*tmp;
+	int		i;
 
-    int i = 1;
-    while (tmp)
-    {
-        if ((ft_strcmp(key, tmp->key)) == 0)
-            return i;
-        tmp = tmp->next;
-        i++;
-    }
-    return 0;
+	tmp = env;
+	i = 1;
+	while (tmp)
+	{
+		if ((ft_strcmp(key, tmp->key)) == 0)
+			return (i);
+		tmp = tmp->next;
+		i++;
+	}
+	return (0);
 }
 
-void deleteNode(t_env **head, int position)
+void	delete_node(t_env **head, int position)
 {
-    if (!head || !*head)
-        return;
-    t_env *temp = *head;
-    
-    if (position == 1)
-    {
-        *head = (*head)->next;
-        return;
-    }
-    
-    int i = 1;
-    t_env *prev = NULL;
-    while (temp != NULL && i < position)
-    {
-        prev = temp;
-        temp = temp->next;
-        i++;
-    }
-    prev->next = temp->next;
+	t_env	*temp;
+	t_env	*prev;
+	int		i;
+
+	if (!head || !*head)
+		return ;
+	temp = *head;
+	if (position == 1)
+	{
+		*head = (*head)->next;
+		return ;
+	}
+	i = 1;
+	prev = NULL;
+	while (temp != NULL && i < position)
+	{
+		prev = temp;
+		temp = temp->next;
+		i++;
+	}
+	prev->next = temp->next;
 }
 
-int ft_unset(char **args, t_env **env)
+int	ft_unset(char **args, t_env **env)
 {
-    if (!args || !env || !*env)
-        return 0;
-    int i = 0;
-    while (args[i])
-    {
-        int position = find_position(args[i], *env);
-        if (position) {
-            deleteNode(env, position);
-        }
-        i++;
-    }
-    return 0;
+	int	i;
+	int	position;
+
+	if (!args || !env || !*env)
+		return (0);
+	i = 0;
+	while (args[i])
+	{
+		position = find_position(args[i], *env);
+		if (position)
+			delete_node(env, position);
+		i++;
+	}
+	return (0);
 }

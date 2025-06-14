@@ -3,20 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   ft_pwd.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
+/*   By: achraf <achraf@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/20 14:54:36 by acben-ka          #+#    #+#             */
-/*   Updated: 2025/05/13 16:25:38 by acben-ka         ###   ########.fr       */
+/*   Updated: 2025/06/14 20:47:25 by achraf           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// #include "minishell.h"
 #include "../minishell.h"
 
-
-int ft_pwd(void)
+int	ft_pwd(void)
 {
-	char cwd[PATH_MAX]; // 4096
+	char	cwd[PATH_MAX];
 
 	if (getcwd(cwd, sizeof(cwd)) != NULL)
 	{

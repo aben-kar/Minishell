@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_split.c                                         :+:      :+:    :+:   */
+/*   ft_split_gc.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
+/*   By: achraf <achraf@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 21:16:50 by zaakrab           #+#    #+#             */
-/*   Updated: 2025/05/13 16:29:53 by acben-ka         ###   ########.fr       */
+/*   Updated: 2025/06/14 17:28:03 by achraf           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ char	*ft_strsdup(char const *s, size_t *j, char *sp, t_gc **gc)
 	return (result);
 }
 
+
 char	**ft_split_gc(char const *s, char *c, t_gc **gc)
 {
 	size_t	i[2];
@@ -97,5 +98,6 @@ char	**ft_split_gc(char const *s, char *c, t_gc **gc)
 			i[1]++;
 		}
 	}
+	prr[len_word] = NULL;
 	return (prr);
 }

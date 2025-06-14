@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
+/*   By: achraf <achraf@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 15:32:12 by acben-ka          #+#    #+#             */
-/*   Updated: 2025/06/03 23:28:08 by acben-ka         ###   ########.fr       */
+/*   Updated: 2025/06/12 19:08:10 by achraf           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,14 @@ void write_error(char *cmd, int error_code)
 {
     if (!cmd)
         return ;
-    if (error_code == 5) // No such file or directory
+    
+    if (error_code == 6)
+    {
+        ft_putstr_fd(cmd, 2);
+        ft_putstr_fd(": ambiguous redirect\n", 2);
+    }
+    
+    else if (error_code == 5) // No such file or directory
     {
         ft_putstr_fd(cmd, 2);
         ft_putstr_fd(": No such file or directory\n", 2);
