@@ -6,7 +6,7 @@
 /*   By: achraf <achraf@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 00:59:32 by acben-ka          #+#    #+#             */
-/*   Updated: 2025/06/14 20:51:20 by achraf           ###   ########.fr       */
+/*   Updated: 2025/06/16 17:27:26 by achraf           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,8 @@ void	handle_heredoc_redirect(t_redirect *redir)
 
 void	handel_redirection_1(t_command *cmd)
 {
+	if (!cmd || !cmd->cmd || !cmd->cmd[0])
+		return ;
 	t_redirect	*redir;
 
 	redir = cmd->redirects;

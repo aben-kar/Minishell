@@ -6,7 +6,7 @@
 /*   By: achraf <achraf@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 16:23:09 by acben-ka          #+#    #+#             */
-/*   Updated: 2025/06/14 20:43:28 by achraf           ###   ########.fr       */
+/*   Updated: 2025/06/18 23:12:47 by achraf           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,9 @@ typedef struct s_pipeline
 	int fd[2];
 	int save_fd;
 	int id;
+	pid_t *pids;
+	int cmd_count;
+	
 } t_pipeline;
 
 typedef struct s_variable
@@ -94,7 +97,12 @@ typedef struct s_variable
 	char	*final;
 } t_variable;
 
-
+typedef struct s_to_array
+{
+	int		i;
+	int		size;
+	char	**envp;
+} t_to_array;
 
 // Built-in command
 int ft_echo(char **args);
@@ -148,6 +156,10 @@ void redir_in(t_redirect *redir);
 void redir_out(t_redirect *redir);
 void redir_append(t_redirect *redir);
 void	redir_without_cmd(t_command *cmd);
+pid_t	fork_process(void);
+void	setup_child_process(t_command *current, t_pipeline *vr, t_env *env, t_gc **gc);
+void	handle_parent_process(pid_t *pids, int *i, t_pipeline *vr, t_command *current);
+void	wait_for_all(pid_t *pids, int cmd_count);
 
 // ---------------------------------------------------------------------
 
