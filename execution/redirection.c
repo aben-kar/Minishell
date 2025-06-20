@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: achraf <achraf@student.42.fr>              +#+  +:+       +#+        */
+/*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 00:59:32 by acben-ka          #+#    #+#             */
-/*   Updated: 2025/06/16 17:27:26 by achraf           ###   ########.fr       */
+/*   Updated: 2025/06/20 14:03:10 by acben-ka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,10 +74,10 @@ void	handle_heredoc_redirect(t_redirect *redir)
 
 void	handel_redirection_1(t_command *cmd)
 {
-	if (!cmd || !cmd->cmd || !cmd->cmd[0])
-		return ;
 	t_redirect	*redir;
 
+	if (!cmd || !cmd->cmd || !cmd->cmd[0])
+		return ;
 	redir = cmd->redirects;
 	while (redir)
 	{

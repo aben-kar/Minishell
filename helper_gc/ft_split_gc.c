@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split_gc.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: achraf <achraf@student.42.fr>              +#+  +:+       +#+        */
+/*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 21:16:50 by zaakrab           #+#    #+#             */
-/*   Updated: 2025/06/14 17:28:03 by achraf           ###   ########.fr       */
+/*   Updated: 2025/06/20 14:06:46 by acben-ka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,6 @@ char	*ft_strsdup(char const *s, size_t *j, char *sp, t_gc **gc)
 	result[k] = '\0';
 	return (result);
 }
-
 
 char	**ft_split_gc(char const *s, char *c, t_gc **gc)
 {

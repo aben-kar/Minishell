@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_commande.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: achraf <achraf@student.42.fr>              +#+  +:+       +#+        */
+/*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 00:42:58 by acben-ka          #+#    #+#             */
-/*   Updated: 2025/06/16 17:26:27 by achraf           ###   ########.fr       */
+/*   Updated: 2025/06/20 14:52:53 by acben-ka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void	execute_command(t_command *shell, t_env **env, t_gc **gc)
 		if (!shell->cmd || !shell->cmd[0] || !shell->cmd[0][0])
 			return ;
 	}
-	if (!(alpha(shell->cmd[0]) || shell->cmd[0][0] == '/') 
+	if (!(alpha(shell->cmd[0]) || shell->cmd[0][0] == '/')
 		|| (ft_strcmp(shell->cmd[0], "()") == 0))
 	{
 		if (is_cmd_alpha(shell) == 2)
@@ -80,9 +80,7 @@ void	execute_command(t_command *shell, t_env **env, t_gc **gc)
 			return ;
 	}
 	if (check_command(shell) == true)
-	{
 		execute_external_cmd(shell, *env, gc);
-	}
 	else if (check_command(shell) == false)
 		built_in(shell, env, gc);
 }

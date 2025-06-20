@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   reirection_utils.c                                 :+:      :+:    :+:   */
+/*   redirection_utils.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: achraf <achraf@student.42.fr>              +#+  +:+       +#+        */
+/*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 00:57:34 by acben-ka          #+#    #+#             */
-/*   Updated: 2025/06/14 20:54:26 by achraf           ###   ########.fr       */
+/*   Updated: 2025/06/20 14:03:05 by acben-ka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ int	validate_filename(char *filename, int setup)
 
 void	redir_in(t_redirect *redir)
 {
-    // validate_filename(redir->filename, 0);
 	if (access(redir->filename, F_OK) == 0)
 		return ;
 	else
@@ -53,7 +52,6 @@ void	redir_in(t_redirect *redir)
 
 void	redir_out(t_redirect *redir)
 {
-    // validate_filename(redir->filename, 0);
 	int	out_fd;
 
 	out_fd = open(redir->filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
@@ -66,7 +64,6 @@ void	redir_out(t_redirect *redir)
 
 void	redir_append(t_redirect *redir)
 {
-    // validate_filename(redir->filename, 0);
 	int	append_fd;
 
 	append_fd = open(redir->filename, O_WRONLY | O_CREAT | O_APPEND, 0644);

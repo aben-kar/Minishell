@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_utils_pipeline.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: achraf <achraf@student.42.fr>              +#+  +:+       +#+        */
+/*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 22:44:46 by achraf            #+#    #+#             */
-/*   Updated: 2025/06/18 22:51:14 by achraf           ###   ########.fr       */
+/*   Updated: 2025/06/20 14:02:59 by acben-ka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,8 @@ pid_t	fork_process(void)
 	return (id);
 }
 
-void	setup_child_process(t_command *current, t_pipeline *vr, t_env *env, t_gc **gc)
+void	setup_child_process(t_command *current, t_pipeline *vr,
+		t_env *env, t_gc **gc)
 {
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
@@ -46,7 +47,8 @@ void	setup_child_process(t_command *current, t_pipeline *vr, t_env *env, t_gc **
 	excute_cmd_in_pipe(current, env, gc);
 }
 
-void	handle_parent_process(pid_t *pids, int *i, t_pipeline *vr, t_command *current)
+void	handle_parent_process(pid_t *pids, int *i,
+		t_pipeline *vr, t_command *current)
 {
 	signal(SIGINT, SIG_IGN);
 	signal(SIGQUIT, SIG_IGN);

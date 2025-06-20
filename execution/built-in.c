@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   built-in.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: achraf <achraf@student.42.fr>              +#+  +:+       +#+        */
+/*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 00:42:08 by acben-ka          #+#    #+#             */
-/*   Updated: 2025/06/14 17:51:39 by achraf           ###   ########.fr       */
+/*   Updated: 2025/06/20 12:46:44 by acben-ka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../minishell.h"
+#include "../minishell.h"
 
 bool	check_command(t_command *cmd)
 {

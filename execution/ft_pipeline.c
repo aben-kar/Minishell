@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_pipeline.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: achraf <achraf@student.42.fr>              +#+  +:+       +#+        */
+/*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 18:11:45 by achraf            #+#    #+#             */
-/*   Updated: 2025/06/18 22:49:31 by achraf           ###   ########.fr       */
+/*   Updated: 2025/06/20 14:02:42 by acben-ka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,8 @@ void	init_pipeline(t_pipeline *pl, t_command *cmd, t_gc **gc)
 	pl->pids = gc_alloc(sizeof(pid_t) * count_commands(cmd), gc);
 }
 
-void	process_commands(t_command *current, t_pipeline *pl, t_env *env, t_gc **gc)
+void	process_commands(t_command *current, t_pipeline *pl,
+		t_env *env, t_gc **gc)
 {
 	int	i;
 

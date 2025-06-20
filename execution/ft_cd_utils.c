@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: achraf <achraf@student.42.fr>              +#+  +:+       +#+        */
+/*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 01:03:11 by acben-ka          #+#    #+#             */
-/*   Updated: 2025/06/14 18:14:22 by achraf           ###   ########.fr       */
+/*   Updated: 2025/06/20 14:30:28 by acben-ka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,8 +105,10 @@ int	change_directory(char *path, t_env **env, t_gc **gc)
 	new_pwd = getcwd(NULL, 0);
 	if (!new_pwd || !oldpwd)
 	{
-		ft_putendl_fd("cd: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory", 1);
+		ft_putendl_fd("cd: error retrieving current directory: getcwd:"
+			"cannot access parent directories: No such file or directory", 1);
 		free(oldpwd);
+		free(new_pwd);
 		return (1);
 	}
 	update_pwd_oldpwd(oldpwd, env, gc);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   external_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: achraf <achraf@student.42.fr>              +#+  +:+       +#+        */
+/*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 00:45:19 by acben-ka          #+#    #+#             */
-/*   Updated: 2025/06/14 18:09:15 by achraf           ###   ########.fr       */
+/*   Updated: 2025/06/20 14:01:37 by acben-ka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,6 @@ char	*check_direct_path(t_command *shell)
 {
 	t_stat	info;
 
-	// ft_memset(&info, 0, sizeof(info));
 	if (stat(shell->cmd[0], &info) == 0 && S_ISDIR(info.st_mode))
 	{
 		write_error(shell->cmd[0], 3);

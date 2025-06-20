@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   external_command.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: achraf <achraf@student.42.fr>              +#+  +:+       +#+        */
+/*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 18:21:38 by acben-ka          #+#    #+#             */
-/*   Updated: 2025/06/14 18:03:04 by achraf           ###   ########.fr       */
+/*   Updated: 2025/06/20 15:11:09 by acben-ka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ char	*find_executable_path(t_command *shell, t_env *envp, t_gc **gc)
 	return (search_in_path_dirs(shell, envp, gc));
 }
 
-void	handle_parent_process_1(int child_pid)
+void	handle_parent_process_1(pid_t child_pid)
 {
 	int	status;
 	int	exit_code;
@@ -56,7 +56,7 @@ void	execute_external_cmd(t_command *cmd, t_env *env, t_gc **gc)
 {
 	char	**copier_env;
 	char	*cmd_path;
-	int		id;
+	pid_t		id;
 
 	copier_env = env_to_array(env, gc);
 	cmd_path = find_executable_path(cmd, env, gc);

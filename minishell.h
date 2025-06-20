@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: achraf <achraf@student.42.fr>              +#+  +:+       +#+        */
+/*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 16:23:09 by acben-ka          #+#    #+#             */
-/*   Updated: 2025/06/18 23:12:47 by achraf           ###   ########.fr       */
+/*   Updated: 2025/06/20 14:20:59 by acben-ka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,12 @@ typedef struct s_to_array
 	char	**envp;
 } t_to_array;
 
+typedef struct s_vrr
+{
+	char *key;
+	char *value;
+} t_vrr;
+
 // Built-in command
 int ft_echo(char **args);
 int ft_cd(char **args, t_env *env, t_gc **gc);
@@ -112,16 +118,12 @@ void ft_export(char **args, t_env **env, t_gc **gc);
 int ft_env(t_env *env);
 int ft_unset(char **args, t_env **env);
 int ft_exit(char **args, t_gc **gc);
-// function helper about Built-in
-// t_env *ft_copier_env(t_env *env, char **envp, t_gc **gc);
 t_env *init_copier_env(char **envp, t_gc **gc);
 void insert_at_end(t_env **head, char *key, char *value, t_gc **gc);
 void print_error(char *key, t_gc **gc);
-// bool check_plus(char *args);
 int equal_or_plus(char *arg);
-void key_with_equal(char *arg, char **key, char **value, t_env **env, t_gc **gc);
-void key_with_plus(char *arg, char **key, char **value, t_env **env, t_gc **gc);
-// execution
+void	key_with_plus(char *arg, t_vrr *var, t_env **env, t_gc **gc);
+void	key_with_equal(char *arg, t_vrr *var, t_env **env, t_gc **gc);
 void execute_command(t_command *shell, t_env **env, t_gc **gc);
 char **env_to_array(t_env *env, t_gc **gc);
 char *find_executable_path(t_command *shell, t_env *envp, t_gc **gc);
@@ -129,9 +131,7 @@ bool check_command(t_command *cmd);
 void execute_external_cmd(t_command *cmd, t_env *env, t_gc **gc);
 void built_in(t_command *cmd, t_env **env, t_gc **gc);
 void write_error(char *cmd, int error_code);
-// multi-pipe
 void execute_multi_cmd(t_command *cmd, t_env *env, t_gc **gc);
-// void execute_multi_cmd(t_command *cmd, t_env *env, t_pipeline *var,t_gc **gc);
 void excute_cmd_in_pipe(t_command *cmd, t_env *env, t_gc **gc);
 int handle_exit_status(int status);
 int alpha(char *args);
@@ -207,8 +207,5 @@ char		*ft_substr_gc(const char *s, unsigned int start,
 char		*ft_strjoin_gc(const char *s1, const char *s2, t_gc **gc);
 char		*ft_strjoin_char_gc(const char *s, char c, t_gc **gc);
 char		**ft_split_gc(char const *s, char *c, t_gc **gc);
-// test
-// void print_command_structure(t_command *cmds);
-// int count_args(char **args);
 
 #endif

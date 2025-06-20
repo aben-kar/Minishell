@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: achraf <achraf@student.42.fr>              +#+  +:+       +#+        */
+/*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 16:42:44 by acben-ka          #+#    #+#             */
-/*   Updated: 2025/06/14 18:35:01 by achraf           ###   ########.fr       */
+/*   Updated: 2025/06/20 14:02:21 by acben-ka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ int	ft_exit(char **args, t_gc **gc)
 	if (!args || !*args)
 	{
 		ft_putendl_fd("exit", 1);
-		exit(0);
+		exit(g_exit_status);
 	}
 	else if (!all_is_digit(args[0]))
 		handle_non_numeric_arg(args[0], gc);

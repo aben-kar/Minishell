@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: achraf <achraf@student.42.fr>              +#+  +:+       +#+        */
+/*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 00:52:34 by aben-kar          #+#    #+#             */
-/*   Updated: 2025/06/14 19:34:20 by achraf           ###   ########.fr       */
+/*   Updated: 2025/06/20 14:02:29 by acben-ka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,58 +57,56 @@ char	*implement_value(char *args, t_gc **gc)
 	return (value);
 }
 
-void	key_with_equal(char *arg, char **key, char **value, t_env **env,
-		t_gc **gc)
+void	key_with_equal(char *arg, t_vrr *var, t_env **env, t_gc **gc)
 {
 	t_env	*tmp;
 	t_env	*repetition;
 
 	tmp = *env;
-	*key = implement_key(arg, gc);
-	if ((first_char(*key) == false) || (check_key(*key) == false))
+	var->key = implement_key(arg, gc);
+	if ((first_char(var->key) == false) || (check_key(var->key) == false))
 	{
-		print_error(*key, gc);
+		print_error(var->key, gc);
 		return ;
 	}
-	*value = implement_value(arg, gc);
+	var->value = implement_value(arg, gc);
 	repetition = *env;
 	while (repetition)
 	{
-		if (ft_strcmp(repetition->key, *key) == 0)
+		if (ft_strcmp(repetition->key, var->key) == 0)
 		{
-			repetition->value = *value;
+			repetition->value = var->value;
 			return ;
 		}
 		repetition = repetition->next;
 	}
-	insert_at_end(&tmp, *key, *value, gc);
+	insert_at_end(&tmp, var->key, var->value, gc);
 }
 
-void	key_with_plus(char *arg, char **key, char **value, t_env **env,
-		t_gc **gc)
+void	key_with_plus(char *arg, t_vrr *var, t_env **env, t_gc **gc)
 {
 	t_env	*tmp;
 	t_env	*repetition;
 	char	*new_val;
 
 	tmp = *env;
-	*key = implement_key(arg, gc);
-	if ((first_char(*key) == false) || (check_key(*key) == false))
+	var->key = implement_key(arg, gc);
+	if ((first_char(var->key) == false) || (check_key(var->key) == false))
 	{
-		print_error(*key, gc);
+		print_error(var->key, gc);
 		return ;
 	}
-	*value = implement_value(arg, gc);
+	var->value = implement_value(arg, gc);
 	repetition = *env;
 	while (repetition)
 	{
-		if ((ft_strcmp(repetition->key, *key)) == 0)
+		if ((ft_strcmp(repetition->key, var->key)) == 0)
 		{
-			new_val = ft_strjoin_gc(repetition->value, *value, gc);
+			new_val = ft_strjoin_gc(repetition->value, var->value, gc);
 			repetition->value = new_val;
 			return ;
 		}
 		repetition = repetition->next;
 	}
-	insert_at_end(&tmp, *key, *value, gc);
+	insert_at_end(&tmp, var->key, var->value, gc);
 }
