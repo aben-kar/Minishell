@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zaakrab <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 20:48:03 by zaakrab           #+#    #+#             */
-/*   Updated: 2025/06/02 23:23:39 by zaakrab          ###   ########.fr       */
+/*   Updated: 2025/06/22 16:51:04 by acben-ka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,7 @@ static t_token	*handle_operator_token(const char *input,
 static bool	is_quote_error(const char *input, int i)
 {
 	return ((input[i] == '\'' || input[i] == '"')
-		&& (input[i + 1] == '"' || input[i + 1] == '\'')
-		&& (input[i + 2] == '\0'));
+		&& (input[i + 1] == '"' || input[i + 1] == '\''));
 }
 
 static bool	scan_word_loop(const char *input, int *i)

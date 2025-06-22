@@ -6,7 +6,7 @@
 /*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 01:05:24 by acben-ka          #+#    #+#             */
-/*   Updated: 2025/06/20 14:49:18 by acben-ka         ###   ########.fr       */
+/*   Updated: 2025/06/22 15:29:56 by acben-ka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	ft_env_null(t_env **head, t_gc **gc)
 	insert_at_end(head, ft_strdup_gc("PWD", gc), ft_strdup_gc(pwd, gc), gc);
 	insert_at_end(head, ft_strdup_gc("SHLVL", gc), ft_strdup_gc("1", gc), gc);
 	insert_at_end(head, ft_strdup_gc("_", gc),
-	ft_strdup_gc("/usr/bin/env", gc), gc);
+		ft_strdup_gc("/usr/bin/env", gc), gc);
 	if (!*head)
 	{
 		*head = tmp;

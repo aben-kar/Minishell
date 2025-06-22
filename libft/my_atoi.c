@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   my_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: achraf <achraf@student.42.fr>              +#+  +:+       +#+        */
+/*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 18:31:44 by acben-ka          #+#    #+#             */
-/*   Updated: 2025/05/29 00:46:50 by achraf           ###   ########.fr       */
+/*   Updated: 2025/06/22 15:48:24 by acben-ka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,31 +14,28 @@
 
 long long	ft_aatoi(char *s)
 {
-	int	i;
-	long long	rs;
-	int	sign;
+	t_atoi	vr;
 
-	i = 0;
-	rs = 0;
-	sign = 1;
-	while ((s[i] >= '\t' && s[i] <= '\r') || s[i] == ' ')
-		i++;
-	if (s[i] == '-' || s[i] == '+')
+	vr.i = 0;
+	vr.rs = 0;
+	vr.sign = 1;
+	while ((s[vr.i] >= '\t' && s[vr.i] <= '\r') || s[vr.i] == ' ')
+		vr.i++;
+	if (s[vr.i] == '-' || s[vr.i] == '+')
 	{
-		if (s[i] == '-')
-			sign = -1;
-		i++;
+		if (s[vr.i] == '-')
+			vr.sign = -1;
+		vr.i++;
 	}
-	while (s[i] >= '0' && s[i] <= '9')
+	while (s[vr.i] >= '0' && s[vr.i] <= '9')
 	{
-		int digit = s[i] - '0';
-
-		if (((rs * sign) > (LLONG_MAX - digit) / 10))
+		vr.digit = s[vr.i] - '0';
+		if (((vr.rs * vr.sign) > (LLONG_MAX - vr.digit) / 10))
 			return (LLONG_MAX);
-		if (((rs * sign) < (LLONG_MIN + digit) / 10))
+		if (((vr.rs * vr.sign) < (LLONG_MIN + vr.digit) / 10))
 			return (LLONG_MIN);
-		rs = rs * 10 + digit;
-		i++;
+		vr.rs = vr.rs * 10 + vr.digit;
+		vr.i++;
 	}
-	return (rs * sign);
+	return (vr.rs * vr.sign);
 }

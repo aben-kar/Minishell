@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: achraf <achraf@student.42.fr>              +#+  +:+       +#+        */
+/*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 21:19:26 by zaakrab           #+#    #+#             */
-/*   Updated: 2025/06/07 14:21:22 by achraf           ###   ########.fr       */
+/*   Updated: 2025/06/22 15:43:57 by acben-ka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,13 @@ typedef struct s_list
 	struct s_list	*next;
 }	t_list;
 
+typedef struct s_atoi
+{
+	int			i;
+	int			digit;
+	int			sign;
+	long long	rs;
+}	t_atoi;
 // first page
 long long	ft_aatoi(char *s);
 int			ft_atoi(const char *str);

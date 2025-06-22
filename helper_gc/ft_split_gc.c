@@ -6,7 +6,7 @@
 /*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 21:16:50 by zaakrab           #+#    #+#             */
-/*   Updated: 2025/06/20 14:06:46 by acben-ka         ###   ########.fr       */
+/*   Updated: 2025/06/22 16:44:29 by acben-ka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,14 +78,14 @@ char	**ft_split_gc(char const *s, char *c, t_gc **gc)
 	size_t	len_word;
 
 	i[0] = 0;
-	i[1] = 0;
+	i[1] = -1;
 	len_word = count_word(s, c);
 	if (!s || !len_word)
 		return (NULL);
 	prr = gc_alloc((len_word + 1) * sizeof(char *), gc);
 	if (prr == NULL)
 		return (NULL);
-	while (i[1] < len_word)
+	while (++i[1] < len_word)
 	{
 		while (is_separator(s[i[0]], c) && s[i[0]])
 			i[0]++;
@@ -94,7 +94,6 @@ char	**ft_split_gc(char const *s, char *c, t_gc **gc)
 			prr[i[1]] = ft_strsdup(s, &i[0], c, gc);
 			if (!prr[i[1]])
 				return (NULL);
-			i[1]++;
 		}
 	}
 	prr[len_word] = NULL;

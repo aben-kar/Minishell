@@ -6,11 +6,10 @@
 /*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 18:21:38 by acben-ka          #+#    #+#             */
-/*   Updated: 2025/06/20 15:11:09 by acben-ka         ###   ########.fr       */
+/*   Updated: 2025/06/22 15:30:38 by acben-ka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// #include "minishell.h"
 #include "../minishell.h"
 
 void	setup_child_process_1(t_command *cmd)
@@ -56,7 +55,7 @@ void	execute_external_cmd(t_command *cmd, t_env *env, t_gc **gc)
 {
 	char	**copier_env;
 	char	*cmd_path;
-	pid_t		id;
+	pid_t	id;
 
 	copier_env = env_to_array(env, gc);
 	cmd_path = find_executable_path(cmd, env, gc);

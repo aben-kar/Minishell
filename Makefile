@@ -2,7 +2,8 @@ NAME = minishell
 
 # Compiler and flags
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -fsanitize=address -g3
+CFLAGS = -Wall -Wextra -Werror 
+-fsanitize=address -g3
 LDFLAGS = -Llibft -lft -lreadline -lhistory -lncurses
 
 # Directories

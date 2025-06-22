@@ -6,11 +6,10 @@
 /*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 15:09:08 by acben-ka          #+#    #+#             */
-/*   Updated: 2025/06/20 14:02:17 by acben-ka         ###   ########.fr       */
+/*   Updated: 2025/06/22 15:31:12 by acben-ka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// #include "minishell.h"
 #include "../minishell.h"
 
 int	ft_env(t_env *env)

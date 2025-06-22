@@ -6,11 +6,10 @@
 /*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 14:47:31 by acben-ka          #+#    #+#             */
-/*   Updated: 2025/06/20 14:02:07 by acben-ka         ###   ########.fr       */
+/*   Updated: 2025/06/22 15:31:05 by acben-ka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// #include "minishell.h"
 #include "../minishell.h"
 
 t_env	*init_copier_env(char **envp, t_gc **gc)

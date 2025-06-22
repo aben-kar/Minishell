@@ -6,11 +6,10 @@
 /*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/19 14:20:57 by acben-ka          #+#    #+#             */
-/*   Updated: 2025/06/20 14:02:12 by acben-ka         ###   ########.fr       */
+/*   Updated: 2025/06/22 15:31:09 by acben-ka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// #include "minishell.h"
 #include "../minishell.h"
 
 int	multiple_n(char *str)

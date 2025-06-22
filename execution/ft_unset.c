@@ -6,11 +6,10 @@
 /*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 14:50:45 by aben-kar          #+#    #+#             */
-/*   Updated: 2025/06/20 14:02:55 by acben-ka         ###   ########.fr       */
+/*   Updated: 2025/06/22 15:31:26 by acben-ka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// #include "minishell.h"
 #include "../minishell.h"
 
 int	find_position(char *key, t_env *env)

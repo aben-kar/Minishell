@@ -6,11 +6,10 @@
 /*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 16:42:44 by acben-ka          #+#    #+#             */
-/*   Updated: 2025/06/20 14:02:21 by acben-ka         ###   ########.fr       */
+/*   Updated: 2025/06/22 15:31:15 by acben-ka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// #include "minishell.h"
 #include "../minishell.h"
 
 bool	all_is_digit(char *arg)
