@@ -6,7 +6,7 @@
 /*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 21:16:50 by zaakrab           #+#    #+#             */
-/*   Updated: 2025/06/22 15:37:44 by acben-ka         ###   ########.fr       */
+/*   Updated: 2025/06/23 16:05:24 by acben-ka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,32 +87,29 @@ void	ft_free(char **prr)
 
 char	**ft_split(char const *s, char *c)
 {
-	size_t	j;
-	size_t	i;
-	char	**prr;
-	size_t	len_word;
+	t_split	var;
 
-	i = 0;
-	j = -1;
-	len_word = count_word(s, c);
-	if (!s || !len_word)
+	var.i = 0;
+	var.j = -1;
+	var.len_word = count_word(s, c);
+	if (!s || !var.len_word)
 		return (NULL);
-	prr = (char **)ft_calloc((len_word + 1), sizeof(char *));
-	if (prr == NULL)
+	var.prr = (char **)ft_calloc((var.len_word + 1), sizeof(char *));
+	if (var.prr == NULL)
 		return (NULL);
-	while (++j < len_word)
+	while (++var.j < var.len_word)
 	{
-		while (is_separator(s[i], c) && s[i])
-			i++;
-		if (s[i])
+		while (is_separator(s[var.i], c) && s[var.i])
+			var.i++;
+		if (s[var.i])
 		{
-			prr[j] = ft_strsdup(s, &i, c);
-			if (!prr[j])
+			var.prr[var.j] = ft_strsdup(s, &var.i, c);
+			if (!var.prr[var.j])
 			{
-				ft_free(prr);
+				ft_free(var.prr);
 				return (NULL);
 			}
 		}
 	}
-	return (prr);
+	return (var.prr);
 }

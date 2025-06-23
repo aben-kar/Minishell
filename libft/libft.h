@@ -6,7 +6,7 @@
 /*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 21:19:26 by zaakrab           #+#    #+#             */
-/*   Updated: 2025/06/22 15:43:57 by acben-ka         ###   ########.fr       */
+/*   Updated: 2025/06/23 16:04:04 by acben-ka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,15 @@ typedef struct s_atoi
 	int			sign;
 	long long	rs;
 }	t_atoi;
-// first page
+
+typedef struct s_split
+{
+	size_t	j;
+	size_t	i;
+	char	**prr;
+	size_t	len_word;
+}	t_split;
+
 long long	ft_aatoi(char *s);
 int			ft_atoi(const char *str);
 size_t		ft_strlcat(char *dst, const char *src, size_t dstsize);
@@ -59,8 +67,6 @@ char		*ft_strrchr(const char *s, int c);
 void		*ft_memchr(const void *s, int c, size_t n);
 int			ft_memcmp(const void *s1, const void *s2, size_t n);
 void		*ft_calloc(size_t nelem, size_t size);
-// additional
-// char	**ft_split(const char *s, char c);
 char		**ft_split(char const *s, char *c);
 void		ft_putchar_fd(char c, int fd);
 void		ft_putstr_fd(const char *str, int fd);
@@ -72,7 +78,6 @@ char		*ft_itoa(int n);
 char		*ft_strjoin(const char *s1, const char *s2);
 char		*ft_strmapi(const char *s, char (*f)(unsigned int, char));
 void		ft_striteri(char *s, void (*f)(unsigned int, char *));
-// linked lists
 void		ft_lstadd_back(t_list **lst, t_list *new);
 void		ft_lstadd_front(t_list **lst, t_list *new);
 void		ft_lstclear(t_list **lst, void (*del)(void *));
