@@ -6,7 +6,7 @@
 /*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 19:00:57 by achraf            #+#    #+#             */
-/*   Updated: 2025/06/20 14:02:39 by acben-ka         ###   ########.fr       */
+/*   Updated: 2025/06/23 17:47:06 by acben-ka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,4 +64,9 @@ int	count_commands(t_command *cmd)
 		cmd = cmd->next;
 	}
 	return (count);
+}
+
+bool	is_in_pipe(void)
+{
+	return (!isatty(STDIN_FILENO) || !isatty(STDOUT_FILENO));
 }

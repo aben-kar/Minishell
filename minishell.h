@@ -6,7 +6,7 @@
 /*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 16:23:09 by acben-ka          #+#    #+#             */
-/*   Updated: 2025/06/23 16:28:23 by acben-ka         ###   ########.fr       */
+/*   Updated: 2025/06/23 17:47:29 by acben-ka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,6 +200,7 @@ void					skip_whitespace(const char *input, int *i);
 void					setup_signals(void);
 void					handle_sigint(int sig);
 void					*ft_calloc_gc(size_t nelem, size_t size, t_gc **gc);
+bool					is_in_pipe(void);
 bool					check_command(t_command *cmd);
 bool					check_key(char *args);
 bool					first_char(char *key);

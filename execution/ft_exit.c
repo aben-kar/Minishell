@@ -6,7 +6,7 @@
 /*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 16:42:44 by acben-ka          #+#    #+#             */
-/*   Updated: 2025/06/22 15:31:15 by acben-ka         ###   ########.fr       */
+/*   Updated: 2025/06/23 17:46:50 by acben-ka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,8 @@ int	ft_exit(char **args, t_gc **gc)
 {
 	if (!args || !*args)
 	{
-		ft_putendl_fd("exit", 1);
+		if (!is_in_pipe())
+			ft_putendl_fd("exit", 1);
 		exit(g_exit_status);
 	}
 	else if (!all_is_digit(args[0]))
