@@ -14,11 +14,11 @@
 
 void	*gc_alloc(size_t size, t_gc **gc)
 {
-	if (!gc)
-		return NULL;
 	void	*ptr;
 	t_gc	*new;
 
+	if (!gc)
+		return (NULL);
 	ptr = malloc(size);
 	if (!ptr)
 		return (NULL);

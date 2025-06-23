@@ -83,8 +83,10 @@ char	*handle_heredoc(const char *raw_delim, t_gc **gc, t_env *env)
 	bool			quoted;
 	t_herdoc_line	*lines;
 
+	delimiter = get_delimiter(raw_delim, gc);
+	if (!delimiter)
+		return (NULL);
 	quoted = is_quoted_delimiter(raw_delim);
-	delimiter = strip_quotes(raw_delim, gc);
 	lines = collect_heredoc_lines(delimiter, quoted, gc, env);
 	tempfile = generate_temp_filename(gc);
 	fd = open(tempfile, O_CREAT | O_WRONLY | O_TRUNC, 0644);

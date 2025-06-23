@@ -207,6 +207,8 @@ bool					first_char(char *key);
 bool					multiple_key(t_env *env, char *key);
 bool					is_quoted_delimiter(const char *delimiter);
 bool					skip_quoted(const char *input, int *i);
+char					*remove_all_quotes(const char *input, t_gc **gc);
+char					*get_delimiter(const char *raw_delim, t_gc **gc);
 bool					handle_argument(t_command *cmd, t_token *token,
 							t_minus_param *ctx);
 bool					handle_redirection(t_command *cmd, t_token **tokens,

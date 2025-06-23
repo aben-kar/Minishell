@@ -30,23 +30,12 @@ static t_token	*handle_operator_token(const char *input,
 	return (ctx->last);
 }
 
-static bool	is_quote_error(const char *input, int i)
-{
-	return ((input[i] == '\'' || input[i] == '"')
-		&& (input[i + 1] == '"' || input[i + 1] == '\''));
-}
-
 static bool	scan_word_loop(const char *input, int *i)
 {
 	while (input[*i] && !ft_isspace(input[*i]) && !is_operator(input[*i]))
 	{
 		if (input[*i] == '\'' || input[*i] == '"')
 		{
-			if (is_quote_error(input, *i))
-			{
-				ft_putstr_fd("Command '' not found\n", 2);
-				return (false);
-			}
 			if (!skip_quoted(input, i))
 				return (false);
 		}
@@ -66,6 +55,12 @@ static t_token	*handle_word_token(const char *input,
 	if (!scan_word_loop(input, i))
 		return (NULL);
 	val = ft_substr_gc(input, start, *i - start, ctx->gc);
+	if (!ctx->head
+		&& (ft_strcmp(val, "\"\"") == 0 || ft_strcmp(val, "''") == 0))
+	{
+		ft_putstr_fd("Command '' not found\n", 2);
+		return (NULL);
+	}
 	ctx->last = add_token(ctx->last, val, ctx->gc);
 	if (!ctx->head)
 		ctx->head = ctx->last;

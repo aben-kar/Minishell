@@ -54,7 +54,6 @@ static t_command	*parse_single_command(t_token **tokens, t_minus_param *ctx)
 			return (NULL);
 		*tokens = (*tokens)->next;
 	}
-	// if (!cmd->cmd || !cmd->cmd[0])
 	if ((!cmd->cmd || !cmd->cmd[0]) && !cmd->has_redirect)
 		return (NULL);
 	if (cmd->cmd && cmd->cmd[0] && cmd->cmd[0][0] == '$')

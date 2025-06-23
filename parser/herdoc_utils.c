@@ -12,26 +12,58 @@
 
 #include "../minishell.h"
 
-bool	is_quoted_delimiter(const char *delimiter)
+bool	is_quoted_delimiter(const char *str)
 {
-	int	len;
-
-	len = ft_strlen(delimiter);
-	if (len >= 2 && ((delimiter[0] == '\'' && delimiter[len - 1] == '\'')
-			|| (delimiter[0] == '"' && delimiter[len - 1] == '"')))
-		return (true);
+	while (*str)
+	{
+		if (*str == '\'' || *str == '"')
+			return (true);
+		str++;
+	}
 	return (false);
 }
 
-char	*strip_quotes(const char *str, t_gc **gc)
+char	*remove_all_quotes(const char *input, t_gc **gc)
 {
-	int	len;
+	int		i;
+	int		j;
+	char	*res;
+	char	quote;
 
-	len = ft_strlen(str);
-	if (len >= 2 && ((str[0] == '\'' && str[len - 1] == '\'')
-			|| (str[0] == '"' && str[len - 1] == '"')))
-		return (ft_strndup(str + 1, len - 2, gc));
-	return (ft_strdup_gc(str, gc));
+	i = 0;
+	j = 0;
+	res = gc_alloc(ft_strlen(input) + 1, gc);
+	if (!res)
+		return (NULL);
+	while (input[i])
+	{
+		if (input[i] == '\'' || input[i] == '"')
+		{
+			quote = input[i++];
+			while (input[i] && input[i] != quote)
+				res[j++] = input[i++];
+			if (input[i] == quote)
+				i++;
+		}
+		else
+			res[j++] = input[i++];
+	}
+	res[j] = '\0';
+	return (res);
+}
+
+char	*get_delimiter(const char *raw_delim, t_gc **gc)
+{
+	t_token	*token;
+	char	*delimiter;
+
+	if (ft_strcmp(raw_delim, "\"\"") == 0)
+		return ("");
+	token = tokenize(raw_delim, gc);
+	if (!token || token->next)
+		return (NULL);
+	delimiter = token->value;
+	return (remove_all_quotes(delimiter, gc));
 }
 
 char	*generate_temp_filename(t_gc **gc)
