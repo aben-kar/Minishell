@@ -15,13 +15,14 @@
 void	bash_syntax_error(const char *token)
 {
 	if (!token)
-		ft_putstr_fd("bash: syntax error near unexpected"
+		ft_putstr_fd("newline: syntax error near unexpected"
 			" token `newline'\n", 2);
 	else if (ft_strcmp(token, "|") == 0)
-		ft_putstr_fd("bash: syntax error near unexpected token `|'\n", 2);
+		ft_putstr_fd("|: syntax error near unexpected token `|'\n", 2);
 	else if (is_redir(token))
 	{
-		ft_putstr_fd("bash: syntax error near unexpected token `", 2);
+		ft_putstr_fd(token, 2);
+		ft_putstr_fd(": syntax error near unexpected token `", 2);
 		ft_putstr_fd(token, 2);
 		ft_putstr_fd("'\n", 2);
 	}
@@ -32,7 +33,8 @@ void	bash_syntax_error(const char *token)
 
 void	bash_unclosed_quote_error(char quote)
 {
-	ft_putstr_fd("bash: unexpected EOF while looking for matching `", 2);
+	ft_putchar_fd(quote, 2);
+	ft_putstr_fd(": unexpected EOF while looking for matching `", 2);
 	ft_putchar_fd(quote, 2);
 	ft_putstr_fd("'\n", 2);
 	ft_putstr_fd("bash: syntax error: unexpected end of file\n", 2);
