@@ -59,16 +59,20 @@ bool	handle_redirection(t_command *cmd, t_token **tokens,
 	t_minus_param *ctx, int type)
 {
 	char	*filename;
+	bool	was_quoted;
 
+	was_quoted = ((*tokens)->value[0] == '\'' || (*tokens)->value[0] == '"');
 	if (is_token_invalid(tokens))
 		return (false);
 	filename = expand_filename(type, (*tokens)->value, ctx);
-	if (!filename)
+	if (!*filename || !filename)
 	{
+		ft_putstr_fd("  : ambiguous redirect\n", 2);
 		g_exit_status = 1;
 		return (false);
 	}
-	trim_filename(&filename);
+	if (!was_quoted)
+		trim_filename(&filename);
 	if (!*filename)
 	{
 		bash_syntax_error("newline");

@@ -32,8 +32,17 @@ static void	init_expand_ctx(t_expand_helper *ctx, t_gc **gc,
 static int	handle_expansion(const char *word, int i, t_expand_helper *ctx,
 	bool *in_single)
 {
-	if (word[i + 1] == '"' || word[i + 1] == '\'')
+	if (word[i + 1] == '"' || word[i + 1] == '\'' || word[i + 1] == '\0')
+	{
+		handle_simple_dollar(ctx);
 		return (i + 1);
+	}
+	if (word[i + 1] == '$')
+	{
+		ft_putstr_fd("Expansion not supported\n", 2);
+		handle_simple_dollar(ctx);
+		return (i + 2);
+	}
 	if (!*in_single)
 		return (handle_dollar(word, i, ctx));
 	return (handle_char(word, i, ctx));
