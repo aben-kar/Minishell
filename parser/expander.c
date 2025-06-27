@@ -39,9 +39,9 @@ static int	handle_expansion(const char *word, int i, t_expand_helper *ctx,
 	}
 	if (word[i + 1] == '$')
 	{
-		ft_putstr_fd("Expansion not supported\n", 2);
+		// ft_putstr_fd("Expansion not supported\n", 2);
 		handle_simple_dollar(ctx);
-		return (i + 2);
+		return (i + 1);
 	}
 	if (!*in_single)
 		return (handle_dollar(word, i, ctx));

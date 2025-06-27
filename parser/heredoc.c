@@ -12,6 +12,18 @@
 
 #include "../minishell.h"
 
+static volatile sig_atomic_t g_heredoc_sigint = 0;
+
+static void	handle_heredoc_sigint(int sig)
+{
+	(void)sig;
+	g_heredoc_sigint = 1;
+	write(STDOUT_FILENO, "\n", 1);
+	// rl_replace_line("", 0);
+	// rl_point = rl_end = 0;
+	rl_done = 1;
+}
+
 static t_herdoc_line	*new_heredoc_node(char *line, bool quoted,
 	t_gc **gc, t_env *env)
 {
@@ -46,11 +58,20 @@ static t_herdoc_line	*collect_heredoc_lines(char *delimiter, bool quoted,
 	t_herdoc_line	*new_node;
 	char			*line;
 
+	g_heredoc_sigint = 0;
+	signal(SIGINT, handle_heredoc_sigint);
+
 	head = NULL;
 	tail = NULL;
 	while (1)
 	{
 		line = readline("> ");
+		if (g_heredoc_sigint || !line)
+		{
+			if (line)
+				free(line);
+			break ;
+		}
 		if (!line || ft_strcmp(line, delimiter) == 0)
 		{
 			free(line);
@@ -61,6 +82,13 @@ static t_herdoc_line	*collect_heredoc_lines(char *delimiter, bool quoted,
 			break ;
 		append_heredoc_node(&head, &tail, new_node);
 		free(line);
+	}
+
+	signal(SIGINT, handle_sigint);
+	if (g_heredoc_sigint)
+	{
+		g_exit_status = 130;
+		return (NULL);
 	}
 	return (head);
 }
