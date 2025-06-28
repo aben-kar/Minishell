@@ -19,8 +19,6 @@ static void	handle_heredoc_sigint(int sig)
 	(void)sig;
 	g_heredoc_sigint = 1;
 	write(STDOUT_FILENO, "\n", 1);
-	// rl_replace_line("", 0);
-	// rl_point = rl_end = 0;
 	rl_done = 1;
 }
 
@@ -68,8 +66,7 @@ static t_herdoc_line	*collect_heredoc_lines(char *delimiter, bool quoted,
 		line = readline("> ");
 		if (g_heredoc_sigint || !line)
 		{
-			if (line)
-				free(line);
+			free(line);
 			break ;
 		}
 		if (!line || ft_strcmp(line, delimiter) == 0)
