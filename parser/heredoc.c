@@ -63,7 +63,7 @@ static t_herdoc_line	*collect_heredoc_lines(char *delimiter, bool quoted,
 
 	head = NULL;
 	tail = NULL;
-	while (!g_heredoc_sigint) // 1
+	while (!g_heredoc_sigint)
 	{
 		line = readline("> ");
 		if (g_heredoc_sigint || !line)
