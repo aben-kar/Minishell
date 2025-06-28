@@ -22,6 +22,10 @@ static bool	handle_token(t_command *cmd, t_token **tokens, t_minus_param *ctx)
 	int		type;
 	char	*value;
 
+	if (!tokens || !*tokens)
+		return (false); // avoid dereferencing NULL
+
+
 	if (is_redir((*tokens)->value))
 	{
 		type = redir_type((*tokens)->value);

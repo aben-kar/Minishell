@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zaakrab <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 08:31:45 by zaakrab           #+#    #+#             */
-/*   Updated: 2025/05/31 08:31:46 by zaakrab          ###   ########.fr       */
+/*   Updated: 2025/06/28 18:48:41 by acben-ka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,27 @@
 
 static volatile sig_atomic_t g_heredoc_sigint = 0;
 
-static void	handle_heredoc_sigint(int sig)
+// static void handle_heredoc_sigint(int sig)
+// {
+// 	(void)sig;
+// 	g_heredoc_sigint = 1;
+// 	write(STDOUT_FILENO, "\n", 1);
+// 	// rl_replace_line("", 0);
+// 	// rl_redisplay();
+// 	// rl_done = 1;
+// }
+
+static void handle_heredoc_sigint(int sig)
 {
 	(void)sig;
 	g_heredoc_sigint = 1;
 	write(STDOUT_FILENO, "\n", 1);
-	// rl_replace_line("", 0);
-	// rl_redisplay();
-	rl_done = 1;
 }
 
-static t_herdoc_line	*new_heredoc_node(char *line, bool quoted,
-	t_gc **gc, t_env *env)
+static t_herdoc_line *new_heredoc_node(char *line, bool quoted,
+									   t_gc **gc, t_env *env)
 {
-	t_herdoc_line	*node;
+	t_herdoc_line *node;
 
 	node = gc_alloc(sizeof(t_herdoc_line), gc);
 	if (!node)
@@ -40,8 +47,8 @@ static t_herdoc_line	*new_heredoc_node(char *line, bool quoted,
 	return (node);
 }
 
-static void	append_heredoc_node(t_herdoc_line **head,
-	t_herdoc_line **tail, t_herdoc_line *new_node)
+static void append_heredoc_node(t_herdoc_line **head,
+								t_herdoc_line **tail, t_herdoc_line *new_node)
 {
 	if (!*head)
 		*head = new_node;
@@ -50,8 +57,8 @@ static void	append_heredoc_node(t_herdoc_line **head,
 	*tail = new_node;
 }
 
-static t_herdoc_line	*collect_heredoc_lines(char *delimiter, bool quoted,
-	t_gc **gc, t_env *env)
+static t_herdoc_line *collect_heredoc_lines(char *delimiter, bool quoted,
+											t_gc **gc, t_env *env)
 {
 	t_herdoc_line	*head;
 	t_herdoc_line	*tail;
@@ -59,26 +66,27 @@ static t_herdoc_line	*collect_heredoc_lines(char *delimiter, bool quoted,
 	char			*line;
 
 	g_heredoc_sigint = 0;
-	signal(SIGINT, handle_heredoc_sigint);
+	// signal(SIGINT, handle_heredoc_sigint);
 
 	head = NULL;
 	tail = NULL;
-	while (!g_heredoc_sigint)
+	while (1)
 	{
 		line = readline("> ");
 		if (g_heredoc_sigint || !line)
 		{
-			free(line);
-			break ;
+			// free(line);
+			exit(130);
+			// break;
 		}
 		if (!line || ft_strcmp(line, delimiter) == 0)
 		{
 			free(line);
-			break ;
+			break;
 		}
 		new_node = new_heredoc_node(line, quoted, gc, env);
 		if (!new_node)
-			break ;
+			break;
 		append_heredoc_node(&head, &tail, new_node);
 		free(line);
 	}
@@ -92,7 +100,7 @@ static t_herdoc_line	*collect_heredoc_lines(char *delimiter, bool quoted,
 	return (head);
 }
 
-static void	write_heredoc_lines(int fd, t_herdoc_line *lines)
+static void write_heredoc_lines(int fd, t_herdoc_line *lines)
 {
 	while (lines)
 	{
@@ -102,28 +110,65 @@ static void	write_heredoc_lines(int fd, t_herdoc_line *lines)
 	}
 }
 
-char	*handle_heredoc(const char *raw_delim, t_gc **gc, t_env *env)
+char *handle_heredoc(const char *raw_delim, t_gc **gc, t_env *env)
 {
-	char			*tempfile;
-	char			*delimiter;
-	int				fd;
-	bool			quoted;
-	t_herdoc_line	*lines;
+	char *tempfile;
+	char *delimiter;
+	bool quoted;
+	pid_t pid;
+	int status;
 
 	delimiter = get_delimiter(raw_delim, gc);
 	if (!delimiter)
 		return (NULL);
 	quoted = is_quoted_delimiter(raw_delim);
-	lines = collect_heredoc_lines(delimiter, quoted, gc, env);
 	tempfile = generate_temp_filename(gc);
-	fd = open(tempfile, O_CREAT | O_WRONLY | O_TRUNC, 0644);
-	if (fd < 0)
+
+	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
+
+	pid = fork();
+	if (pid < 0)
+		return (NULL);
+
+	if (pid == 0)
 	{
-		unlink(tempfile);
-		g_exit_status = -1;
+		signal(SIGINT, handle_heredoc_sigint);
+		// signal(SIGQUIT, SIG_IGN);
+
+		t_herdoc_line *lines = collect_heredoc_lines(delimiter, quoted, gc, env);
+		if (!lines)
+		{
+			free (lines);
+			exit(130); // SIGINT
+		}
+		int fd = open(tempfile, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+		if (fd < 0)
+			exit(1);
+		write_heredoc_lines(fd, lines);
+		close(fd);
+		exit(0);
+	}
+
+	waitpid(pid, &status, 0);
+	if (WIFEXITED(status))
+	{
+		int exit_code = WEXITSTATUS(status);
+		if (exit_code == 130)
+		{
+			g_exit_status = 130;
+			return (NULL);
+		}
+		else if (exit_code != 0)
+		{
+			g_exit_status = 1;
+			return (NULL);
+		}
+	}
+	else if (WIFSIGNALED(status))
+	{
+		g_exit_status = 130;
 		return (NULL);
 	}
-	write_heredoc_lines(fd, lines);
-	close(fd);
 	return (tempfile);
 }

@@ -50,6 +50,11 @@ static void	minishell_loop(t_env *env_list, t_gc **gc)
 		if (*input)
 			add_history(input);
 		handle_input(input, &env_list, gc);
+		if (g_exit_status == 130)
+		{
+			g_exit_status = 0;
+			continue;
+		}
 		free(input);
 	}
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zaakrab <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 18:02:24 by zaakrab           #+#    #+#             */
-/*   Updated: 2025/06/02 22:20:05 by zaakrab          ###   ########.fr       */
+/*   Updated: 2025/06/28 18:41:39 by acben-ka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,14 @@ static bool	is_token_invalid(t_token **tokens)
 static char	*expand_filename(int type, char *value, t_minus_param *ctx)
 {
 	if (type == REDIR_HEREDOC)
-		return (handle_heredoc(value, ctx->gc, ctx->env));
+	{
+		char *file_name;
+
+		file_name = handle_heredoc(value, ctx->gc, ctx->env);
+		if (NULL == file_name)
+			return (NULL);
+		return (file_name);
+	}
 	return (expand_word(value, ctx->gc, ctx->env));
 }
 
@@ -61,13 +68,18 @@ bool	handle_redirection(t_command *cmd, t_token **tokens,
 	char	*filename;
 	bool	was_quoted;
 
+	if (!tokens || !*tokens || !(*tokens)->value)
+	{
+		bash_syntax_error("newline");
+		g_exit_status = 1;
+		return (false);
+	}
 	was_quoted = ((*tokens)->value[0] == '\'' || (*tokens)->value[0] == '"');
 	if (is_token_invalid(tokens))
 		return (false);
 	filename = expand_filename(type, (*tokens)->value, ctx);
-	if (!*filename || !filename)
+	if (!filename || !*filename)
 	{
-		ft_putstr_fd("  : ambiguous redirect\n", 2);
 		g_exit_status = 1;
 		return (false);
 	}
