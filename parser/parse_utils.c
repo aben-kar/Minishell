@@ -35,10 +35,10 @@ static bool	is_token_invalid(t_token **tokens)
 
 static char	*expand_filename(int type, char *value, t_minus_param *ctx)
 {
+	char	*file_name;
+
 	if (type == REDIR_HEREDOC)
 	{
-		char *file_name;
-
 		file_name = handle_heredoc(value, ctx->gc, ctx->env);
 		if (NULL == file_name)
 			return (NULL);
@@ -79,10 +79,7 @@ bool	handle_redirection(t_command *cmd, t_token **tokens,
 		return (false);
 	filename = expand_filename(type, (*tokens)->value, ctx);
 	if (!filename || !*filename)
-	{
-		// g_exit_status = 1;
 		return (false);
-	}
 	if (!was_quoted)
 		trim_filename(&filename);
 	if (!*filename)

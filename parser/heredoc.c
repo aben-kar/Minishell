@@ -12,17 +12,10 @@
 
 #include "../minishell.h"
 
-static void handle_heredoc_sigint(int sig)
+static t_herdoc_line	*new_heredoc_node(char *line, bool quoted,
+										t_gc **gc, t_env *env)
 {
-	(void)sig;
-	write(STDOUT_FILENO, "\n", 1);
-	exit(130);
-}
-
-static t_herdoc_line *new_heredoc_node(char *line, bool quoted,
-									   t_gc **gc, t_env *env)
-{
-	t_herdoc_line *node;
+	t_herdoc_line	*node;
 
 	node = gc_alloc(sizeof(t_herdoc_line), gc);
 	if (!node)
@@ -35,7 +28,7 @@ static t_herdoc_line *new_heredoc_node(char *line, bool quoted,
 	return (node);
 }
 
-static void append_heredoc_node(t_herdoc_line **head,
+static void	append_heredoc_node(t_herdoc_line **head,
 								t_herdoc_line **tail, t_herdoc_line *new_node)
 {
 	if (!*head)
@@ -45,7 +38,7 @@ static void append_heredoc_node(t_herdoc_line **head,
 	*tail = new_node;
 }
 
-static t_herdoc_line *collect_heredoc_lines(char *delimiter, bool quoted,
+static t_herdoc_line	*collect_heredoc_lines(char *delimiter, bool quoted,
 											t_gc **gc, t_env *env)
 {
 	t_herdoc_line	*head;
@@ -78,7 +71,7 @@ static t_herdoc_line *collect_heredoc_lines(char *delimiter, bool quoted,
 	return (head);
 }
 
-static void write_heredoc_lines(int fd, t_herdoc_line *lines)
+static void	write_heredoc_lines(int fd, t_herdoc_line *lines)
 {
 	while (lines)
 	{
@@ -90,11 +83,15 @@ static void write_heredoc_lines(int fd, t_herdoc_line *lines)
 
 char	*handle_heredoc(const char *raw_delim, t_gc **gc, t_env *env)
 {
-	char	*tempfile;
-	char	*delimiter;
-	bool	quoted;
-	pid_t	pid;
-	int		status;
+	char			*tempfile;
+	char			*delimiter;
+	bool			quoted;
+	pid_t			pid;
+	int				status;
+	t_herdoc_line	*lines;
+	int				fd;
+	int				sig;
+	int				exit_code;
 
 	delimiter = get_delimiter(raw_delim, gc);
 	if (!delimiter)
@@ -110,10 +107,8 @@ char	*handle_heredoc(const char *raw_delim, t_gc **gc, t_env *env)
 	{
 		signal(SIGINT, handle_heredoc_sigint);
 		signal(SIGQUIT, SIG_IGN);
-		t_herdoc_line *lines = collect_heredoc_lines(delimiter, quoted, gc, env);
-		// if (!lines)
-		// 	free (lines);
-		int fd = open(tempfile, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+		lines = collect_heredoc_lines(delimiter, quoted, gc, env);
+		fd = open(tempfile, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 		if (fd < 0)
 			exit(1);
 		write_heredoc_lines(fd, lines);
@@ -123,7 +118,7 @@ char	*handle_heredoc(const char *raw_delim, t_gc **gc, t_env *env)
 	waitpid(pid, &status, 0);
 	if (WIFSIGNALED(status))
 	{
-		int sig = WTERMSIG(status);
+		sig = WTERMSIG(status);
 		if (sig == SIGINT)
 			g_exit_status = 130;
 		else
@@ -132,7 +127,7 @@ char	*handle_heredoc(const char *raw_delim, t_gc **gc, t_env *env)
 	}
 	else if (WIFEXITED(status))
 	{
-		int exit_code = WEXITSTATUS(status);
+		exit_code = WEXITSTATUS(status);
 		if (exit_code != 0)
 		{
 			g_exit_status = exit_code;

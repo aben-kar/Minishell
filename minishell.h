@@ -199,6 +199,7 @@ void					bash_unclosed_quote_error(char quote);
 void					skip_whitespace(const char *input, int *i);
 void					setup_signals(void);
 void					handle_sigint(int sig);
+void					handle_heredoc_sigint(int sig);
 void					*ft_calloc_gc(size_t nelem, size_t size, t_gc **gc);
 bool					is_in_pipe(void);
 bool					check_command(t_command *cmd);

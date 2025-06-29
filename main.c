@@ -40,14 +40,10 @@ static void	minishell_loop(t_env *env_list, t_gc **gc)
 	while (1)
 	{
 		setup_signals();
-		// rl_catch_signals = 0;
 		input = readline(CYAN "minishell$ " RESET);
 		if (!input)
 		{
 			printf("exit\n");
-			// gc_free_all(gc);
-			// clear_history();
-			// exit(g_exit_status);
 			break ;
 		}
 		if (*input)
@@ -56,7 +52,7 @@ static void	minishell_loop(t_env *env_list, t_gc **gc)
 		if (g_exit_status == 130)
 		{
 			free(input);
-			continue;
+			continue ;
 		}
 		free(input);
 	}
@@ -75,6 +71,5 @@ int	main(int ac, char **av, char **envp)
 	minishell_loop(env_list, &gc);
 	clear_history();
 	gc_free_all(&gc);
-	// return (0);
 	return (g_exit_status);
 }
