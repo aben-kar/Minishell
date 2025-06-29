@@ -51,11 +51,6 @@ static t_herdoc_line	*collect_heredoc_lines(char *delimiter, bool quoted,
 	while (1)
 	{
 		line = readline("> ");
-		if (!line)
-		{
-			free(line);
-			break ;
-		}
 		if (!line || ft_strcmp(line, delimiter) == 0)
 		{
 			free(line);
