@@ -80,7 +80,7 @@ bool	handle_redirection(t_command *cmd, t_token **tokens,
 	filename = expand_filename(type, (*tokens)->value, ctx);
 	if (!filename || !*filename)
 	{
-		g_exit_status = 1;
+		// g_exit_status = 1;
 		return (false);
 	}
 	if (!was_quoted)
