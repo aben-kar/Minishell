@@ -200,6 +200,11 @@ void					skip_whitespace(const char *input, int *i);
 void					setup_signals(void);
 void					handle_sigint(int sig);
 void					handle_heredoc_sigint(int sig);
+void					handle_heredoc_child(t_heredoc_ctx *ctx);
+bool					handle_heredoc_parent(pid_t pid);
+t_herdoc_line			*collect_heredoc_lines(char *delimiter, bool quoted,
+							t_gc **gc, t_env *env);
+void					write_heredoc_lines(int fd, t_herdoc_line *lines);
 void					*ft_calloc_gc(size_t nelem, size_t size, t_gc **gc);
 bool					is_in_pipe(void);
 bool					check_command(t_command *cmd);

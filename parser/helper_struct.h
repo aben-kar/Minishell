@@ -39,4 +39,13 @@ typedef struct s_token_helper
 	t_gc	**gc;
 }	t_token_helper;
 
+typedef struct s_heredoc_ctx
+{
+	char		*delimiter;
+	bool		quoted;
+	t_gc		**gc;
+	t_env		*env;
+	char		*tempfile;
+}	t_heredoc_ctx;
+
 #endif

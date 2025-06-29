@@ -51,7 +51,8 @@ SRC = main.c \
 	$(PARSER_DIR)/expander.c \
 	$(PARSER_DIR)/gc.c \
 	$(PARSER_DIR)/helper_func.c \
-	$(PARSER_DIR)/herdoc_utils.c \
+	$(PARSER_DIR)/heredoc_utils.c \
+	$(PARSER_DIR)/heredoc_signals.c \
 	$(PARSER_DIR)/heredoc.c \
 	$(PARSER_DIR)/parse_utils.c \
 	$(PARSER_DIR)/signals.c \
