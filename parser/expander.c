@@ -64,8 +64,8 @@ char	*expand_word(const char *word, t_gc **gc, t_env *env)
 		update_quote_state(word[i], &in_single, &in_double);
 		if ((word[i] == '\'' && !in_double) || (word[i] == '"' && !in_single))
 			i++;
-		else if (word[i] == '$')
-			i = handle_expansion(word, i, &ctx, &in_single);
+		else if (word[i] == '$' && !in_single)
+			i += handle_expansion(word, i, &ctx, &in_single);
 		else
 			i = handle_char(word, i, &ctx);
 	}
