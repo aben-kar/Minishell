@@ -29,8 +29,6 @@ int	handle_dollar(const char *word, int i, t_expand_helper *ctx)
 		return (handle_exit_code(ctx));
 	if (!word[i + 1])
 		return (handle_simple_dollar(ctx));
-	if (!ft_isalpha(word[i + 1]) && word[i + 1] != '_')
-		return (handle_simple_dollar(ctx));
 	return (handle_dollar_inner(word, i, ctx));
 }
 

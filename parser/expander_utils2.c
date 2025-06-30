@@ -53,6 +53,8 @@ int	get_key_end_index(const char *word, int i)
 	int	j;
 
 	j = i + 1;
+	if (ft_isdigit(word[j]))
+		return (j + 1);
 	while (ft_isalnum(word[j]) || word[j] == '_')
 		j++;
 	return (j);
@@ -70,5 +72,5 @@ int	handle_dollar_inner(const char *word, int i, t_expand_helper *ctx)
 	if (val)
 		*(ctx->res) = ft_strjoin_gc(*(ctx->res),
 				ft_strdup_gc(val, ctx->gc), ctx->gc);
-	return (j);
+	return (j - i);
 }

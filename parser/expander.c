@@ -35,12 +35,12 @@ static int	handle_expansion(const char *word, int i, t_expand_helper *ctx,
 	if (word[i + 1] == '"' || word[i + 1] == '\'' || word[i + 1] == '\0')
 	{
 		handle_simple_dollar(ctx);
-		return (i + 1);
+		return (1);
 	}
 	if (word[i + 1] == '$')
 	{
 		handle_simple_dollar(ctx);
-		return (i + 1);
+		return (2);
 	}
 	if (!*in_single)
 		return (handle_dollar(word, i, ctx));
