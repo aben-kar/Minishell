@@ -1,16 +1,15 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_substr.c                                        :+:      :+:    :+:   */
+/*   ft_substr_gc.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: zaakrab <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/01 21:19:07 by zaakrab           #+#    #+#             */
-/*   Updated: 2024/11/01 21:19:08 by zaakrab          ###   ########.fr       */
+/*   Created: 2025/06/30 17:30:34 by zaakrab           #+#    #+#             */
+/*   Updated: 2025/06/30 17:30:36 by zaakrab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// #include "minishell.h"
 #include "../minishell.h"
 
 char	*ft_substr_gc(const char *s, unsigned int start, size_t len, t_gc **gc)

@@ -3,14 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strdup_gc.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acben-ka <acben-ka@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zaakrab <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/01 21:17:04 by zaakrab           #+#    #+#             */
-/*   Updated: 2025/05/13 16:26:23 by acben-ka         ###   ########.fr       */
+/*   Created: 2025/06/30 17:29:08 by zaakrab           #+#    #+#             */
+/*   Updated: 2025/06/30 17:29:09 by zaakrab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// #include "minishell.h"
 #include "../minishell.h"
 
 char	*ft_strdup_gc(const char *s1, t_gc **gc)
