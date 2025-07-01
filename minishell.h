@@ -160,8 +160,6 @@ char					*handle_heredoc(const char *delimiter, t_gc **gc,
 							t_env *env);
 char					**argv_add(char **argv, const char *value, t_gc **gc);
 char					*strip_quotes(const char *str, t_gc **gc);
-char					*expand_word_always_expand(const char *word, t_gc **gc,
-							t_env *env);
 void					insert_at_end(t_env **head, char *key, char *value,
 							t_gc **gc);
 void					print_error(char *key, t_gc **gc);
@@ -228,5 +226,11 @@ t_command				*parse_tokens(t_token *tokens, int *has_pipe,
 t_command				*add_command(t_command *list, t_command *new);
 t_redirect				*add_redir(t_redirect *list, char *filename, int type,
 							t_gc **gc);
+void					init_expand_ctx(t_expand_helper *ctx, t_gc **gc,
+							t_env *env, char **res);
+int						handle_expansion(const char *word, int i,
+							t_expand_helper *ctx, bool *in_single);
+char					*expand_word_always_expand(const char *word,
+							t_gc **gc, t_env *env);
 
 #endif

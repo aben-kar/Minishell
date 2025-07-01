@@ -20,7 +20,7 @@ static void	update_quote_state(char c, bool *in_single, bool *in_double)
 		*in_double = !*in_double;
 }
 
-static void	init_expand_ctx(t_expand_helper *ctx, t_gc **gc,
+void	init_expand_ctx(t_expand_helper *ctx, t_gc **gc,
 	t_env *env, char **res)
 {
 	*res = ft_strdup_gc("", gc);
@@ -29,7 +29,7 @@ static void	init_expand_ctx(t_expand_helper *ctx, t_gc **gc,
 	ctx->res = res;
 }
 
-static int	handle_expansion(const char *word, int i, t_expand_helper *ctx,
+int	handle_expansion(const char *word, int i, t_expand_helper *ctx,
 	bool *in_single)
 {
 	if (word[i + 1] == '"' || word[i + 1] == '\'' || word[i + 1] == '\0')

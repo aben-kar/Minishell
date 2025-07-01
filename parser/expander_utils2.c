@@ -15,22 +15,26 @@
 char	*expand_word_always_expand(const char *word, t_gc **gc, t_env *env)
 {
 	int				i;
+	bool			in_single;
 	t_expand_helper	ctx;
-	char			*result;
+	char			*res;
 
 	i = 0;
-	result = ft_strdup_gc("", gc);
-	ctx.gc = gc;
-	ctx.env = env;
-	ctx.res = &result;
+	in_single = false;
+	init_expand_ctx(&ctx, gc, env, &res);
 	while (word[i])
 	{
-		if (word[i] == '$')
-			i = handle_dollar(word, i, &ctx);
+		if (word[i] == '\'' || word[i] == '"')
+		{
+			*(ctx.res) = ft_strjoin_char_gc(*(ctx.res), word[i], ctx.gc);
+			i++;
+		}
+		else if (word[i] == '$')
+			i += handle_expansion(word, i, &ctx, &in_single);
 		else
 			i = handle_char(word, i, &ctx);
 	}
-	return (result);
+	return (res);
 }
 
 int	handle_exit_code(t_expand_helper *ctx)
